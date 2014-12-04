@@ -1,11 +1,11 @@
-# Build librobosim
+# project: libRoboSim
 project (LIBROBOSIM)
 
 # Set minimum cmake version
 cmake_minimum_required (VERSION 2.8)
 
 # set the version number
-set (LIBROBOSIM_VERSION 1.7.70)
+set (LIBROBOSIM_VERSION 0.0.70)
 set (LIBROBOSIM_SO_VERSION 0)
 
 # verbose ouptut
@@ -39,18 +39,13 @@ endif (MSVC)
 
 # include directory
 include_directories (
-	"${PROJECT_SOURCE_DIR}"
+	"${PROJECT_SOURCE_DIR}/include"
 	"${PROJECT_BINARY_DIR}"
 )
 
-# set output directory for shared objects
-set (OUTPUT_LIBDIR "${LIBROBOSIM_BINARY_DIR}/lib")
-set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_LIBDIR})
-make_directory (${OUTPUT_LIBDIR})
-
 # add librs library
-include_directories ("/home/kgucwa/projects/playground/librs/inc")
-link_directories ("/home/kgucwa/projects/playground/librs/build/lib")
+include_directories ("/home/kgucwa/projects/librs/include")
+link_directories ("/home/kgucwa/projects/librs/build/lib")
 set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsRobots debug rsRobotsd)
 set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsSim debug rsSimd)
 set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsScene debug rsScened)
@@ -58,9 +53,9 @@ set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsXML debug rsXMLd)
 
 # add ODE headers
 if (MSVC)
-	include_directories ("/home/kgucwa/projects/robot-sim/src/opende/include")
+	include_directories ("/home/kgucwa/projects/librs/deps/ode/include")
 else (MSVC)
-	include_directories ("/home/kgucwa/projects/robot-sim/src/opende/sys/include")
+	include_directories ("/home/kgucwa/projects/librs/deps/ode/sys/include")
 endif (MSVC)
 
 # ODE options
@@ -68,17 +63,22 @@ add_definitions (-DdDOUBLE)
 add_definitions (-DdNODEBUG)
 
 # add OpenSceneGraph headers
-include_directories ("/home/kgucwa/projects/robot-sim/src/osg/build/include")
-include_directories ("/home/kgucwa/projects/robot-sim/src/osg/include")
+include_directories ("/home/kgucwa/projects/librs/deps/osg/build/include")
+include_directories ("/home/kgucwa/projects/librs/deps/osg/include")
 
 # add tinyxml2 headers
-include_directories ("/home/kgucwa/projects/robot-sim/src/tinyxml2")
+include_directories ("/home/kgucwa/projects/librs/deps/tinyxml2")
 
 # add source files to library
 set (SRCS ${SRCS}
-	robosim.cpp
-	linkbot.cpp
+	src/robosim.cpp
+	src/linkbot.cpp
 )
+
+# set output directory for shared objects
+set (OUTPUT_LIBDIR "${LIBROBOSIM_BINARY_DIR}/lib")
+set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_LIBDIR})
+make_directory (${OUTPUT_LIBDIR})
 
 # add the library
 add_library (robosim SHARED ${SRCS})
@@ -88,4 +88,15 @@ target_link_libraries (robosim ${EXTRA_LIBS})
 
 # set version properties
 set_target_properties (robosim PROPERTIES VERSION ${LIBROBOSIM_VERSION} SOVERSION ${LIBROBOSIM_SO_VERSION})
+
+# set output directory for demos
+set (OUTPUT_BINDIR "${LIBROBOSIM_BINARY_DIR}/bin")
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_BINDIR})
+make_directory (${OUTPUT_BINDIR})
+
+# link library against dependencies
+target_link_libraries (robosim ${EXTRA_LIBS})
+
+# build demos
+add_subdirectory ("${LIBROBOSIM_SOURCE_DIR}/demo/")
 
