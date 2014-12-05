@@ -15,6 +15,7 @@ class RoboSim : public rsSim::Sim, public rsXML::Store, public rsScene::Scene {
 
 		int addRobot(rsSim::ModularRobot*);
 		int deleteRobot(int);
+		void keyPressed(int);
 };
 
 #endif	// ROBOSIM_HPP_

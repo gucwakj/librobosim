@@ -46,7 +46,7 @@ std::cout << "delete Robot" << std::endl;
 		MUTEX_UNLOCK(&(_pause_mutex));
 
 		// get HUD and set message
-		//Scene::getHUDText()->setText("Paused: Press any key to end");
+		Scene::getHUDText()->setText("Paused: Press any key to end");
 
 		// sleep until pausing halted by user
 		MUTEX_LOCK(&(_pause_mutex));
@@ -67,3 +67,12 @@ std::cout << "delete Robot" << std::endl;
 	return 1;
 }
 
+void RoboSim::keyPressed(int key) {
+	if (key == 'r') {
+		Sim::setCollisions(2);
+	}
+	else {
+		Sim::setPause(2);
+		Scene::setPauseText(Sim::getPause());
+	}
+}
