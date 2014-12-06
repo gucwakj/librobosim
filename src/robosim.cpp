@@ -4,8 +4,8 @@
 RoboSim *g_sim = NULL;
 
 RoboSim::RoboSim(char *name, int pause) : rsSim::Sim(pause), rsScene::Scene(), rsXML::Store(name) {
-	Sim::setPause(1);
-	Scene::start(1);
+	Sim::setPause(Store::getPause());
+	Scene::start(Store::getPause());
 	for (int i = 1; i < Store::getNumGrounds(); i++) {
 		//rsScene::drawGround();
 		i = i;
