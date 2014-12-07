@@ -7,14 +7,32 @@ RoboSim::RoboSim(char *name, int pause) : rsSim::Sim(pause), rsScene::Scene(), r
 	Scene::setGrid(Store::getUnits(), Store::getGrid());
 	Sim::setPause(Store::getPause());
 	Scene::start(Store::getPause());
-	for (int i = 1; i < Store::getNumGrounds(); i++) {
-		//rsScene::drawGround();
-		i = i;
+
+	// draw ground objects
+	for (int i = 0; i < Store::getNumGrounds(); i++) {
+		// get xml ground object
+		rsXML::Ground *ground = Store::getGround(i);
+		// build ground object
+		switch (ground->getType()) {
+			case rs::BOX:
+				Sim::addGround(ground->getPosition(), ground->getQuaternion(), ground->getDimensions(), ground->getMass());
+				break;
+			case rs::CYLINDER:
+				Sim::addGround(ground->getPosition(), ground->getQuaternion(), ground->getDimensions(), ground->getMass(), ground->getAxis());
+				break;
+			case rs::SPHERE:
+				Sim::addGround(ground->getPosition(), ground->getDimensions(), ground->getMass());
+				break;
+		}
+		// draw ground object
+		Scene::drawGround(ground->getType(), ground->getPosition(), ground->getColor(), ground->getDimensions(), ground->getQuaternion());
 	}
-	for (int i = 0; i < Store::getNumMarkers(); i++) {
-		//rsScene::drawMaker(]);
-		i = i;
-	}
+
+	// draw marker objects
+	/*for (int i = 0; i < Store::getNumMarkers(); i++) {
+		rsXML::Marker *marker = Store::getMarker(i);
+		Scene::drawMaker(marker->getType(), marker->getStart(), marker->getEnd(), marker->getColor(), marker->getSize(), marker->getName());
+	}*/
 }
 
 RoboSim::~RoboSim(void) {
