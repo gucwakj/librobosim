@@ -29,10 +29,10 @@ RoboSim::RoboSim(char *name, int pause) : rsSim::Sim(pause), rsScene::Scene(), r
 	}
 
 	// draw marker objects
-	/*for (int i = 0; i < Store::getNumMarkers(); i++) {
+	for (int i = 0; i < Store::getNumMarkers(); i++) {
 		rsXML::Marker *marker = Store::getMarker(i);
-		Scene::drawMaker(marker->getType(), marker->getStart(), marker->getEnd(), marker->getColor(), marker->getSize(), marker->getName());
-	}*/
+		Scene::drawMarker(marker->getType(), marker->getStart(), marker->getEnd(), marker->getColor(), marker->getSize(), marker->getLabel());
+	}
 }
 
 RoboSim::~RoboSim(void) {
