@@ -7,8 +7,9 @@
 #include <rsSim/sim.hpp>
 #include <rsXML/store.hpp>
 #include <rsXML/robot.hpp>
+#include <rsCallback/callback.hpp>
 
-class RoboSim : public rsSim::Sim, public rsXML::Store, public rsScene::Scene {
+class RoboSim : public rsSim::Sim, public rsXML::Store, public rsScene::Scene , public rsCallback::Callback {
 	public:
 		RoboSim(char*, int);
 		virtual ~RoboSim(void);

@@ -49,6 +49,7 @@ link_directories ("/home/kgucwa/projects/librs/build/lib")
 set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsRobots debug rsRobotsd)
 set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsSim debug rsSimd)
 set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsScene debug rsScened)
+set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsCallback debug rsCallbackd)
 set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsXML debug rsXMLd)
 
 # add ODE headers
