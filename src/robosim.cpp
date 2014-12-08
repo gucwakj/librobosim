@@ -13,7 +13,7 @@ RoboSim::RoboSim(char *name, int pause) : rsSim::Sim(pause), rsScene::Scene(), r
 		// get xml ground object
 		rsXML::Ground *ground = Store::getGround(i);
 		// build ground object
-		rsSim::Ground2 *simGround;
+		rsSim::Ground *simGround;
 		switch (ground->getType()) {
 			case rs::BOX:
 				simGround = Sim::addGround(ground->getPosition(), ground->getQuaternion(), ground->getDimensions(), ground->getMass());
