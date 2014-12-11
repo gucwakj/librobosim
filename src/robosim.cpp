@@ -7,6 +7,7 @@ RoboSim::RoboSim(char *name, int pause) : rsSim::Sim(pause), rsScene::Scene(), r
 	Scene::setGrid(Store::getUnits(), Store::getGrid());
 	Sim::setPause(Store::getPause());
 	Scene::start(Store::getPause());
+	Callback::setUnits(Store::getUnits());
 
 	// draw ground objects
 	for (int i = 0; i < Store::getNumGrounds(); i++) {
@@ -42,15 +43,20 @@ RoboSim::~RoboSim(void) {
 }
 
 int RoboSim::addRobot(rsSim::ModularRobot *robot) {
+	// find new robot of this type
 	int ff;
 	robot->getFormFactor(ff);
 	rsXML::Robot *xmlbot = Store::getNextRobot(ff);
 
+	// build simulation robot
 	Sim::addRobot3(robot, xmlbot->getID(), xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getGround(), 0);
 
+	// 'connect' xml version to prevent finding it again
 	xmlbot->setConnect(1);
 
-	Sim::_robot.back()->node = Scene::drawRobot(robot, ff, xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getTrace());
+	// draw graphical robot
+	rsScene::Robot *sceneRobot = Scene::drawRobot(robot, ff, xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getTrace());
+	Callback::attachCallback(sceneRobot, robot, robot->getBodyList(), robot->getConnectorList());
 
 	// success
 	return 0;
