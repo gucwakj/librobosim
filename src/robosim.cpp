@@ -54,6 +54,12 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot) {
 	// 'connect' xml version to prevent finding it again
 	xmlbot->setConnect(1);
 
+	// build connectors
+	rsXML::ConnectorList conn = xmlbot->getConnectorList();
+	for (int i = 0; i < conn.size(); i++) {
+		robot->addConnector(conn[i]->getType(), conn[i]->getFace1(), conn[i]->getSize());
+	}
+
 	// draw graphical robot
 	rsScene::Robot *sceneRobot = Scene::drawRobot(robot, ff, xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getTrace());
 	Callback::attachCallback(sceneRobot, robot, robot->getBodyList(), robot->getConnectorList());
