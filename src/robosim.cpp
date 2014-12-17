@@ -57,17 +57,23 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot) {
 	// build connectors
 	rsXML::ConnectorList conn = xmlbot->getConnectorList();
 	for (int i = 0; i < conn.size(); i++) {
-		robot->addConnector(conn[i]->getType(), conn[i]->getFace1(), conn[i]->getSize());
+		robot->addConnector(conn[i]->getType(), conn[i]->getFace1(), conn[i]->getSize(), conn[i]->getSide(), conn[i]->getConn());
 	}
 
 	// draw graphical robot
 	rsScene::Robot *sceneRobot = Scene::drawRobot(robot, ff, xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getTrace());
+
+	// draw connectors
+	for (int i = 0; i < conn.size(); i++) {
+		Scene::drawConnector(robot, sceneRobot, conn[i]->getType(), conn[i]->getFace1(), conn[i]->getSize(), conn[i]->getSide(), conn[i]->getConn());
+	}
+
+	// attach callback
 	Callback::attachCallback(sceneRobot, robot, robot->getBodyList(), robot->getConnectorList());
 
 	// success
 	return 0;
 }
-
 
 int RoboSim::deleteRobot(int loc) {
 std::cout << "delete Robot" << std::endl;
