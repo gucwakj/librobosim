@@ -3,7 +3,7 @@
 // global robot simulation object
 RoboSim *g_sim = NULL;
 
-RoboSim::RoboSim(char *name, int pause) : rsSim::Sim(pause), rsScene::Scene(), rsXML::Store(name), rsCallback::Callback() {
+RoboSim::RoboSim(char *name, int pause) : rsScene::Scene(), rsSim::Sim(pause), rsXML::Store(name), rsCallback::Callback() {
 	Scene::setGrid(Store::getUnits(), Store::getGrid());
 	Sim::setPause(Store::getPause());
 	Scene::start(Store::getPause());

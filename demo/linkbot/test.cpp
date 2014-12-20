@@ -5,6 +5,6 @@ int main(int argc, char *argv[]) {
 	CLinkbotI robot;
 	robot.connect();
 
-	usleep(1000000);
+	robot.driveDistance(5, 1.75);
 	return 0;
 }
