@@ -49,7 +49,13 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot) {
 	rsXML::Robot *xmlbot = Store::getNextRobot(ff);
 
 	// build simulation robot
-	Sim::addRobot3(robot, xmlbot->getID(), xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getGround(), 0);
+	if (xmlbot->getBaseConnector()) {
+		rsXML::Conn *conn = xmlbot->getBaseConnector();
+		Sim::addRobot(robot, xmlbot->getID(), Sim::getRobot(conn->getRobot()), xmlbot->getJoints(), conn->getFace1(), conn->getFace2(), conn->getType(), conn->getSide(), xmlbot->getGround(), 0);
+	}
+	else {
+		Sim::addRobot(robot, xmlbot->getID(), xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getGround(), 0);
+	}
 
 	// 'connect' xml version to prevent finding it again
 	xmlbot->setConnect(1);
@@ -76,7 +82,7 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot) {
 }
 
 int RoboSim::deleteRobot(int loc) {
-std::cout << "delete Robot" << std::endl;
+	std::cout << "delete Robot" << std::endl;
 	// pause simulation to view results only on first delete
 	MUTEX_LOCK(&(_pause_mutex));
 	static int paused = 0;
@@ -102,8 +108,7 @@ std::cout << "delete Robot" << std::endl;
 	}
 	MUTEX_UNLOCK(&(_pause_mutex));
 	//Scene::stageForDelete(Sim::_robot[loc]->node);
-	//return Sim::deleteRobot(loc);
-	return 1;
+	return Sim::deleteRobot(loc);
 }
 
 void RoboSim::keyPressed(int key) {

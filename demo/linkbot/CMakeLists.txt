@@ -1,12 +1,11 @@
 # project: libRoboSim linkbot demos
 project (LIBROBOSIM_LINKBOT_DEMOS)
 
-# add source files to library
-set (SRCS ${SRCS} robosim.cpp)
-
 # add executable
-add_executable (linkbottest test.cpp)
+add_executable (linkbot_one one.cpp)
+add_executable (linkbot_two two.cpp)
 
 # link library against dependencies
-target_link_libraries (linkbottest ${EXTRA_LIBS})
+target_link_libraries (linkbot_one ${EXTRA_LIBS})
+target_link_libraries (linkbot_two ${EXTRA_LIBS})
 
