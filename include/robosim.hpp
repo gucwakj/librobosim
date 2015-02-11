@@ -3,6 +3,7 @@
 
 #include <iostream>
 
+#include <rs/enum.hpp>
 #include <rsScene/scene.hpp>
 #include <rsSim/sim.hpp>
 #include <rsXML/store.hpp>

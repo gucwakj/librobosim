@@ -7,7 +7,7 @@
 
 #include "robosim.hpp"
 
-class CLinkbotI : public rsSim::CLinkbotI {
+class CLinkbotI : public rsSim::LinkbotI {
 	public:
 		CLinkbotI(void);
 		virtual ~CLinkbotI(void);
@@ -15,7 +15,7 @@ class CLinkbotI : public rsSim::CLinkbotI {
 		int connect(char* = NULL, int = 3);
 };
 
-class CLinkbotL : public rsSim::CLinkbotL {
+class CLinkbotL : public rsSim::LinkbotL {
 	public:
 		CLinkbotL(void);
 		virtual ~CLinkbotL(void);
@@ -23,7 +23,7 @@ class CLinkbotL : public rsSim::CLinkbotL {
 		int connect(char* = NULL, int = 3);
 };
 
-class CLinkbotT : public rsSim::CLinkbotT {
+class CLinkbotT : public rsSim::LinkbotT {
 	public:
 		CLinkbotT(void);
 		virtual ~CLinkbotT(void);
