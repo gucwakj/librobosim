@@ -67,7 +67,7 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot) {
 	}
 
 	// draw graphical robot
-	rsScene::Robot *sceneRobot = Scene::drawRobot(robot, ff, xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getTrace());
+	rsScene::Robot *sceneRobot = Scene::drawRobot(robot, ff, xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getLED(), xmlbot->getTrace());
 
 	// draw connectors
 	for (int i = 0; i < conn.size(); i++) {
