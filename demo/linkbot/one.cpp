@@ -5,8 +5,8 @@ int main(int argc, char *argv[]) {
 	CLinkbotI robot;
 	robot.connect();
 
-	//robot.driveDistance(5, 1.75);
-	//robot.moveJointTo(rs::JOINT1, 360);
-	robot.moveJointTo(rsLinkbot::JOINT3, 360);
+	robot.addForce(rsLinkbot::BODY, 10, 0, 0);
+	//robot.moveJointTo(rsLinkbot::JOINT3, 360);
+	robot.delaySeconds(1);
 	return 0;
 }
