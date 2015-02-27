@@ -148,3 +148,8 @@ void RoboSim::keyPressed(int key) {
 		Scene::setPauseText(Sim::getPause());
 	}
 }
+
+void RoboSim::saveState(char *name) {
+	rsXML::Writer *writer = new rsXML::Writer("test.xml", Store::getDoc());
+}
+

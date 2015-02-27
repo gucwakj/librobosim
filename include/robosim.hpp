@@ -8,6 +8,7 @@
 #include <rsSim/sim.hpp>
 #include <rsXML/store.hpp>
 #include <rsXML/robot.hpp>
+#include <rsXML/Writer>
 #include <rsCallback/callback.hpp>
 
 class RoboSim : public rsSim::Sim, public rsXML::Store, public rsScene::Scene , public rsCallback::Callback {
@@ -19,6 +20,7 @@ class RoboSim : public rsSim::Sim, public rsXML::Store, public rsScene::Scene , 
 		int addRobot(rsSim::ModularRobot*);
 		int deleteRobot(int);
 		void keyPressed(int);
+		void saveState(char*);
 };
 
 #endif	// ROBOSIM_HPP_
