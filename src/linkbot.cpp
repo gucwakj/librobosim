@@ -21,7 +21,7 @@ int CLinkbotI::connect(char *name, int pause) {
 	return 0;
 }
 
-CLinkbotL::CLinkbotL(void) : rsRobots::Robot(rs::LINKBOTI), rsSim::LinkbotL(), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT2) {
+CLinkbotL::CLinkbotL(void) : rsRobots::Robot(rs::LINKBOTL), rsSim::LinkbotL(), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT2) {
 }
 
 CLinkbotL::~CLinkbotL(void) {
@@ -42,7 +42,7 @@ int CLinkbotL::connect(char *name, int pause) {
 	return 0;
 }
 
-CLinkbotT::CLinkbotT(void) : rsRobots::Robot(rs::LINKBOTI), rsSim::LinkbotT(), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {
+CLinkbotT::CLinkbotT(void) : rsRobots::Robot(rs::LINKBOTT), rsSim::LinkbotT(), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {
 }
 
 CLinkbotT::~CLinkbotT(void) {

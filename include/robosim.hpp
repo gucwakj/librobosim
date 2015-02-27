@@ -15,6 +15,7 @@ class RoboSim : public rsSim::Sim, public rsXML::Store, public rsScene::Scene , 
 		RoboSim(char*, int);
 		virtual ~RoboSim(void);
 
+		int addRobot(rsSim::Robot*);
 		int addRobot(rsSim::ModularRobot*);
 		int deleteRobot(int);
 		void keyPressed(int);

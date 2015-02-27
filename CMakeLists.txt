@@ -77,6 +77,7 @@ include_directories ("/home/kgucwa/projects/librs/deps/tinyxml2")
 set (SRCS ${SRCS}
 	src/robosim.cpp
 	src/linkbot.cpp
+	src/mindstorms.cpp
 )
 
 # set output directory for shared objects

@@ -7,7 +7,7 @@ link_directories ("${LIBROBOSIM_SOURCE_DIR}/lib")
 set (EXTRA_LIBS ${EXTRA_LIBS} optimized robosim debug robosimd)
 
 # add each subdirectory
-foreach (DEMO linkbot)
+foreach (DEMO linkbot mindstorms)
 	add_subdirectory (${DEMO})
 endforeach ()
 
