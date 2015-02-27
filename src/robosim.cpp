@@ -9,16 +9,16 @@
 // global robot simulation object
 RoboSim *g_sim = NULL;
 
-RoboSim::RoboSim(char *name, int pause) : rsScene::Scene(), rsSim::Sim(pause), rsXML::Store(name), rsCallback::Callback() {
-	Scene::setGrid(Store::getUnits(), Store::getGrid());
-	Sim::setPause(Store::getPause());
-	Scene::start(Store::getPause());
-	Callback::setUnits(Store::getUnits());
+RoboSim::RoboSim(char *name, int pause) : rsScene::Scene(), rsSim::Sim(pause), rsXML::Reader(name), rsCallback::Callback() {
+	Scene::setGrid(Reader::getUnits(), Reader::getGrid());
+	Sim::setPause(Reader::getPause());
+	Scene::start(Reader::getPause());
+	Callback::setUnits(Reader::getUnits());
 
 	// draw ground objects
-	for (int i = 0; i < Store::getNumGrounds(); i++) {
+	for (int i = 0; i < Reader::getNumGrounds(); i++) {
 		// get xml ground object
-		rsXML::Ground *ground = Store::getGround(i);
+		rsXML::Ground *ground = Reader::getGround(i);
 		// build ground object
 		rsSim::Ground *simGround;
 		switch (ground->getType()) {
@@ -38,8 +38,8 @@ RoboSim::RoboSim(char *name, int pause) : rsScene::Scene(), rsSim::Sim(pause), r
 	}
 
 	// draw marker objects
-	for (int i = 0; i < Store::getNumMarkers(); i++) {
-		rsXML::Marker *marker = Store::getMarker(i);
+	for (int i = 0; i < Reader::getNumMarkers(); i++) {
+		rsXML::Marker *marker = Reader::getMarker(i);
 		Scene::drawMarker(marker->getType(), marker->getStart(), marker->getEnd(), marker->getColor(), marker->getSize(), marker->getLabel());
 	}
 }
@@ -52,7 +52,7 @@ int RoboSim::addRobot(rsSim::Robot *robot) {
 	// find new robot of this type
 	int ff;
 	robot->getFormFactor(ff);
-	rsXML::Robot *xmlbot = Store::getNextRobot(ff);
+	rsXML::Robot *xmlbot = Reader::getNextRobot(ff);
 
 	// build simulation robot
 	Sim::addRobot(robot, xmlbot->getID(), xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getGround(), 0);
@@ -74,7 +74,7 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot) {
 	// find new robot of this type
 	int ff;
 	robot->getFormFactor(ff);
-	rsXML::Robot *xmlbot = Store::getNextRobot(ff);
+	rsXML::Robot *xmlbot = Reader::getNextRobot(ff);
 
 	// build simulation robot
 	if (xmlbot->getBaseConnector()) {
@@ -150,6 +150,6 @@ void RoboSim::keyPressed(int key) {
 }
 
 void RoboSim::saveState(char *name) {
-	rsXML::Writer *writer = new rsXML::Writer("test.xml", Store::getDoc());
+	rsXML::Writer *writer = new rsXML::Writer("test.xml", Reader::getDoc());
 }
 

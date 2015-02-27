@@ -3,15 +3,15 @@
 
 #include <iostream>
 
-#include <rs/enum.hpp>
-#include <rsScene/scene.hpp>
-#include <rsSim/sim.hpp>
-#include <rsXML/store.hpp>
-#include <rsXML/robot.hpp>
+#include <rs/Enum>
+#include <rsScene/Scene>
+#include <rsSim/Sim>
+#include <rsXML/Robot>
+#include <rsXML/Reader>
 #include <rsXML/Writer>
-#include <rsCallback/callback.hpp>
+#include <rsCallback/Callback>
 
-class RoboSim : public rsSim::Sim, public rsXML::Store, public rsScene::Scene , public rsCallback::Callback {
+class RoboSim : public rsSim::Sim, public rsXML::Reader, public rsScene::Scene , public rsCallback::Callback {
 	public:
 		RoboSim(char*, int);
 		virtual ~RoboSim(void);

@@ -1,8 +1,8 @@
 #ifndef CMINDSTORMS_HPP_
 #define CMINDSTORMS_HPP_
 
-#include <rsSim/sim.hpp>
-#include <rsSim/Mindstorms.hpp>
+#include <rsSim/Sim>
+#include <rsSim/Mindstorms>
 
 #include "robosim.hpp"
 

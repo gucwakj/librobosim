@@ -1,9 +1,8 @@
 #ifndef CLINKBOT_HPP_
 #define CLINKBOT_HPP_
 
-#include <rsSim/sim.hpp>
-#include <rsSim/linkbot.hpp>
-//#include <rsSim/linkbotgroup.hpp>
+#include <rsSim/Sim>
+#include <rsSim/Linkbot>
 
 #include "robosim.hpp"
 
