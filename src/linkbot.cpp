@@ -4,6 +4,7 @@ CLinkbotI::CLinkbotI(void) : rsRobots::Robot(rs::LINKBOTI), rsSim::LinkbotI(), r
 }
 
 CLinkbotI::~CLinkbotI(void) {
+	if (!_sim->deleteRobot(_pos)) { delete _sim; }
 }
 
 int CLinkbotI::connect(char *name, int pause) {
@@ -25,6 +26,7 @@ CLinkbotL::CLinkbotL(void) : rsRobots::Robot(rs::LINKBOTL), rsSim::LinkbotL(), r
 }
 
 CLinkbotL::~CLinkbotL(void) {
+	if (!_sim->deleteRobot(_pos)) { delete _sim; }
 }
 
 int CLinkbotL::connect(char *name, int pause) {
@@ -46,6 +48,7 @@ CLinkbotT::CLinkbotT(void) : rsRobots::Robot(rs::LINKBOTT), rsSim::LinkbotT(), r
 }
 
 CLinkbotT::~CLinkbotT(void) {
+	if (!_sim->deleteRobot(_pos)) { delete _sim; }
 }
 
 int CLinkbotT::connect(char *name, int pause) {

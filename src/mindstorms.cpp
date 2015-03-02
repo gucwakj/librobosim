@@ -4,6 +4,7 @@ CMindstorms::CMindstorms(void) : rsRobots::Robot(rs::MINDSTORMS), rsSim::Mindsto
 }
 
 CMindstorms::~CMindstorms(void) {
+	if (!_sim->deleteRobot(_pos)) { delete _sim; }
 }
 
 int CMindstorms::connect(char *name, int pause) {
