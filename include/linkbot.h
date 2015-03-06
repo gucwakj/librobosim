@@ -6,33 +6,37 @@
 
 #include "robosim.h"
 
-class CLinkbotI : public rsSim::LinkbotI {
+class CLinkbot : public rsSim::Linkbot {
+	public:
+		CLinkbot(void);
+		virtual ~CLinkbot(void);
+		int turnLeft(double, double, double);
+		int turnRight(double, double, double);
+};
+
+class CLinkbotI : public CLinkbot {
 	public:
 		CLinkbotI(void);
-		virtual ~CLinkbotI(void);
+		virtual ~CLinkbotI(void) {};
 
 		int connect(char* = NULL, int = 3);
 };
 
-class CLinkbotL : public rsSim::LinkbotL {
+class CLinkbotL : public CLinkbot {
 	public:
 		CLinkbotL(void);
-		virtual ~CLinkbotL(void);
+		virtual ~CLinkbotL(void) {};
 
 		int connect(char* = NULL, int = 3);
 };
 
-class CLinkbotT : public rsSim::LinkbotT {
+class CLinkbotT : public CLinkbot {
 	public:
 		CLinkbotT(void);
-		virtual ~CLinkbotT(void);
+		virtual ~CLinkbotT(void) {};
 
 		int connect(char* = NULL, int = 3);
 };
-
-/*class DLLIMPORT CLinkbotTGroup : public rsSim::CLinkbotTGroup {};
-class DLLIMPORT CLinkbotIGroup : public rsSim::CLinkbotIGroup {};
-class DLLIMPORT CLinkbotLGroup : public rsSim::CLinkbotLGroup {};*/
 
 // simulation
 extern RoboSim *g_sim;

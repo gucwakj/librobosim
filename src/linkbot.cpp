@@ -1,10 +1,83 @@
 #include "linkbot.h"
 
-CLinkbotI::CLinkbotI(void) : rsRobots::Robot(rs::LINKBOTI), rsSim::LinkbotI(), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {
+CLinkbot::CLinkbot(void) : rsRobots::Robot(rs::LINKBOTT), rsSim::Linkbot(), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {
 }
 
-CLinkbotI::~CLinkbotI(void) {
+CLinkbot::~CLinkbot(void) {
 	if (!_sim->deleteRobot(_pos)) { delete _sim; }
+}
+
+int CLinkbot::turnLeft(double angle, double radius, double trackwidth) {
+	// calculate angle to turn
+	double r0 = this->getRotation(rsLinkbot::BODY, 2);
+	angle = DEG2RAD(angle);
+	double rf = r0 + angle;
+
+	// get speed of robot
+	double *speed = new double[_dof]();
+	this->getJointSpeeds(speed[0], speed[1], speed[2]);
+
+	// turn toward new postition until pointing correctly
+	while (fabs(angle) > 0.005) {
+		// turn in shortest path
+		double theta = (angle*trackwidth)/(2*radius);
+
+		// turn
+		if (angle > 0.005)
+			this->move(-RAD2DEG(theta), 0, -RAD2DEG(theta));
+		else if (RAD2DEG(angle) < -0.005)
+			this->move(RAD2DEG(theta), 0, RAD2DEG(theta));
+
+		// calculate new rotation from error
+		angle = rf - this->getRotation(rsLinkbot::BODY, 2);
+
+		// move slowly
+		this->setJointSpeeds(45, 45, 45);
+	}
+
+	// reset to original speed after turning
+	this->setJointSpeeds(speed[0], speed[1], speed[2]);
+
+	// success
+	return 1;
+}
+
+int CLinkbot::turnRight(double angle, double radius, double trackwidth) {
+	// calculate angle to turn
+	double r0 = this->getRotation(rsLinkbot::BODY, 2);
+	angle = DEG2RAD(angle);
+	double rf = r0 - angle;
+
+	// get speed of robot
+	double *speed = new double[_dof]();
+	this->getJointSpeeds(speed[0], speed[1], speed[2]);
+
+	// turn toward new postition until pointing correctly
+	while (fabs(angle) > 0.005) {
+		// turn in shortest path
+		double theta = (angle*trackwidth)/(2*radius);
+
+		// turn
+		if (angle > 0.005)
+			this->move(RAD2DEG(theta), 0, RAD2DEG(theta));
+		else if (RAD2DEG(angle) < -0.005)
+			this->move(-RAD2DEG(theta), 0, -RAD2DEG(theta));
+
+		// calculate new rotation from error
+		angle = rf - this->getRotation(rsLinkbot::BODY, 2);
+
+		// move slowly
+		this->setJointSpeeds(45, 45, 45);
+	}
+
+	// reset to original speed after turning
+	this->setJointSpeeds(speed[0], speed[1], speed[2]);
+
+	// success
+	return 1;
+}
+
+CLinkbotI::CLinkbotI(void) : rsRobots::Robot(rs::LINKBOTI), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {
 }
 
 int CLinkbotI::connect(char *name, int pause) {
@@ -16,17 +89,13 @@ int CLinkbotI::connect(char *name, int pause) {
 	g_sim->addRobot(this);
 
 	// call base class connect
-	rsSim::LinkbotI::connect();
+	rsSim::Linkbot::connect();
 
 	// success
 	return 0;
 }
 
-CLinkbotL::CLinkbotL(void) : rsRobots::Robot(rs::LINKBOTL), rsSim::LinkbotL(), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT2) {
-}
-
-CLinkbotL::~CLinkbotL(void) {
-	if (!_sim->deleteRobot(_pos)) { delete _sim; }
+CLinkbotL::CLinkbotL(void) : rsRobots::Robot(rs::LINKBOTL), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT2) {
 }
 
 int CLinkbotL::connect(char *name, int pause) {
@@ -38,17 +107,13 @@ int CLinkbotL::connect(char *name, int pause) {
 	g_sim->addRobot(this);
 
 	// call base class connect
-	rsSim::LinkbotL::connect();
+	rsSim::Linkbot::connect();
 
 	// success
 	return 0;
 }
 
-CLinkbotT::CLinkbotT(void) : rsRobots::Robot(rs::LINKBOTT), rsSim::LinkbotT(), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {
-}
-
-CLinkbotT::~CLinkbotT(void) {
-	if (!_sim->deleteRobot(_pos)) { delete _sim; }
+CLinkbotT::CLinkbotT(void) : rsRobots::Robot(rs::LINKBOTT), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {
 }
 
 int CLinkbotT::connect(char *name, int pause) {
@@ -60,7 +125,7 @@ int CLinkbotT::connect(char *name, int pause) {
 	g_sim->addRobot(this);
 
 	// call base class connect
-	rsSim::LinkbotT::connect();
+	rsSim::Linkbot::connect();
 
 	// success
 	return 0;
