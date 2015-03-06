@@ -26,6 +26,13 @@ class CLinkbot : public rsSim::Linkbot {
 		int driveAccelTimeNB(double, double, double);
 		int driveAccelToMaxSpeedNB(double, double);
 		int driveAccelToVelocityNB(double, double, double);
+		int driveForeverNB(void);
+		int driveForwardNB(double);
+		int drivexyToSmooth(double, double, double, double, double, double, double, double);
+		int getJointAngles(double&, double&, double&, int = 10);
+		int getJointAnglesInstant(double&, double&, double&);
+		int getJointSpeeds(double&, double&, double&);
+		int getJointSpeedRatios(double&, double&, double&);
 		int turnLeft(double, double, double);
 		int turnRight(double, double, double);
 };

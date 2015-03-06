@@ -242,6 +242,94 @@ int CLinkbot::driveAccelToVelocityNB(double radius, double a, double v) {
 	return 0;
 }
 
+int CLinkbot::driveForeverNB(void) {
+	// negate speed to act as a car
+	_motor[JOINT3].omega = -_motor[JOINT3].omega;
+
+	// set joint movements
+	this->moveJointForeverNB(JOINT1);
+	this->moveJointForeverNB(JOINT3);
+
+	// success
+	return 0;
+}
+
+int CLinkbot::driveForwardNB(double angle) {
+	this->moveJointNB(JOINT1, angle);
+	this->moveJointNB(JOINT3, -angle);
+
+	// success
+	return 0;
+}
+
+int CLinkbot::drivexyToSmooth(double x1, double y1, double x2, double y2, double x3, double y3, double radius, double trackwidth) {
+	// get midpoints
+	double p[2] = {(x1 + x2)/2, (y1 + y2)/2};
+	double q[2] = {(x2 + x3)/2, (y2 + y3)/2};
+
+	// calculate equations of bisecting lines
+	double m1 = -1/((y1 - y2)/(x1 - x2));
+	double m2 = -1/((y2 - y3)/(x2 - x3));
+	double b1 = -m1*p[0] + p[1];
+	double b2 = -m2*q[0] + q[1];
+
+	// circle parameters that passes through these points
+	double c[2] = {(b2 - b1)/(m1 - m2), m1*(b2 - b1)/(m1 - m2) + b1};
+	double rho = sqrt((c[0] - x2)*(c[0] - x2) + (c[1] - y2)*(c[1] - y2));
+	double theta = 2*fabs(atan((m1 - m2)/(1 + m1*m2)));
+
+	// distance to travel for each wheel
+	trackwidth = this->convert(_trackwidth, 0);
+	double s1 = theta*(rho + trackwidth/2);
+	double s2 = theta*(rho - trackwidth/2);
+
+	// move joints the proper amount
+	this->setJointSpeed(JOINT1, RAD2DEG(s1/theta/rho/radius*_speed));
+	this->setJointSpeed(JOINT3, RAD2DEG(s2/theta/rho/radius*_speed));
+	this->moveJointNB(JOINT1, RAD2DEG(s1/radius));
+	this->moveJointNB(JOINT3, -RAD2DEG(s2/radius));
+	this->delay(theta*rho/_speed*1000);
+
+	// success
+	return 0;
+}
+
+int CLinkbot::getJointAngles(double &angle1, double &angle2, double &angle3, int numReadings) {
+	this->getJointAngle(JOINT1, angle1, numReadings);
+	this->getJointAngle(JOINT2, angle2, numReadings);
+	this->getJointAngle(JOINT3, angle3, numReadings);
+
+	// success
+	return 0;
+}
+
+int CLinkbot::getJointAnglesInstant(double &angle1, double &angle2, double &angle3) {
+	this->getJointAngleInstant(JOINT1, angle1);
+	this->getJointAngleInstant(JOINT2, angle2);
+	this->getJointAngleInstant(JOINT3, angle3);
+
+	// success
+	return 0;
+}
+
+int CLinkbot::getJointSpeeds(double &speed1, double &speed2, double &speed3) {
+	this->getJointSpeed(JOINT1, speed1);
+	this->getJointSpeed(JOINT2, speed2);
+	this->getJointSpeed(JOINT3, speed3);
+
+	// success
+	return 0;
+}
+
+int CLinkbot::getJointSpeedRatios(double &ratio1, double &ratio2, double &ratio3) {
+	this->getJointSpeedRatio(JOINT1, ratio1);
+	this->getJointSpeedRatio(JOINT2, ratio2);
+	this->getJointSpeedRatio(JOINT3, ratio3);
+
+	// success
+	return 0;
+}
+
 int CLinkbot::turnLeft(double angle, double radius, double trackwidth) {
 	// calculate angle to turn
 	double r0 = this->getRotation(rsLinkbot::BODY, 2);
