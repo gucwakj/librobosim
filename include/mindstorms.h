@@ -8,10 +8,8 @@
 
 class CMindstorms : public rsSim::Mindstorms {
 	public:
-		CMindstorms(void);
+		CMindstorms(char* = NULL, bool = true);
 		virtual ~CMindstorms(void);
-
-		int connect(char* = NULL, int = 3);
 };
 
 // simulation

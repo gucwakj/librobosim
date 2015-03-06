@@ -8,7 +8,7 @@
 
 class CLinkbot : public rsSim::Linkbot {
 	public:
-		CLinkbot(void);
+		CLinkbot(char* = NULL, bool = true);
 		virtual ~CLinkbot(void);
 
 		int accelJointAngleNB(rsLinkbot::Joint, double, double);
@@ -20,7 +20,6 @@ class CLinkbot : public rsSim::Linkbot {
 		int accelJointToVelocityNB(rsLinkbot::Joint, double, double);
 		int closeGripper(void);
 		int closeGripperNB(void);
-		int connect(char* = NULL, int = 3);
 		int driveAccelCycloidalNB(double, double, double);
 		int driveAccelDistanceNB(double, double, double);
 		int driveAccelHarmonicNB(double, double, double);
@@ -57,17 +56,17 @@ class CLinkbot : public rsSim::Linkbot {
 
 class CLinkbotI : public CLinkbot {
 	public:
-		CLinkbotI(void) : rsRobots::Robot(rs::LINKBOTI), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {};
+		CLinkbotI(char *name = NULL, bool pause = true) : CLinkbot(name, pause), rsRobots::Robot(rs::LINKBOTI), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {};
 };
 
 class CLinkbotL : public CLinkbot {
 	public:
-		CLinkbotL(void) : rsRobots::Robot(rs::LINKBOTL), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT2) {};
+		CLinkbotL(char *name = NULL, bool pause = true) : CLinkbot(name, pause), rsRobots::Robot(rs::LINKBOTL), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT2) {};
 };
 
 class CLinkbotT : public CLinkbot {
 	public:
-		CLinkbotT(void) : rsRobots::Robot(rs::LINKBOTT), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {};
+		CLinkbotT(char *name = NULL, bool pause = true) : CLinkbot(name, pause), rsRobots::Robot(rs::LINKBOTT), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {};
 };
 
 // motion threading

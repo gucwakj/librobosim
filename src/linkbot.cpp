@@ -2,7 +2,13 @@
 
 using namespace rsLinkbot;
 
-CLinkbot::CLinkbot(void) : rsRobots::Robot(rs::LINKBOTT), rsSim::Linkbot(), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {
+CLinkbot::CLinkbot(char *name, bool pause) : rsRobots::Robot(rs::LINKBOTT), rsSim::Linkbot(), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {
+	// create simulation object if necessary
+	if (!g_sim)
+		g_sim = new RoboSim(name, pause);
+
+	// add to simulation
+	g_sim->addRobot(this);
 }
 
 CLinkbot::~CLinkbot(void) {
@@ -197,21 +203,6 @@ int CLinkbot::closeGripperNB(void) {
 
 	// start thread
 	THREAD_CREATE(&moving, closeGripperNBThread, (void *)move);
-
-	// success
-	return 0;
-}
-
-int CLinkbot::connect(char *name, int pause) {
-	// create simulation object if necessary
-	if (!g_sim)
-		g_sim = new RoboSim(name, pause);
-
-	// add to simulation
-	g_sim->addRobot(this);
-
-	// call base class connect
-	rsSim::Linkbot::connect();
 
 	// success
 	return 0;
