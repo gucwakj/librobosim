@@ -167,6 +167,41 @@ int CLinkbot::accelJointToVelocityNB(Joint id, double a, double v) {
 	return 0;
 }
 
+int CLinkbot::closeGripper(void) {
+	double gripperAngleOld = 0;
+	double gripperAngleNew = 0;
+	int retval = getJointAngleInstant(JOINT1, gripperAngleNew);
+	while ( fabs(gripperAngleNew - gripperAngleOld) > 0.1 ) {
+		gripperAngleOld = gripperAngleNew;
+		retval = retval || getJointAngleInstant(JOINT1, gripperAngleNew);
+		retval = retval || moveNB(8, 0, 8);
+		delaySeconds(1);
+		retval = retval || getJointAngleInstant(JOINT1, gripperAngleNew);
+	}
+	retval = retval || moveNB(8, 0, 8);
+	delaySeconds(1);
+	retval = retval || holdJoints();
+	return retval;
+}
+
+int CLinkbot::closeGripperNB(void) {
+	// create thread
+	THREAD_T moving;
+
+	// store args
+	LinkbotMove *move = new LinkbotMove;
+	move->robot = this;
+
+	// motion in progress
+	_motion = true;
+
+	// start thread
+	THREAD_CREATE(&moving, closeGripperNBThread, (void *)move);
+
+	// success
+	return 0;
+}
+
 int CLinkbot::connect(char *name, int pause) {
 	// create simulation object if necessary
 	if (!g_sim)
@@ -330,6 +365,73 @@ int CLinkbot::getJointSpeedRatios(double &ratio1, double &ratio2, double &ratio3
 	return 0;
 }
 
+int CLinkbot::move(double angle1, double angle2, double angle3) {
+	this->moveNB(angle1, angle2, angle3);
+	this->moveWait();
+
+	// success
+	return 0;
+}
+
+int CLinkbot::moveNB(double angle1, double angle2, double angle3) {
+	this->moveJointNB(JOINT1, angle1);
+	this->moveJointNB(JOINT2, angle2);
+	this->moveJointNB(JOINT3, angle3);
+
+	// success
+	return 0;
+}
+
+int CLinkbot::moveTo(double angle1, double angle2, double angle3) {
+	this->moveToNB(angle1, angle2, angle3);
+	this->moveWait();
+
+	// success
+	return 0;
+}
+
+int CLinkbot::moveToNB(double angle1, double angle2, double angle3) {
+	this->moveJointToNB(JOINT1, angle1);
+	this->moveJointToNB(JOINT2, angle2);
+	this->moveJointToNB(JOINT3, angle3);
+
+	// success
+	return 0;
+}
+
+int CLinkbot::moveToByTrackPos(double angle1, double angle2, double angle3) {
+	this->moveToByTrackPosNB(angle1, angle2, angle3);
+	this->moveWait();
+
+	// success
+	return 0;
+}
+
+int CLinkbot::moveToByTrackPosNB(double angle1, double angle2, double angle3) {
+	this->moveToNB(angle1, angle2, angle3);
+
+	// success
+	return 0;
+}
+
+int CLinkbot::openGripper(double angle) {
+	this->openGripperNB(angle);
+	this->moveWait();
+
+	// success
+	return 0;
+}
+
+int CLinkbot::openGripperNB(double angle) {
+	if (_form == rs::LINKBOTL)
+		this->moveJointToNB(JOINT1, -angle);
+	else
+		this->moveToNB(-angle/2, 0, -angle/2);
+
+	// success
+	return 0;
+}
+
 int CLinkbot::turnLeft(double angle, double radius, double trackwidth) {
 	// calculate angle to turn
 	double r0 = this->getRotation(rsLinkbot::BODY, 2);
@@ -398,5 +500,25 @@ int CLinkbot::turnRight(double angle, double radius, double trackwidth) {
 
 	// success
 	return 1;
+}
+
+/**********************************************************
+	private functions
+ **********************************************************/
+void* CLinkbot::closeGripperNBThread(void *arg) {
+	// cast arg
+	LinkbotMove *move = (LinkbotMove *)arg;
+
+	// perform motion
+	move->robot->closeGripper();
+
+	// signal successful completion
+	COND_ACTION(&move->robot->_motion_cond, &move->robot->_motion_mutex, move->robot->_motion = false);
+
+	// cleanup
+	delete move;
+
+	// success
+	return NULL;
 }
 

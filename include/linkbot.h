@@ -18,6 +18,8 @@ class CLinkbot : public rsSim::Linkbot {
 		int accelJointTimeNB(rsLinkbot::Joint, double, double);
 		int accelJointToMaxSpeedNB(rsLinkbot::Joint, double);
 		int accelJointToVelocityNB(rsLinkbot::Joint, double, double);
+		int closeGripper(void);
+		int closeGripperNB(void);
 		int connect(char* = NULL, int = 3);
 		int driveAccelCycloidalNB(double, double, double);
 		int driveAccelDistanceNB(double, double, double);
@@ -33,8 +35,19 @@ class CLinkbot : public rsSim::Linkbot {
 		int getJointAnglesInstant(double&, double&, double&);
 		int getJointSpeeds(double&, double&, double&);
 		int getJointSpeedRatios(double&, double&, double&);
+		int move(double, double, double);
+		int moveNB(double, double, double);
+		int moveTo(double, double, double);
+		int moveToNB(double, double, double);
+		int moveToByTrackPos(double, double, double);
+		int moveToByTrackPosNB(double, double, double);
+		int openGripper(double);
+		int openGripperNB(double);
 		int turnLeft(double, double, double);
 		int turnRight(double, double, double);
+
+	private:
+		static void* closeGripperNBThread(void*);
 };
 
 class CLinkbotI : public CLinkbot {
@@ -50,6 +63,15 @@ class CLinkbotL : public CLinkbot {
 class CLinkbotT : public CLinkbot {
 	public:
 		CLinkbotT(void) : rsRobots::Robot(rs::LINKBOTT), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {};
+};
+
+// motion threading
+struct LinkbotMove {
+	CLinkbot *robot;
+	char *expr;
+	double x, y, radius, trackwidth;
+	double (*func)(double x);
+	int i;
 };
 
 // simulation
