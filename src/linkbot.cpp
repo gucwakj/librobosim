@@ -432,6 +432,54 @@ int CLinkbot::openGripperNB(double angle) {
 	return 0;
 }
 
+int CLinkbot::recordAngles(double *time, double *angle1, double *angle2, double *angle3, int num, double seconds, int shiftData) {
+	// check if recording already
+	for (int i = 0; i < _dof; i++) {
+		if (_motor[i].record) { return -1; }
+	}
+
+	// store angles
+	double **angles = new double * [_dof];
+	angles[JOINT1] = angle1;
+	angles[JOINT2] = angle2;
+	angles[JOINT3] = angle3;
+
+	// call base class recording function
+	return Robot::recordAngles(time, angles, num, seconds, shiftData);
+}
+
+int CLinkbot::recordAnglesBegin(robotRecordData_t &time, robotRecordData_t &angle1, robotRecordData_t &angle2, robotRecordData_t &angle3, double seconds, int shiftData) {
+	// check if recording already
+	for (int i = 0; i < _dof; i++) {
+		if (_motor[i].record) { return -1; }
+	}
+
+	// store angles
+	double **angles = new double * [_dof];
+	angles[JOINT1] = angle1;
+	angles[JOINT2] = angle2;
+	angles[JOINT3] = angle3;
+
+	// call base class recording function
+	return Robot::recordAnglesBegin(time, angles, seconds, shiftData);
+}
+
+int CLinkbot::recordDistancesBegin(robotRecordData_t &time, robotRecordData_t &distance1, robotRecordData_t &distance2, robotRecordData_t &distance3, double radius, double seconds, int shiftData) {
+	// check if recording already
+	for (int i = 0; i < _dof; i++) {
+		if (_motor[i].record) { return -1; }
+	}
+
+	// store angles
+	double **angles = new double * [_dof];
+	angles[JOINT1] = distance1;
+	angles[JOINT2] = distance2;
+	angles[JOINT3] = distance3;
+
+	// call base class recording function
+	return Robot::recordAnglesBegin(time, angles, seconds, shiftData);
+}
+
 int CLinkbot::setJointSpeeds(double speed1, double speed2, double speed3) {
 	this->setJointSpeed(JOINT1, speed1);
 	this->setJointSpeed(JOINT2, speed2);
