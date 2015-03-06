@@ -432,6 +432,24 @@ int CLinkbot::openGripperNB(double angle) {
 	return 0;
 }
 
+int CLinkbot::setJointSpeeds(double speed1, double speed2, double speed3) {
+	this->setJointSpeed(JOINT1, speed1);
+	this->setJointSpeed(JOINT2, speed2);
+	this->setJointSpeed(JOINT3, speed3);
+
+	// success
+	return 0;
+}
+
+int CLinkbot::setJointSpeedRatios(double ratio1, double ratio2, double ratio3) {
+	this->setJointSpeedRatio(JOINT1, ratio1);
+	this->setJointSpeedRatio(JOINT2, ratio2);
+	this->setJointSpeedRatio(JOINT3, ratio3);
+
+	// success
+	return 0;
+}
+
 int CLinkbot::turnLeft(double angle, double radius, double trackwidth) {
 	// calculate angle to turn
 	double r0 = this->getRotation(rsLinkbot::BODY, 2);

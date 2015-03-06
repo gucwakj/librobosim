@@ -43,6 +43,8 @@ class CLinkbot : public rsSim::Linkbot {
 		int moveToByTrackPosNB(double, double, double);
 		int openGripper(double);
 		int openGripperNB(double);
+		int setJointSpeeds(double, double, double);
+		int setJointSpeedRatios(double, double, double);
 		int turnLeft(double, double, double);
 		int turnRight(double, double, double);
 
