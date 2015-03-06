@@ -1,4 +1,4 @@
-#include "clinkbot.hpp"
+#include "linkbot.h"
 
 CLinkbotI::CLinkbotI(void) : rsRobots::Robot(rs::LINKBOTI), rsSim::LinkbotI(), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {
 }

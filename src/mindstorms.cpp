@@ -1,4 +1,4 @@
-#include "cmindstorms.hpp"
+#include "mindstorms.h"
 
 CMindstorms::CMindstorms(void) : rsRobots::Robot(rs::MINDSTORMS), rsSim::Mindstorms(), rsSim::Robot(rsMindstorms::JOINT1, rsMindstorms::JOINT2) {
 }

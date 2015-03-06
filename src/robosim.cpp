@@ -4,7 +4,7 @@
 #include <unistd.h>
 #endif // _WIN32
 
-#include "robosim.hpp"
+#include "robosim.h"
 
 // global robot simulation object
 RoboSim *g_sim = NULL;

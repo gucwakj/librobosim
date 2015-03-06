@@ -1,5 +1,5 @@
-#ifndef ROBOSIM_HPP_
-#define ROBOSIM_HPP_
+#ifndef ROBOSIM_H_
+#define ROBOSIM_H_
 
 #include <iostream>
 
@@ -23,5 +23,5 @@ class RoboSim : public rsSim::Sim, public rsXML::Reader, public rsScene::Scene ,
 		void saveState(char*);
 };
 
-#endif	// ROBOSIM_HPP_
+#endif	// ROBOSIM_H_
 

@@ -1,10 +1,10 @@
-#ifndef CMINDSTORMS_HPP_
-#define CMINDSTORMS_HPP_
+#ifndef MINDSTORMS_H_
+#define MINDSTORMS_H_
 
 #include <rsSim/Sim>
 #include <rsSim/Mindstorms>
 
-#include "robosim.hpp"
+#include "robosim.h"
 
 class CMindstorms : public rsSim::Mindstorms {
 	public:
@@ -17,5 +17,5 @@ class CMindstorms : public rsSim::Mindstorms {
 // simulation
 extern RoboSim *g_sim;
 
-#endif // CMINDSTORMS_HPP_
+#endif // MINDSTORMS_H_
 

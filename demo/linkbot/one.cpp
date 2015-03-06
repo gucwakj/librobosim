@@ -1,5 +1,5 @@
 #include <iostream>
-#include "clinkbot.hpp"
+#include "linkbot.h"
 
 int main(int argc, char *argv[]) {
 	CLinkbotI robot;

@@ -1,10 +1,10 @@
-#ifndef CLINKBOT_HPP_
-#define CLINKBOT_HPP_
+#ifndef LINKBOT_H_
+#define LINKBOT_H_
 
 #include <rsSim/Sim>
 #include <rsSim/Linkbot>
 
-#include "robosim.hpp"
+#include "robosim.h"
 
 class CLinkbotI : public rsSim::LinkbotI {
 	public:
@@ -37,5 +37,5 @@ class DLLIMPORT CLinkbotLGroup : public rsSim::CLinkbotLGroup {};*/
 // simulation
 extern RoboSim *g_sim;
 
-#endif // CLINKBOT_HPP_
+#endif // LINKBOT_H_
 
