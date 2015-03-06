@@ -7,6 +7,24 @@ CLinkbot::~CLinkbot(void) {
 	if (!_sim->deleteRobot(_pos)) { delete _sim; }
 }
 
+/**********************************************************
+	public functions
+ **********************************************************/
+int CLinkbot::connect(char *name, int pause) {
+	// create simulation object if necessary
+	if (!g_sim)
+		g_sim = new RoboSim(name, pause);
+
+	// add to simulation
+	g_sim->addRobot(this);
+
+	// call base class connect
+	rsSim::Linkbot::connect();
+
+	// success
+	return 0;
+}
+
 int CLinkbot::turnLeft(double angle, double radius, double trackwidth) {
 	// calculate angle to turn
 	double r0 = this->getRotation(rsLinkbot::BODY, 2);
@@ -75,59 +93,5 @@ int CLinkbot::turnRight(double angle, double radius, double trackwidth) {
 
 	// success
 	return 1;
-}
-
-CLinkbotI::CLinkbotI(void) : rsRobots::Robot(rs::LINKBOTI), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {
-}
-
-int CLinkbotI::connect(char *name, int pause) {
-	// create simulation object if necessary
-	if (!g_sim)
-		g_sim = new RoboSim(name, pause);
-
-	// add to simulation
-	g_sim->addRobot(this);
-
-	// call base class connect
-	rsSim::Linkbot::connect();
-
-	// success
-	return 0;
-}
-
-CLinkbotL::CLinkbotL(void) : rsRobots::Robot(rs::LINKBOTL), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT2) {
-}
-
-int CLinkbotL::connect(char *name, int pause) {
-	// create simulation object if necessary
-	if (!g_sim)
-		g_sim = new RoboSim(name, pause);
-
-	// add to simulation
-	g_sim->addRobot(this);
-
-	// call base class connect
-	rsSim::Linkbot::connect();
-
-	// success
-	return 0;
-}
-
-CLinkbotT::CLinkbotT(void) : rsRobots::Robot(rs::LINKBOTT), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {
-}
-
-int CLinkbotT::connect(char *name, int pause) {
-	// create simulation object if necessary
-	if (!g_sim)
-		g_sim = new RoboSim(name, pause);
-
-	// add to simulation
-	g_sim->addRobot(this);
-
-	// call base class connect
-	rsSim::Linkbot::connect();
-
-	// success
-	return 0;
 }
 

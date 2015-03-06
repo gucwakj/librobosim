@@ -10,32 +10,25 @@ class CLinkbot : public rsSim::Linkbot {
 	public:
 		CLinkbot(void);
 		virtual ~CLinkbot(void);
+
+		int connect(char* = NULL, int = 3);
 		int turnLeft(double, double, double);
 		int turnRight(double, double, double);
 };
 
 class CLinkbotI : public CLinkbot {
 	public:
-		CLinkbotI(void);
-		virtual ~CLinkbotI(void) {};
-
-		int connect(char* = NULL, int = 3);
+		CLinkbotI(void) : rsRobots::Robot(rs::LINKBOTI), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {};
 };
 
 class CLinkbotL : public CLinkbot {
 	public:
-		CLinkbotL(void);
-		virtual ~CLinkbotL(void) {};
-
-		int connect(char* = NULL, int = 3);
+		CLinkbotL(void) : rsRobots::Robot(rs::LINKBOTL), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT2) {};
 };
 
 class CLinkbotT : public CLinkbot {
 	public:
-		CLinkbotT(void);
-		virtual ~CLinkbotT(void) {};
-
-		int connect(char* = NULL, int = 3);
+		CLinkbotT(void) : rsRobots::Robot(rs::LINKBOTT), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {};
 };
 
 // simulation
