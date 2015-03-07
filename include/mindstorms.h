@@ -5,8 +5,9 @@
 #include <rsSim/Mindstorms>
 
 #include "robosim.h"
+#include "robot.h"
 
-class CMindstorms : public rsSim::Mindstorms {
+class CMindstorms : public rsSim::Mindstorms, public Robot {
 	public:
 		CMindstorms(char* = NULL, bool = true);
 		virtual ~CMindstorms(void);

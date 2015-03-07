@@ -76,6 +76,7 @@ include_directories ("/home/kgucwa/projects/librs/deps/tinyxml2")
 # add source files to library
 set (SRCS ${SRCS}
 	src/robosim.cpp
+	src/robot.cpp
 	src/linkbot.cpp
 	src/mindstorms.cpp
 )

@@ -5,8 +5,9 @@
 #include <rsSim/Linkbot>
 
 #include "robosim.h"
+#include "robot.h"
 
-class CLinkbot : public rsSim::Linkbot {
+class CLinkbot : virtual public rsSim::Linkbot, virtual public Robot {
 	public:
 		CLinkbot(char* = NULL, bool = true);
 		virtual ~CLinkbot(void);
@@ -56,17 +57,17 @@ class CLinkbot : public rsSim::Linkbot {
 
 class CLinkbotI : public CLinkbot {
 	public:
-		CLinkbotI(char *name = NULL, bool pause = true) : CLinkbot(name, pause), rsRobots::Robot(rs::LINKBOTI), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {};
+		CLinkbotI(char *name = NULL, bool pause = true) : CLinkbot(name, pause), rsRobots::Robot(rs::LINKBOTI), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {};
 };
 
 class CLinkbotL : public CLinkbot {
 	public:
-		CLinkbotL(char *name = NULL, bool pause = true) : CLinkbot(name, pause), rsRobots::Robot(rs::LINKBOTL), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT2) {};
+		CLinkbotL(char *name = NULL, bool pause = true) : CLinkbot(name, pause), rsRobots::Robot(rs::LINKBOTL), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT2) {};
 };
 
 class CLinkbotT : public CLinkbot {
 	public:
-		CLinkbotT(char *name = NULL, bool pause = true) : CLinkbot(name, pause), rsRobots::Robot(rs::LINKBOTT), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {};
+		CLinkbotT(char *name = NULL, bool pause = true) : CLinkbot(name, pause), rsRobots::Robot(rs::LINKBOTT), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {};
 };
 
 // motion threading

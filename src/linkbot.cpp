@@ -2,7 +2,7 @@
 
 using namespace rsLinkbot;
 
-CLinkbot::CLinkbot(char *name, bool pause) : rsRobots::Robot(rs::LINKBOTT), rsSim::Linkbot(), rsSim::Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {
+CLinkbot::CLinkbot(char *name, bool pause) : rsRobots::Robot(rs::LINKBOTT), rsSim::Linkbot(), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {
 	// create simulation object if necessary
 	if (!g_sim)
 		g_sim = new RoboSim(name, pause);

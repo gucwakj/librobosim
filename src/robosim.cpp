@@ -50,9 +50,7 @@ RoboSim::~RoboSim(void) {
 
 int RoboSim::addRobot(rsSim::Robot *robot) {
 	// find new robot of this type
-	int ff;
-	robot->getFormFactor(ff);
-	rsXML::Robot *xmlbot = Reader::getNextRobot(ff);
+	rsXML::Robot *xmlbot = Reader::getNextRobot(robot->getForm());
 
 	// build simulation robot
 	Sim::addRobot(robot, xmlbot->getID(), xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getGround(), 0);
@@ -61,7 +59,7 @@ int RoboSim::addRobot(rsSim::Robot *robot) {
 	xmlbot->setConnect(1);
 
 	// draw graphical robot
-	rsScene::Robot *sceneRobot = Scene::drawRobot(robot, ff, xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getLED(), xmlbot->getTrace());
+	rsScene::Robot *sceneRobot = Scene::drawRobot(robot, robot->getForm(), xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getLED(), xmlbot->getTrace());
 
 	// attach callback
 	Callback::attachCallback(sceneRobot, robot, robot->getBodyList());
@@ -72,9 +70,7 @@ int RoboSim::addRobot(rsSim::Robot *robot) {
 
 int RoboSim::addRobot(rsSim::ModularRobot *robot) {
 	// find new robot of this type
-	int ff;
-	robot->getFormFactor(ff);
-	rsXML::Robot *xmlbot = Reader::getNextRobot(ff);
+	rsXML::Robot *xmlbot = Reader::getNextRobot(robot->getForm());
 
 	// build simulation robot
 	if (xmlbot->getBaseConnector()) {
@@ -95,7 +91,7 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot) {
 	}
 
 	// draw graphical robot
-	rsScene::Robot *sceneRobot = Scene::drawRobot(robot, ff, xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getLED(), xmlbot->getTrace());
+	rsScene::Robot *sceneRobot = Scene::drawRobot(robot, robot->getForm(), xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getLED(), xmlbot->getTrace());
 
 	// draw connectors
 	for (int i = 0; i < conn.size(); i++) {
