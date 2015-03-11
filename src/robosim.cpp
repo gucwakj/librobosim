@@ -105,14 +105,15 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot) {
 	return 0;
 }
 
-int RoboSim::deleteRobot(int loc) {
-	std::cout << "delete Robot" << std::endl;
+int RoboSim::deleteRobot(int id) {
 	// pause simulation to view results only on first delete
-	MUTEX_LOCK(&(_pause_mutex));
 	static int paused = 0;
+	MUTEX_LOCK(&(_pause_mutex));
+	MUTEX_LOCK(&(_running_mutex));
 	if (!paused++ && _running) {
 		Sim::_pause = 1;
 		MUTEX_UNLOCK(&(_pause_mutex));
+		MUTEX_UNLOCK(&(_running_mutex));
 
 		// get HUD and set message
 		Scene::getHUDText()->setText("Paused: Press any key to end");
@@ -129,10 +130,18 @@ int RoboSim::deleteRobot(int loc) {
 			MUTEX_LOCK(&(_pause_mutex));
 		}
 		MUTEX_UNLOCK(&(_pause_mutex));
+
+		// relock for new loop
+		MUTEX_LOCK(&(_pause_mutex));
+		MUTEX_LOCK(&(_running_mutex));
 	}
+	// unlock mutexes
 	MUTEX_UNLOCK(&(_pause_mutex));
-	//Scene::stageForDelete(Sim::_robot[loc]->node);
-	return Sim::deleteRobot(loc);
+	MUTEX_UNLOCK(&(_running_mutex));
+
+	// delete robot from modules
+	Scene::deleteChild(id);
+	return Sim::deleteRobot(id);
 }
 
 void RoboSim::keyPressed(int key) {

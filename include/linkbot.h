@@ -57,17 +57,17 @@ class CLinkbot : virtual public rsSim::Linkbot, virtual public Robot {
 
 class CLinkbotI : public CLinkbot {
 	public:
-		CLinkbotI(char *name = NULL, bool pause = true) : CLinkbot(name, pause), rsRobots::Robot(rs::LINKBOTI), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {};
+		CLinkbotI(char *name = NULL, bool pause = true) : CLinkbot(name, pause), rsRobots::Robot(rs::LINKBOTI), rsSim::Linkbot(rs::LINKBOTI), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {};
 };
 
 class CLinkbotL : public CLinkbot {
 	public:
-		CLinkbotL(char *name = NULL, bool pause = true) : CLinkbot(name, pause), rsRobots::Robot(rs::LINKBOTL), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT2) {};
+		CLinkbotL(char *name = NULL, bool pause = true) : CLinkbot(name, pause), rsRobots::Robot(rs::LINKBOTL), rsSim::Linkbot(rs::LINKBOTL), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT2) {};
 };
 
 class CLinkbotT : public CLinkbot {
 	public:
-		CLinkbotT(char *name = NULL, bool pause = true) : CLinkbot(name, pause), rsRobots::Robot(rs::LINKBOTT), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {};
+		CLinkbotT(char *name = NULL, bool pause = true) : CLinkbot(name, pause), rsRobots::Robot(rs::LINKBOTT), rsSim::Linkbot(rs::LINKBOTT), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {};
 };
 
 // motion threading
