@@ -52,6 +52,9 @@ int RoboSim::addRobot(rsSim::Robot *robot) {
 	// find new robot of this type
 	rsXML::Robot *xmlbot = Reader::getNextRobot(robot->getForm());
 
+	// set robot name
+	robot->setName(xmlbot->getName());
+
 	// build simulation robot
 	Sim::addRobot(robot, xmlbot->getID(), xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getGround(), 0);
 
@@ -71,6 +74,9 @@ int RoboSim::addRobot(rsSim::Robot *robot) {
 int RoboSim::addRobot(rsSim::ModularRobot *robot) {
 	// find new robot of this type
 	rsXML::Robot *xmlbot = Reader::getNextRobot(robot->getForm());
+
+	// set robot name
+	robot->setName(xmlbot->getName());
 
 	// build simulation robot
 	if (xmlbot->getBaseConnector()) {
