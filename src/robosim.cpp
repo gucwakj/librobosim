@@ -10,7 +10,6 @@
 RoboSim *g_sim = NULL;
 
 RoboSim::RoboSim(char *name, int pause) : rsScene::Scene(), rsSim::Sim(pause, true), rsXML::Reader(name), rsCallback::Callback() {
-	Scene::setGrid(Reader::getUnits(), Reader::getGrid());
 	Sim::setPause(Reader::getPause());
 	Scene::start(Reader::getPause());
 	Callback::setUnits(Reader::getUnits());
@@ -33,7 +32,7 @@ RoboSim::RoboSim(char *name, int pause) : rsScene::Scene(), rsSim::Sim(pause, tr
 				break;
 		}
 		// draw ground object
-		rsScene::Ground *sceneGround = Scene::drawGround(ground->getType(), ground->getPosition(), ground->getColor(), ground->getDimensions(), ground->getQuaternion());
+		rsScene::Ground *sceneGround = Scene::drawGround(0, ground->getType(), ground->getPosition(), ground->getColor(), ground->getDimensions(), ground->getQuaternion());
 		Callback::attachCallback(sceneGround, simGround);
 	}
 
@@ -42,6 +41,9 @@ RoboSim::RoboSim(char *name, int pause) : rsScene::Scene(), rsSim::Sim(pause, tr
 		rsXML::Marker *marker = Reader::getMarker(i);
 		Scene::drawMarker(marker->getType(), marker->getStart(), marker->getEnd(), marker->getColor(), marker->getSize(), marker->getLabel());
 	}
+
+	// set grid
+	Scene::setGrid(Reader::getUnits(), Reader::getGrid());
 }
 
 RoboSim::~RoboSim(void) {
