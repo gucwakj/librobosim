@@ -58,7 +58,7 @@ int RoboSim::addRobot(rsSim::Robot *robot) {
 	robot->setName(xmlbot->getName());
 
 	// build simulation robot
-	Sim::addRobot(robot, xmlbot->getID(), xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getGround(), 0);
+	Sim::addRobot(robot, xmlbot->getID(), xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getGround());
 
 	// 'connect' xml version to prevent finding it again
 	xmlbot->setConnect(1);
@@ -83,10 +83,10 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot) {
 	// build simulation robot
 	if (xmlbot->getBaseConnector()) {
 		rsXML::Conn *conn = xmlbot->getBaseConnector();
-		Sim::addRobot(robot, xmlbot->getID(), Sim::getRobot(conn->getRobot()), xmlbot->getJoints(), conn->getFace1(), conn->getFace2(), conn->getType(), conn->getSide(), conn->getOrientation(), xmlbot->getGround(), 0);
+		Sim::addRobot(robot, xmlbot->getID(), Sim::getRobot(conn->getRobot()), xmlbot->getJoints(), conn->getFace1(), conn->getFace2(), conn->getType(), conn->getSide(), conn->getOrientation(), xmlbot->getGround());
 	}
 	else {
-		Sim::addRobot(robot, xmlbot->getID(), xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getGround(), 0);
+		Sim::addRobot(robot, xmlbot->getID(), xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getGround());
 	}
 
 	// 'connect' xml version to prevent finding it again
