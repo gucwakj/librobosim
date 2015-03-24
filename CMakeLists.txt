@@ -74,13 +74,21 @@ include_directories ("/home/kgucwa/projects/librs/deps/osg/include")
 # add tinyxml2 headers
 include_directories ("/home/kgucwa/projects/librs/deps/tinyxml2")
 
+# options for individual robot compilation
+set (ENABLE_LINKBOT ON)
+set (ENABLE_MINDSTORMS ON)
+
 # add source files to library
 set (SRCS ${SRCS}
 	src/robosim.cpp
 	src/robot.cpp
-	src/linkbot.cpp
-	src/mindstorms.cpp
 )
+if (ENABLE_LINKBOT)
+	set (SRCS ${SRCS} src/linkbot.cpp)
+endif (ENABLE_LINKBOT)
+if (ENABLE_MINDSTORMS)
+	set (SRCS ${SRCS} src/mindstorms.cpp)
+endif (ENABLE_MINDSTORMS)
 
 # set output directory for shared objects
 set (OUTPUT_LIBDIR "${LIBROBOSIM_BINARY_DIR}/lib")
