@@ -1,6 +1,6 @@
 #include "mindstorms.h"
 
-CMindstorms::CMindstorms(char *name, bool pause) : rsRobots::Robot(rs::MINDSTORMS), rsSim::Mindstorms(), Robot(rsMindstorms::JOINT1, rsMindstorms::JOINT2) {
+CMindstorms::CMindstorms(char *name, bool pause) : rsRobots::Robot(rs::EV3), rsSim::Mindstorms(), Robot(rsMindstorms::JOINT1, rsMindstorms::JOINT2) {
 	// create simulation object if necessary
 	if (!g_sim)
 		g_sim = new RoboSim(name, pause);

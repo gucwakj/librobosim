@@ -53,6 +53,7 @@ RoboSim::~RoboSim(void) {
 int RoboSim::addRobot(rsSim::Robot *robot) {
 	// find new robot of this type
 	rsXML::Robot *xmlbot = Reader::getNextRobot(robot->getForm());
+	robot->setForm(xmlbot->getForm());
 
 	// set robot name
 	robot->setName(xmlbot->getName());
