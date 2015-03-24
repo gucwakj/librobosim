@@ -65,7 +65,7 @@ int RoboSim::addRobot(rsSim::Robot *robot) {
 	xmlbot->setConnect(1);
 
 	// draw graphical robot
-	rsScene::Robot *sceneRobot = Scene::drawRobot(robot, xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getLED(), xmlbot->getTrace());
+	rsScene::Robot *sceneRobot = Scene::drawRobot(robot, xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getLED(), xmlbot->getTrace());
 
 	// attach callback
 	Callback::attachCallback(sceneRobot, robot, robot->getBodyList());
@@ -100,7 +100,7 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot) {
 	}
 
 	// draw graphical robot
-	rsScene::Robot *sceneRobot = Scene::drawRobot(robot, xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getLED(), xmlbot->getTrace());
+	rsScene::Robot *sceneRobot = Scene::drawRobot(robot, xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getLED(), xmlbot->getTrace());
 
 	// draw connectors
 	for (int i = 0; i < conn.size(); i++) {
