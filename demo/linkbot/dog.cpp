@@ -15,14 +15,13 @@ int main(int argc, char *argv[]) {
 	}
 
 	// output feet locations
-	double p1[3], q1[4];
-	robot[7]->getRobotFaceOffset(rsLinkbot::FACE2, 0, robot[7]->getPosition(), robot[7]->getQuaternion(), p1, q1);
+	rs::Pos p1 = robot[7]->getRobotFacePosition(rsLinkbot::FACE2, robot[7]->getPosition(), robot[7]->getQuaternion());
 	std::cerr << "foot: " << p1[0] << " " << p1[1] << " " << p1[2] << std::endl;
-	robot[11]->getRobotFaceOffset(rsLinkbot::FACE2, 0, robot[11]->getPosition(), robot[11]->getQuaternion(), p1, q1);
+	p1 = robot[11]->getRobotFacePosition(rsLinkbot::FACE2, robot[11]->getPosition(), robot[11]->getQuaternion());
 	std::cerr << "foot: " << p1[0] << " " << p1[1] << " " << p1[2] << std::endl;
-	robot[15]->getRobotFaceOffset(rsLinkbot::FACE2, 0, robot[15]->getPosition(), robot[15]->getQuaternion(), p1, q1);
+	p1 = robot[15]->getRobotFacePosition(rsLinkbot::FACE2, robot[15]->getPosition(), robot[15]->getQuaternion());
 	std::cerr << "foot: " << p1[0] << " " << p1[1] << " " << p1[2] << std::endl;
-	robot[19]->getRobotFaceOffset(rsLinkbot::FACE2, 0, robot[19]->getPosition(), robot[19]->getQuaternion(), p1, q1);
+	p1 = robot[19]->getRobotFacePosition(rsLinkbot::FACE2, robot[19]->getPosition(), robot[19]->getQuaternion());
 	std::cerr << "foot: " << p1[0] << " " << p1[1] << " " << p1[2] << std::endl;
 
 	robot[0]->moveTo(45, 0, 45);

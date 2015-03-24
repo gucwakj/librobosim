@@ -49,6 +49,7 @@ include_directories (
 # add librs library
 include_directories ("/home/kgucwa/projects/librs/include")
 link_directories ("/home/kgucwa/projects/librs/build/lib")
+set (EXTRA_LIBS ${EXTRA_LIBS} optimized rs debug rsd)
 set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsRobots debug rsRobotsd)
 set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsSim debug rsSimd)
 set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsScene debug rsScened)
