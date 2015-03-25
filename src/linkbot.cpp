@@ -502,7 +502,7 @@ int CLinkbot::turnLeft(double angle, double radius, double trackwidth) {
 	// turn toward new postition until pointing correctly
 	while (fabs(angle) > 0.005) {
 		// turn in shortest path
-		double theta = (angle*trackwidth)/(2*radius);
+		double theta = (angle*_trackwidth)/(2*radius);
 
 		// turn
 		if (angle > 0.005)
@@ -537,7 +537,7 @@ int CLinkbot::turnRight(double angle, double radius, double trackwidth) {
 	// turn toward new postition until pointing correctly
 	while (fabs(angle) > 0.005) {
 		// turn in shortest path
-		double theta = (angle*trackwidth)/(2*radius);
+		double theta = (angle*_trackwidth)/(2*radius);
 
 		// turn
 		if (angle > 0.005)
