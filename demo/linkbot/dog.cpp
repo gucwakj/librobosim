@@ -24,7 +24,11 @@ int main(int argc, char *argv[]) {
 	p1 = robot[19]->getRobotFacePosition(rsLinkbot::FACE2, robot[19]->getPosition(), robot[19]->getQuaternion());
 	std::cerr << "foot: " << p1[0] << " " << p1[1] << " " << p1[2] << std::endl;
 
-	robot[0]->moveTo(45, 0, 45);
+	robot[1]->moveTo(0, 0, 45);
+
+	for (int i = 0; i < NUM; i++) {
+		delete robot[i];
+	}
 
 	return 0;
 }
