@@ -43,7 +43,8 @@ RoboSim::RoboSim(char *name, int pause) : rsScene::Scene(), rsSim::Sim(pause, tr
 	}
 
 	// set grid
-	Scene::setGrid(Reader::getUnits(), Reader::getGrid());
+	Scene::setGrid(Reader::getGrid());
+	Scene::setUnits(Reader::getUnits());
 }
 
 RoboSim::~RoboSim(void) {
