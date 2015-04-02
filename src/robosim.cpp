@@ -39,7 +39,7 @@ RoboSim::RoboSim(char *name, int pause) : rsScene::Scene(), rsSim::Sim(pause, tr
 	// draw marker objects
 	for (int i = 0; i < Reader::getNumMarkers(); i++) {
 		rsXML::Marker *marker = Reader::getMarker(i);
-		Scene::drawMarker(marker->getType(), marker->getStart(), marker->getEnd(), marker->getColor(), marker->getSize(), marker->getLabel());
+		Scene::drawMarker(0, marker->getType(), marker->getStart(), marker->getEnd(), marker->getColor(), marker->getSize(), marker->getLabel());
 	}
 
 	// set grid
