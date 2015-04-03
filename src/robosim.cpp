@@ -20,7 +20,7 @@ RoboSim::RoboSim(char *name, int pause) : rsScene::Scene(), rsSim::Sim(pause, tr
 		rsXML::Ground *ground = Reader::getGround(i);
 		// build ground object
 		rsSim::Ground *simGround;
-		switch (ground->getType()) {
+		switch (ground->getForm()) {
 			case rs::BOX:
 				simGround = Sim::addGround(ground->getPosition(), ground->getQuaternion(), ground->getDimensions(), ground->getMass());
 				break;
@@ -32,7 +32,7 @@ RoboSim::RoboSim(char *name, int pause) : rsScene::Scene(), rsSim::Sim(pause, tr
 				break;
 		}
 		// draw ground object
-		rsScene::Ground *sceneGround = Scene::drawGround(0, ground->getType(), ground->getPosition(), ground->getColor(), ground->getDimensions(), ground->getQuaternion());
+		rsScene::Ground *sceneGround = Scene::drawGround(0, ground->getForm(), ground->getPosition(), ground->getColor(), ground->getDimensions(), ground->getQuaternion());
 		Callback::attachCallback(sceneGround, simGround);
 	}
 
