@@ -11,21 +11,10 @@ set (LIBROBOSIM_SO_VERSION 0)
 # verbose ouptut
 set (CMAKE_VERBOSE_MAKEFILE off)
 
-# set build type
-set (CMAKE_BUILD_TYPE "Release")
-
-# set the build postfix extension according to what configuration is being built
-if (CMAKE_BUILD_TYPE MATCHES "Release")
-    set (CMAKE_BUILD_POSTFIX "")
-elseif (CMAKE_BUILD_TYPE MATCHES "MinSizeRel")
-    set (CMAKE_BUILD_POSTFIX "s")
-elseif (CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo")
-    set (CMAKE_BUILD_POSTFIX "rd")
-elseif (CMAKE_BUILD_TYPE MATCHES "Debug")
-    set (CMAKE_BUILD_POSTFIX "d")
-else()
-    set (CMAKE_BUILD_POSTFIX "")
-endif()
+# set the build postfix extension for debugging
+if (CMAKE_BUILD_TYPE MATCHES "Debug")
+	set (CMAKE_DEBUG_POSTFIX "d")
+endif ()
 
 # set gcc compiler version
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
@@ -34,17 +23,20 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 cmake_policy (SET CMP0015 NEW)
 
 # set developer warnings
-if (MSVC)
+if (WIN32)
 	add_definitions (-D_CRT_SECURE_NO_WARNINGS)
-else (MSVC)
+else ()
 	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-write-strings")
-endif (MSVC)
+endif ()
 
 # include directory
 include_directories (
 	"${PROJECT_SOURCE_DIR}/include"
 	"${PROJECT_BINARY_DIR}"
 )
+
+# link directory
+link_directories ("${LIBROBOSIM_BINARY_DIR}/lib")
 
 # add librs library
 include_directories ("/home/kgucwa/projects/librs/include")
@@ -57,11 +49,11 @@ set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsCallback debug rsCallbackd)
 set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsXML debug rsXMLd)
 
 # add ODE headers
-if (MSVC)
+if (WIN32)
 	include_directories ("/home/kgucwa/projects/librs/deps/ode/include")
-else (MSVC)
+else ()
 	include_directories ("/home/kgucwa/projects/librs/deps/ode/sys/include")
-endif (MSVC)
+endif ()
 
 # ODE options
 add_definitions (-DdDOUBLE)
