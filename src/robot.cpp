@@ -100,9 +100,6 @@ int Robot::driveDistance(double distance, double radius) {
 	double x0, y0;
 	this->getxy(x0, y0);
 
-	// get current rotation
-	double r0 = this->getRotation(0, 2);
-
 	// calculate distance to move
 	double x = x0 + distance*sin(this->getRotation(0, 2));
 	double y = y0 + distance*cos(this->getRotation(0, 2));
@@ -1193,7 +1190,7 @@ int Robot::recordxyEnd(int &num) {
 	num = _motor[_leftWheel].record_num;
 
 	// convert recorded values into in/cm
-	double m2x = (1, 0);
+	double m2x = convert(1, 0);
 	for (int i = 0; i < num; i++) {
 		(*_motor[_leftWheel].record_angle)[i] *= m2x;
 		(*_motor[_rightWheel].record_angle)[i] *= m2x;

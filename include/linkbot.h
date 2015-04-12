@@ -58,17 +58,12 @@ class CLinkbot : virtual public rsSim::Linkbot, virtual public Robot {
 
 class CLinkbotI : public CLinkbot {
 	public:
-		CLinkbotI(char *name = NULL, bool pause = true) : CLinkbot(name, pause), rsRobots::Robot(rs::LINKBOTI), rsSim::Linkbot(rs::LINKBOTI), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {};
+		CLinkbotI(char *name = NULL, bool pause = true) : rsRobots::Robot(rs::LINKBOTI), rsSim::Linkbot(rs::LINKBOTI), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3), CLinkbot(name, pause) { };
 };
 
 class CLinkbotL : public CLinkbot {
 	public:
-		CLinkbotL(char *name = NULL, bool pause = true) : CLinkbot(name, pause), rsRobots::Robot(rs::LINKBOTL), rsSim::Linkbot(rs::LINKBOTL), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT2) {};
-};
-
-class CLinkbotT : public CLinkbot {
-	public:
-		CLinkbotT(char *name = NULL, bool pause = true) : CLinkbot(name, pause), rsRobots::Robot(rs::LINKBOTT), rsSim::Linkbot(rs::LINKBOTT), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3) {};
+		CLinkbotL(char *name = NULL, bool pause = true) : rsRobots::Robot(rs::LINKBOTL), rsSim::Linkbot(rs::LINKBOTL), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT2), CLinkbot(name, pause) { };
 };
 
 // group
@@ -78,56 +73,56 @@ class CLinkbotGroup : public RobotGroup<CLinkbot> {
 		virtual ~CLinkbotGroup(void) { };
 
 		inline int accelJointAngleNB(rsLinkbot::Joint id, double a, double angle) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->accelJointAngleNB(id, a, angle);
 			}
 			return 0;
 		}
 
 		inline int accelJointCycloidalNB(rsLinkbot::Joint id, double angle, double t) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->accelJointCycloidalNB(id, angle, t);
 			}
 			return 0;
 		}
 
 		inline int accelJointHarmonicNB(rsLinkbot::Joint id, double angle, double t) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->accelJointHarmonicNB(id, angle, t);
 			}
 			return 0;
 		}
 
 		inline int accelJointSmoothNB(rsLinkbot::Joint id, double a0, double af, double vmax, double angle) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->accelJointSmoothNB(id, a0, af, vmax, angle);
 			}
 			return 0;
 		}
 
 		inline int accelJointTimeNB(rsLinkbot::Joint id, double a, double t) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->accelJointTimeNB(id, a, t);
 			}
 			return 0;
 		}
 
 		inline int accelJointToMaxSpeedNB(rsLinkbot::Joint id, double a) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->accelJointToMaxSpeedNB(id, a);
 			}
 			return 0;
 		}
 
 		inline int accelJointToVelocityNB(rsLinkbot::Joint id, double a, double v) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->accelJointToVelocityNB(id, a, v);
 			}
 			return 0;
 		}
 
 		inline int closeGripper(void) {
-			for (int i = 0; i < _robots.size()-1; i++) {
+			for (unsigned int i = 0; i < _robots.size()-1; i++) {
 				_robots[i]->closeGripperNB();
 			}
 			_robots.back()->closeGripper();
@@ -135,56 +130,56 @@ class CLinkbotGroup : public RobotGroup<CLinkbot> {
 		}
 
 		inline int closeGripperNB(void) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->closeGripperNB();
 			}
 			return 0;
 		}
 
 		inline int driveAccelCycloidalNB(double radius, double d, double t) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->driveAccelCycloidalNB(radius, d, t);
 			}
 			return 0;
 		}
 
 		inline int driveAccelDistanceNB(double radius, double a, double d) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->driveAccelDistanceNB(radius, a, d);
 			}
 			return 0;
 		}
 
 		inline int driveAccelHarmonicNB(double radius, double d, double t) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->driveAccelHarmonicNB(radius, d, t);
 			}
 			return 0;
 		}
 
 		inline int driveAccelSmoothNB(double radius, double a0, double af, double vmax, double d) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->driveAccelSmoothNB(radius, a0, af, vmax, d);
 			}
 			return 0;
 		}
 
 		inline int driveAccelTimeNB(double radius, double a, double t) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->driveAccelTimeNB(radius, a, t);
 			}
 			return 0;
 		}
 
 		inline int driveAccelToMaxSpeedNB(double radius, double a) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->driveAccelToMaxSpeedNB(radius, a);
 			}
 			return 0;
 		}
 
 		inline int driveAccelToVelocityNB(double radius, double a, double v) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->driveAccelToVelocityNB(radius, a, v);
 			}
 			return 0;
@@ -196,7 +191,7 @@ class CLinkbotGroup : public RobotGroup<CLinkbot> {
 		}
 
 		inline int moveNB(double angle1, double angle2, double angle3) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->moveNB(angle1, angle2, angle3);
 			}
 			return 0;
@@ -208,7 +203,7 @@ class CLinkbotGroup : public RobotGroup<CLinkbot> {
 		}
 
 		inline int moveToNB(double angle1, double angle2, double angle3) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->moveToNB(angle1, angle2, angle3);
 			}
 			return 0;
@@ -220,7 +215,7 @@ class CLinkbotGroup : public RobotGroup<CLinkbot> {
 		}
 
 		inline int moveToByTrackPosNB(double angle1, double angle2, double angle3) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->moveToByTrackPosNB(angle1, angle2, angle3);
 			}
 			return 0;
@@ -232,21 +227,21 @@ class CLinkbotGroup : public RobotGroup<CLinkbot> {
 		}
 
 		inline int openGripperNB(double angle) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->openGripperNB(angle);
 			}
 			return 0;
 		}
 
 		inline int setJointSpeeds(double speed1, double speed2, double speed3) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->setJointSpeeds(speed1, speed2, speed3);
 			}
 			return 0;
 		}
 
 		inline int setJointSpeedRatios(double ratio1, double ratio2, double ratio3) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->setJointSpeedRatios(ratio1, ratio2, ratio3);
 			}
 			return 0;
@@ -255,7 +250,6 @@ class CLinkbotGroup : public RobotGroup<CLinkbot> {
 
 class CLinkbotIGroup : public CLinkbotGroup { };
 class CLinkbotLGroup : public CLinkbotGroup { };
-class CLinkbotTGroup : public CLinkbotGroup { };
 
 // motion threading
 struct LinkbotMove {

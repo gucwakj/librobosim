@@ -95,7 +95,7 @@ class Robot : virtual public rsSim::Robot {
 		int recordWait(void);
 		int recordxyBegin(robotRecordData_t&, robotRecordData_t&, double, int = 1);
 		int recordxyEnd(int&);
-		int relaxJoint(int id);
+		int relaxJoint(int);
 		int relaxJoints(void);
 		int resetToZero(void);
 		int resetToZeroNB(void);
@@ -181,21 +181,21 @@ template<class T> class RobotGroup {
 		}
 
 		int blinkLED(double delay, int num) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->blinkLED(delay, num);
 			}
 			return 0;
 		}
 
 		int connect(void) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->connect();
 			}
 			return 0;
 		}
 
 		int disconnect(void) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->disconnect();
 			}
 			return 0;
@@ -207,7 +207,7 @@ template<class T> class RobotGroup {
 		}
 
 		int driveBackwardNB(double angle) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->driveBackwardNB(angle);
 			}
 			return 0;
@@ -219,7 +219,7 @@ template<class T> class RobotGroup {
 		}
 
 		int driveDistanceNB(double distance, double radius) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->driveDistanceNB(distance, radius);
 			}
 			return 0;
@@ -231,7 +231,7 @@ template<class T> class RobotGroup {
 		}
 
 		int driveForeverNB(void) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->driveForeverNB();
 			}
 			return 0;
@@ -243,14 +243,14 @@ template<class T> class RobotGroup {
 		}
 
 		int driveForwardNB(double angle) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->driveForwardNB(angle);
 			}
 			return 0;
 		}
 
 		int driveTime(double seconds) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->driveTimeNB(seconds);
 			}
 			#ifdef _WIN32
@@ -258,56 +258,56 @@ template<class T> class RobotGroup {
 			#else
 			usleep(seconds * 1000000);
 			#endif
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->holdJoints();
 			}
 			return 0;
 		}
 
 		int driveTimeNB(double seconds) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->driveTimeNB(seconds);
 			}
 			return 0;
 		}
 
 		int holdJoint(int id) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->holdJoint(id);
 			}
 			return 0;
 		}
 
 		int holdJoints(void) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->holdJoints();
 			}
 			return 0;
 		}
 
 		int holdJointsAtExit(void) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->holdJointsAtExit();
 			}
 			return 0;
 		}
 
 		int isMoving(void) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				if(_robots[i]->isMoving()) return 1;
 			}
 			return 0;
 		}
 
 		int isNotMoving(void) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				if(_robots[i]->isNotMoving()) return 1;
 			}
 			return 0;
 		}
 
 		int moveForeverNB(void) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->moveForeverNB();
 			}
 			return 0;
@@ -319,21 +319,21 @@ template<class T> class RobotGroup {
 		}
 
 		int moveJointNB(int id, double angle) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->moveJointNB(id, angle);
 			}
 			return 0;
 		}
 
 		int moveJointByPowerNB(int id, int power) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->moveJointByPowerNB(id, power);
 			}
 			return 0;
 		}
 
 		int moveJointForeverNB(int id) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->moveJointForeverNB(id);
 			}
 			return 0;
@@ -350,7 +350,7 @@ template<class T> class RobotGroup {
 		}
 
 		int moveJointTimeNB(int id, double seconds) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->moveJointTimeNB(id, seconds);
 			}
 			return 0;
@@ -362,7 +362,7 @@ template<class T> class RobotGroup {
 		}
 
 		int moveJointToNB(int id, double angle) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->moveJointToNB(id, angle);
 			}
 			return 0;
@@ -374,21 +374,21 @@ template<class T> class RobotGroup {
 		}
 
 		int moveJointToByTrackPosNB(int id, double angle) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->moveJointToByTrackPosNB(id, angle);
 			}
 			return 0;
 		}
 
 		int moveJointWait(int id) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->moveJointWait(id);
 			}
 			return 0;
 		}
 
 		int moveTime(double seconds) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->moveForeverNB();
 			}
 			#ifdef _WIN32
@@ -396,14 +396,14 @@ template<class T> class RobotGroup {
 			#else
 			usleep(seconds * 1000000);
 			#endif
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->holdJoints();
 			}
 			return 0;
 		}
 
 		int moveTimeNB(double seconds) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->moveTimeNB(seconds);
 			}
 			return 0;
@@ -415,28 +415,28 @@ template<class T> class RobotGroup {
 		}
 
 		int moveToZeroNB(void) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->moveToZeroNB();
 			}
 			return 0;
 		}
 
 		int moveWait(void) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->moveWait();
 			}
 			return 0;
 		}
 
 		int relaxJoint(int id) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->relaxJoint(id);
 			}
 			return 0;
 		}
 
 		int relaxJoints(void) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->relaxJoints();
 			}
 			return 0;
@@ -448,91 +448,91 @@ template<class T> class RobotGroup {
 		}
 
 		int resetToZeroNB(void) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->resetToZeroNB();
 			}
 			return 0;
 		}
 
 		int setBuzzerFrequency(int frequency, double time) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->setBuzzerFrequency(frequency, time);
 			}
 			return 0;
 		}
 
 		int setBuzzerFrequencyOff(void) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->setBuzzerFrequencyOff();
 			}
 			return 0;
 		}
 
 		int setBuzzerFrequencyOn(int frequency) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->setBuzzerFrequencyOn(frequency);
 			}
 			return 0;
 		}
 
 		int setLEDColor(char *color) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->setLEDColor(color);
 			}
 			return 0;
 		}
 
 		int setLEDColorRGB(int r, int g, int b) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->setLEDColorRGB(r, g, b);
 			}
 			return 0;
 		}
 
 		int setJointSafetyAngle(double angle) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->setJointSafetyAngle(angle);
 			}
 			return 0;
 		}
 
 		int setJointSafetyAngleTimeout(double seconds) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->setJointSafetyAngleTimeout(seconds);
 			}
 			return 0;
 		}
 
 		int setJointSpeed(int id, double speed) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->setJointSpeed(id, speed);
 			}
 			return 0;
 		}
 
 		int setJointSpeedRatio(int id, double ratio) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->setJointSpeedRatio(id, ratio);
 			}
 			return 0;
 		}
 
 		int setSpeed(double speed, double radius) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->setSpeed(speed, radius);
 			}
 			return 0;
 		}
 
 		int traceOff(void) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->traceOff();
 			}
 			return 0;
 		}
 
 		int traceOn(void) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->traceOn();
 			}
 			return 0;
@@ -544,7 +544,7 @@ template<class T> class RobotGroup {
 		}
 
 		int turnLeftNB(double angle, double radius, double trackwidth) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->turnLeftNB(angle, radius, trackwidth);
 			}
 			return 0;
@@ -556,7 +556,7 @@ template<class T> class RobotGroup {
 		}
 
 		int turnRightNB(double angle, double radius, double trackwidth) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->turnRightNB(angle, radius, trackwidth);
 			}
 			return 0;

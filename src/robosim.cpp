@@ -47,10 +47,6 @@ RoboSim::RoboSim(char *name, int pause) : rsScene::Scene(), rsSim::Sim(pause, tr
 	Scene::setUnits(Reader::getUnits());
 }
 
-RoboSim::~RoboSim(void) {
-	std::cerr << "deleting RoboSim" << std::endl;
-}
-
 int RoboSim::addRobot(rsSim::Robot *robot) {
 	// find new robot of this type
 	rsXML::Robot *xmlbot = Reader::getNextRobot(robot->getForm());
@@ -96,7 +92,7 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot) {
 
 	// build connectors
 	rsXML::ConnectorList conn = xmlbot->getConnectorList();
-	for (int i = 0; i < conn.size(); i++) {
+	for (unsigned int i = 0; i < conn.size(); i++) {
 		robot->addConnector(conn[i]->getType(), conn[i]->getFace1(), conn[i]->getOrientation(), conn[i]->getSize(), conn[i]->getSide(), conn[i]->getConn());
 	}
 
@@ -104,7 +100,7 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot) {
 	rsScene::Robot *sceneRobot = Scene::drawRobot(robot, xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getLED(), xmlbot->getTrace());
 
 	// draw connectors
-	for (int i = 0; i < conn.size(); i++) {
+	for (unsigned int i = 0; i < conn.size(); i++) {
 		Scene::drawConnector(robot, sceneRobot, conn[i]->getType(), conn[i]->getFace1(), conn[i]->getOrientation(), conn[i]->getSize(), conn[i]->getSide(), conn[i]->getConn());
 	}
 
@@ -165,6 +161,6 @@ void RoboSim::keyPressed(int key) {
 }
 
 void RoboSim::saveState(char *name) {
-	rsXML::Writer *writer = new rsXML::Writer("test.xml", Reader::getDoc());
+	//rsXML::Writer *writer = new rsXML::Writer("test.xml", Reader::getDoc());
 }
 

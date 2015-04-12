@@ -11,10 +11,10 @@
 #include <rsXML/Writer>
 #include <rsCallback/Callback>
 
-class RoboSim : public rsSim::Sim, public rsXML::Reader, public rsScene::Scene , public rsCallback::Callback {
+class RoboSim : public rsScene::Scene, public rsSim::Sim, public rsXML::Reader, public rsCallback::Callback {
 	public:
 		RoboSim(char*, int);
-		virtual ~RoboSim(void);
+		virtual ~RoboSim(void) { };
 
 		int addRobot(rsSim::Robot*);
 		int addRobot(rsSim::ModularRobot*);

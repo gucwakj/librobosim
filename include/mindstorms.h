@@ -41,7 +41,7 @@ class CMindstormsGroup : public RobotGroup<CMindstorms> {
 			return this->moveWait();
 		}
 		inline int moveNB(double angle1, double angle2) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->moveNB(angle1, angle2);
 			}
 			return 0;
@@ -51,7 +51,7 @@ class CMindstormsGroup : public RobotGroup<CMindstorms> {
 			return moveWait();
 		}
 		inline int moveToNB(double angle1, double angle2) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->moveToNB(angle1, angle2);
 			}
 			return 0;
@@ -61,19 +61,19 @@ class CMindstormsGroup : public RobotGroup<CMindstorms> {
 			return moveWait();
 		}
 		inline int moveToByTrackPosNB(double angle1, double angle2) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->moveToByTrackPosNB(angle1, angle2);
 			}
 			return 0;
 		}
 		inline int setJointSpeeds(double speed1, double speed2) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->setJointSpeeds(speed1, speed2);
 			}
 			return 0;
 		}
 		inline int setJointSpeedRatios(double ratio1, double ratio2) {
-			for (int i = 0; i < _robots.size(); i++) {
+			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->setJointSpeedRatios(ratio1, ratio2);
 			}
 			return 0;
