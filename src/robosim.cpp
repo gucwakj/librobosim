@@ -146,7 +146,7 @@ int RoboSim::deleteRobot(int id) {
 	MUTEX_UNLOCK(&(_running_mutex));
 
 	// delete robot from modules
-	Scene::deleteChild(id);
+	Scene::deleteRobot(id);
 	return Sim::deleteRobot(id);
 }
 
