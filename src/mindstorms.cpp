@@ -12,7 +12,7 @@ CMindstorms::CMindstorms(char *name, bool pause) : rsRobots::Robot(rs::EV3), rsS
 }
 
 CMindstorms::~CMindstorms(void) {
-	if (!_sim->deleteRobot(_pos)) { delete _sim; }
+	if (!g_sim->deleteRobot(_id)) { delete g_sim; this->_sim = NULL; }
 }
 
 int CMindstorms::getJointAngles(double &angle1, double &angle2, int numReadings) {
