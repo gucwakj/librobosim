@@ -151,9 +151,13 @@ int RoboSim::deleteRobot(int id) {
 }
 
 void RoboSim::keyPressed(int key) {
-	if (key == 'r') {
+	if (key == '1') { }
+	else if (key == '2') { }
+	else if (key == 'n') { }
+	else if (key == 'r') {
 		Sim::setCollisions(2);
 	}
+	else if (key == 't') { }
 	else {
 		Sim::setPause(2);
 		Scene::setPauseText(Sim::getPause());
