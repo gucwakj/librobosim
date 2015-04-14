@@ -94,7 +94,9 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot) {
 	// build connectors
 	rsXML::ConnectorList conn = xmlbot->getConnectorList();
 	for (unsigned int i = 0; i < conn.size(); i++) {
+		Sim::mutexLock(0);
 		robot->addConnector(conn[i]->getType(), conn[i]->getFace1(), conn[i]->getOrientation(), conn[i]->getSize(), conn[i]->getSide(), conn[i]->getConn());
+		Sim::mutexUnlock(0);
 	}
 
 	// draw graphical robot
