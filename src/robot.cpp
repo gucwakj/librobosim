@@ -1058,7 +1058,7 @@ int Robot::recordDistanceEnd(int id, int &num) {
 	this->recordAngleEnd(id, num);
 
 	// convert radius to output units
-	double radius = this->convert(_radius, 0);
+	double radius = this->convert(_wheel_radius, 0);
 
 	// convert all angles to distances based upon radius
 	for (int i = 0; i < num; i++) {
@@ -1099,7 +1099,7 @@ int Robot::recordDistancesEnd(int &num) {
 	this->recordAnglesEnd(num);
 
 	// convert radius to output units
-	double radius = this->convert(_radius, 0);
+	double radius = this->convert(_wheel_radius, 0);
 
 	// convert all angles to distances based upon radius
 	for (int i = 0; i < num; i++) {
