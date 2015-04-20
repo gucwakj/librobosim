@@ -15,25 +15,25 @@ RoboSim::RoboSim(char *name, int pause) : rsScene::Scene(), rsSim::Sim(pause, tr
 	Callback::setUnits(Reader::getUnits());
 
 	// draw ground objects
-	for (int i = 0; i < Reader::getNumGrounds(); i++) {
+	for (int i = 0; i < Reader::getNumObstacles(); i++) {
 		// get xml ground object
-		rsXML::Ground *ground = Reader::getGround(i);
+		rsXML::Obstacle *obstacle = Reader::getObstacle(i);
 		// build ground object
-		rsSim::Ground *simGround;
-		switch (ground->getForm()) {
+		rsSim::Obstacle *simObstacle;
+		switch (obstacle->getForm()) {
 			case rs::BOX:
-				simGround = Sim::addGround(ground->getPosition(), ground->getQuaternion(), ground->getDimensions(), ground->getMass());
+				simObstacle = Sim::addObstacle(obstacle->getPosition(), obstacle->getQuaternion(), obstacle->getDimensions(), obstacle->getMass());
 				break;
 			case rs::CYLINDER:
-				simGround = Sim::addGround(ground->getPosition(), ground->getQuaternion(), ground->getDimensions(), ground->getMass(), ground->getAxis());
+				simObstacle = Sim::addObstacle(obstacle->getPosition(), obstacle->getQuaternion(), obstacle->getDimensions(), obstacle->getMass(), obstacle->getAxis());
 				break;
 			case rs::SPHERE:
-				simGround = Sim::addGround(ground->getPosition(), ground->getDimensions(), ground->getMass());
+				simObstacle = Sim::addObstacle(obstacle->getPosition(), obstacle->getDimensions(), obstacle->getMass());
 				break;
 		}
 		// draw ground object
-		rsScene::Ground *sceneGround = Scene::drawGround(0, ground->getForm(), ground->getPosition(), ground->getColor(), ground->getDimensions(), ground->getQuaternion());
-		Callback::attachCallback(sceneGround, simGround);
+		rsScene::Obstacle *sceneObstacle = Scene::drawObstacle(0, obstacle->getForm(), obstacle->getPosition(), obstacle->getColor(), obstacle->getDimensions(), obstacle->getQuaternion());
+		Callback::attachCallback(sceneObstacle, simObstacle);
 	}
 
 	// draw marker objects
