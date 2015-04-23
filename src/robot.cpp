@@ -80,16 +80,17 @@ int Robot::disconnect(void) {
 	return 0;
 }
 
-int Robot::driveBackward(double angle) {
-	this->driveForwardNB(-angle);
+int Robot::driveAngle(double angle) {
+	this->driveAngleNB(angle);
 	this->moveWait();
 
 	// success
 	return 0;
 }
 
-int Robot::driveBackwardNB(double angle) {
-	this->driveForwardNB(-angle);
+int Robot::driveAngleNB(double angle) {
+	this->moveJointNB(_leftWheel, angle);
+	this->moveJointNB(_rightWheel, angle);
 
 	// success
 	return 0;
@@ -109,10 +110,10 @@ int Robot::driveDistance(double distance, double radius) {
 	while (fabs(d) > 0.005) {
 		// turn
 		if (d > 0.005) {
-			this->driveForward(RAD2DEG(d/radius));
+			this->driveAngle(RAD2DEG(d/radius));
 		}
 		else if (d < -0.005) {
-			this->driveBackward(RAD2DEG(d/radius));
+			this->driveAngle(-RAD2DEG(d/radius));
 		}
 
 		// calculate new distance to move
@@ -155,22 +156,6 @@ int Robot::driveForever(void) {
 int Robot::driveForeverNB(void) {
 	this->moveJointForeverNB(_leftWheel);
 	this->moveJointForeverNB(_rightWheel);
-
-	// success
-	return 0;
-}
-
-int Robot::driveForward(double angle) {
-	this->driveForwardNB(angle);
-	this->moveWait();
-
-	// success
-	return 0;
-}
-
-int Robot::driveForwardNB(double angle) {
-	this->moveJointNB(_leftWheel, angle);
-	this->moveJointNB(_rightWheel, angle);
 
 	// success
 	return 0;

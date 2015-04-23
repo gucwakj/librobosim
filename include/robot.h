@@ -24,14 +24,12 @@ class Robot : virtual public rsSim::Robot {
 		int delaySeconds(double);
 		int disableRecordDataShift(void);
 		int disconnect(void);
-		int driveBackward(double);
-		int driveBackwardNB(double);
+		int driveAngle(double);
+		virtual int driveAngleNB(double);
 		int driveDistance(double, double);
 		int driveDistanceNB(double, double);
 		int driveForever(void);
 		virtual int driveForeverNB(void);
-		int driveForward(double);
-		virtual int driveForwardNB(double);
 		int driveTime(double);
 		int driveTimeNB(double);
 		int drivexy(double, double, double, double);
@@ -201,14 +199,14 @@ template<class T> class RobotGroup {
 			return 0;
 		}
 
-		int driveBackward(double angle) {
-			driveBackwardNB(angle);
+		int driveAngle(double angle) {
+			driveAngleNB(angle);
 			return moveWait();
 		}
 
-		int driveBackwardNB(double angle) {
+		int driveAngleNB(double angle) {
 			for (unsigned int i = 0; i < _robots.size(); i++) {
-				_robots[i]->driveBackwardNB(angle);
+				_robots[i]->driveAngleNB(angle);
 			}
 			return 0;
 		}
@@ -233,18 +231,6 @@ template<class T> class RobotGroup {
 		int driveForeverNB(void) {
 			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->driveForeverNB();
-			}
-			return 0;
-		}
-
-		int driveForward(double angle) {
-			driveForwardNB(angle);
-			return moveWait();
-		}
-
-		int driveForwardNB(double angle) {
-			for (unsigned int i = 0; i < _robots.size(); i++) {
-				_robots[i]->driveForwardNB(angle);
 			}
 			return 0;
 		}

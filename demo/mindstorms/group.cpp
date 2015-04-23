@@ -8,8 +8,8 @@ int main(int argc, char *argv[]) {
 	group.addRobot(robot1);
 	group.addRobot(robot2);
 
-	group.driveForward(360);
-	group.driveBackward(360);
+	group.driveAngle(360);
+	group.driveAngle(-360);
 
 	return 0;
 }

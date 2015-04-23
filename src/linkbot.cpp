@@ -268,6 +268,14 @@ int CLinkbot::driveAccelToVelocityNB(double radius, double a, double v) {
 	return 0;
 }
 
+int CLinkbot::driveAngleNB(double angle) {
+	this->moveJointNB(_leftWheel, angle);
+	this->moveJointNB(_rightWheel, angle);
+
+	// success
+	return 0;
+}
+
 int CLinkbot::driveForeverNB(void) {
 	// negate speed to act as a car
 	_motor[JOINT3].omega = -_motor[JOINT3].omega;
@@ -275,14 +283,6 @@ int CLinkbot::driveForeverNB(void) {
 	// set joint movements
 	this->moveJointForeverNB(JOINT1);
 	this->moveJointForeverNB(JOINT3);
-
-	// success
-	return 0;
-}
-
-int CLinkbot::driveForwardNB(double angle) {
-	this->moveJointNB(JOINT1, angle);
-	this->moveJointNB(JOINT3, -angle);
 
 	// success
 	return 0;

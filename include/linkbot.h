@@ -29,8 +29,8 @@ class CLinkbot : virtual public rsSim::Linkbot, virtual public Robot {
 		int driveAccelTimeNB(double, double, double);
 		int driveAccelToMaxSpeedNB(double, double);
 		int driveAccelToVelocityNB(double, double, double);
+		int driveAngleNB(double);
 		int driveForeverNB(void);
-		int driveForwardNB(double);
 		int drivexyToSmooth(double, double, double, double, double, double, double, double);
 		int getJointAngles(double&, double&, double&, int = 10);
 		int getJointAnglesInstant(double&, double&, double&);
