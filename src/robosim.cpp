@@ -10,7 +10,7 @@
 RoboSim *g_sim = NULL;
 
 RoboSim::RoboSim(char *name, int pause) : rsScene::Scene(), rsSim::Sim(pause, true), rsXML::Reader(name), rsCallback::Callback() {
-	Sim::setPause(Reader::getPause());
+	Sim::pause(Reader::getPause());
 	Scene::start(Reader::getPause());
 	Callback::setUnits(Reader::getUnits());
 
@@ -163,7 +163,7 @@ void RoboSim::keyPressed(int key) {
 	}
 	else if (key == 't') { }
 	else {
-		Sim::setPause(2);
+		Sim::pause(2);
 		Scene::setPauseText(Sim::getPause());
 	}
 }
