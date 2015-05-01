@@ -1,3 +1,5 @@
+#include <rs/Macros>
+
 #include "linkbot.h"
 
 using namespace rsLinkbot;
@@ -31,7 +33,7 @@ int CLinkbot::accelJointCycloidalNB(Joint id, double angle, double t) {
 
 	// set initial omega
 	if (_motor[id].state != POSITIVE || _motor[id].state != NEGATIVE) {
-		if ( angle > EPSILON )
+		if (angle > rs::EPSILON)
 			_motor[id].omega = 0.01;
 		else
 			_motor[id].omega = -0.01;
@@ -73,7 +75,7 @@ int CLinkbot::accelJointHarmonicNB(Joint id, double angle, double t) {
 
 	// set initial omega
 	if (_motor[id].state != POSITIVE || _motor[id].state != NEGATIVE) {
-		if ( angle > EPSILON )
+		if (angle > rs::EPSILON)
 			_motor[id].omega = 0.01;
 		else
 			_motor[id].omega = -0.01;
@@ -123,7 +125,7 @@ int CLinkbot::accelJointTimeNB(Joint id, double a, double t) {
 
 	// set initial omega
 	if (_motor[id].state != POSITIVE || _motor[id].state != NEGATIVE) {
-		if ( a > EPSILON )
+		if (a > rs::EPSILON)
 			_motor[id].omega = 0.01;
 		else
 			_motor[id].omega = -0.01;

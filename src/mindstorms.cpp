@@ -1,3 +1,5 @@
+#include <rs/Macros>
+
 #include "mindstorms.h"
 
 using namespace rsMindstorms;

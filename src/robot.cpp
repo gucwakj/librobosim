@@ -1,5 +1,8 @@
 #include <cstdint>
 #include <cstring>
+
+#include <rs/Macros>
+
 #include "robot.h"
 
 Robot::Robot(int left, int right) : rsRobots::Robot(rs::ROBOT) {
@@ -49,7 +52,7 @@ int Robot::delay(double milliseconds) {
 	double end = g_sim->getClock() + milliseconds/1000;
 
 	// while clock hasn't reached ending time
-	while ((end - g_sim->getClock()) >= EPSILON)
+	while ((end - g_sim->getClock()) >= rs::EPSILON)
 		this->doze(50);
 
 	// success
@@ -683,7 +686,7 @@ int Robot::moveJointNB(int id, double angle) {
 	MUTEX_LOCK(&_goal_mutex);
 
 	// set new goal angles
-	if (_motor[id].omega < -EPSILON) angle = -angle;
+	if (_motor[id].omega < -rs::EPSILON) angle = -angle;
 	_motor[id].goal += rs::D2R(angle);
 
 	// actively seeking an angle
@@ -725,9 +728,9 @@ int Robot::moveJointForeverNB(int id) {
 	// set mode
 	_motor[id].mode = CONTINUOUS;
 	// drive in proper direction
-	if ( _motor[id].omega > EPSILON )
+	if ( _motor[id].omega > rs::EPSILON )
 		_motor[id].state = POSITIVE;
-	else if ( _motor[id].omega < EPSILON )
+	else if ( _motor[id].omega < rs::EPSILON )
 		_motor[id].state = NEGATIVE;
 	else
 		_motor[id].state = HOLD;

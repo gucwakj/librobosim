@@ -7,10 +7,12 @@
 #include <unistd.h>
 #endif
 
-#include <rs/Macros>
+#include <rs/Threads>
 #include <rsSim/Robot>
 
 #include "robosim.h"
+
+#define RECORD_ANGLE_ALLOC_SIZE 16
 
 // individual
 class Robot : virtual public rsSim::Robot {
