@@ -110,10 +110,10 @@ int Robot::driveDistance(double distance, double radius) {
 	while (fabs(d) > 0.005) {
 		// turn
 		if (d > 0.005) {
-			this->driveAngle(RAD2DEG(d/radius));
+			this->driveAngle(rs::R2D(d/radius));
 		}
 		else if (d < -0.005) {
-			this->driveAngle(-RAD2DEG(d/radius));
+			this->driveAngle(-rs::R2D(d/radius));
 		}
 
 		// calculate new distance to move
@@ -231,9 +231,9 @@ int Robot::drivexyTo(double x, double y, double radius, double trackwidth) {
 
 	// turn in shortest path
 	if (angle > 0.005)
-		this->turnRight(RAD2DEG(angle), radius, trackwidth);
+		this->turnRight(rs::R2D(angle), radius, trackwidth);
 	else if (angle < -0.005)
-		this->turnLeft(RAD2DEG(-angle), radius, trackwidth);
+		this->turnLeft(rs::R2D(-angle), radius, trackwidth);
 
 	// move along length of line
 	this->getxy(x0, y0);
@@ -453,10 +453,10 @@ int Robot::drivexyToSmooth(double x1, double y1, double x2, double y2, double x3
 	double s2 = theta*(rho - trackwidth/2);
 
 	// move joints the proper amount
-	this->setJointSpeed(_leftWheel, RAD2DEG(s1/theta/rho/radius*_speed));
-	this->setJointSpeed(_rightWheel, RAD2DEG(s2/theta/rho/radius*_speed));
-	this->moveJointNB(_leftWheel, RAD2DEG(s1/radius));
-	this->moveJointNB(_rightWheel, RAD2DEG(s2/radius));
+	this->setJointSpeed(_leftWheel, rs::R2D(s1/theta/rho/radius*_speed));
+	this->setJointSpeed(_rightWheel, rs::R2D(s2/theta/rho/radius*_speed));
+	this->moveJointNB(_leftWheel, rs::R2D(s1/radius));
+	this->moveJointNB(_rightWheel, rs::R2D(s2/radius));
 	this->delay(theta*rho/_speed*1000);
 
 	// success
@@ -503,7 +503,7 @@ int Robot::getBatteryVoltage(double &voltage) {
 int Robot::getDistance(double &distance, double radius) {
 	double angle;
 	this->getJointAngle(_leftWheel, angle, 2);
-	distance = DEG2RAD(angle) * radius;
+	distance = rs::D2R(angle) * radius;
 
 	// success
 	return 0;
@@ -542,14 +542,14 @@ int Robot::getJointAngle(int id, double &angle, int numReadings) {
 }
 
 int Robot::getJointAngleInstant(int id, double &angle) {
-	angle = RAD2DEG(_motor[id].theta);
+	angle = rs::R2D(_motor[id].theta);
 
 	// success
 	return 0;
 }
 
 int Robot::getJointMaxSpeed(int id, double &maxSpeed) {
-	maxSpeed = RAD2DEG(_motor[id].omega_max);
+	maxSpeed = rs::R2D(_motor[id].omega_max);
 
 	// success
 	return 0;
@@ -570,7 +570,7 @@ int Robot::getJointSafetyAngleTimeout(double &seconds) {
 }
 
 int Robot::getJointSpeed(int id, double &speed) {
-	speed = RAD2DEG(_motor[id].omega);
+	speed = rs::R2D(_motor[id].omega);
 
 	// success
 	return 0;
@@ -684,7 +684,7 @@ int Robot::moveJointNB(int id, double angle) {
 
 	// set new goal angles
 	if (_motor[id].omega < -EPSILON) angle = -angle;
-	_motor[id].goal += DEG2RAD(angle);
+	_motor[id].goal += rs::D2R(angle);
 
 	// actively seeking an angle
 	_motor[id].mode = SEEK;
@@ -789,7 +789,7 @@ int Robot::moveJointToNB(int id, double angle) {
 	MUTEX_LOCK(&_goal_mutex);
 
 	// set new goal angles
-	_motor[id].goal = DEG2RAD(angle);
+	_motor[id].goal = rs::D2R(angle);
 
 	// actively seeking an angle
 	_motor[id].mode = SEEK;
@@ -1047,7 +1047,7 @@ int Robot::recordDistanceEnd(int id, int &num) {
 
 	// convert all angles to distances based upon radius
 	for (int i = 0; i < num; i++) {
-		(*_motor[id].record_angle)[i] = DEG2RAD((*_motor[id].record_angle)[i]) * radius + _distOffset;
+		(*_motor[id].record_angle)[i] = rs::D2R((*_motor[id].record_angle)[i]) * radius + _distOffset;
 	}
 
 	// success
@@ -1089,7 +1089,7 @@ int Robot::recordDistancesEnd(int &num) {
 	// convert all angles to distances based upon radius
 	for (int i = 0; i < num; i++) {
 		for (int j = 0; j < _dof; j++) {
-			(*_motor[j].record_angle)[i] = DEG2RAD((*_motor[j].record_angle)[i]) * radius + _distOffset;
+			(*_motor[j].record_angle)[i] = rs::D2R((*_motor[j].record_angle)[i]) * radius + _distOffset;
 		}
 	}
 
@@ -1296,12 +1296,12 @@ int Robot::setJointSafetyAngleTimeout(double seconds) {
 }
 
 int Robot::setJointSpeed(int id, double speed) {
-	if (speed > RAD2DEG(_motor[id].omega_max)) {
+	if (speed > rs::R2D(_motor[id].omega_max)) {
 		fprintf(stderr, "Warning: Setting the speed for joint %d to %.2lf degrees per second is "
 			"beyond the hardware limit of %.2lf degrees per second.\n",
-			id+1, speed, RAD2DEG(_motor[id].omega_max));
+			id+1, speed, rs::R2D(_motor[id].omega_max));
 	}
-	_motor[id].omega = DEG2RAD(speed);
+	_motor[id].omega = rs::D2R(speed);
 
 	// success
 	return 0;
@@ -1311,17 +1311,17 @@ int Robot::setJointSpeedRatio(int id, double ratio) {
 	if ( ratio < 0 || ratio > 1 ) {
 		return -1;
 	}
-	return this->setJointSpeed(id, ratio * RAD2DEG(_motor[(int)id].omega_max));
+	return this->setJointSpeed(id, ratio * rs::R2D(_motor[(int)id].omega_max));
 }
 
 int Robot::setSpeed(double speed, double radius) {
-	if (RAD2DEG(speed/radius) > RAD2DEG(_motor[_leftWheel].omega_max)) {
+	if (rs::R2D(speed/radius) > rs::R2D(_motor[_leftWheel].omega_max)) {
 		fprintf(stderr, "Warning: Speed %.2lf corresponds to joint speeds of %.2lf degrees/second.\n",
-			speed, RAD2DEG(speed/radius));
+			speed, rs::R2D(speed/radius));
 	}
 	_speed = speed;
-	this->setJointSpeed(_leftWheel, RAD2DEG(speed/radius));
-	this->setJointSpeed(_rightWheel, RAD2DEG(speed/radius));
+	this->setJointSpeed(_leftWheel, rs::R2D(speed/radius));
+	this->setJointSpeed(_rightWheel, rs::R2D(speed/radius));
 
 	// success
 	return 0;
@@ -1352,7 +1352,7 @@ int Robot::traceOn(void) {
 int Robot::turnLeft(double angle, double radius, double trackwidth) {
 	// calculate angle to turn
 	double r0 = this->getRotation(0, 2);
-	angle = DEG2RAD(angle);
+	angle = rs::D2R(angle);
 	double rf = r0 + angle;
 
 	// get speed of robot
@@ -1366,13 +1366,13 @@ int Robot::turnLeft(double angle, double radius, double trackwidth) {
 		double theta = (angle*trackwidth)/(2*radius);
 
 		// turn
-		if (RAD2DEG(angle) > 0.005) {
-			this->moveJoint(_leftWheel, -RAD2DEG(theta));
-			this->moveJoint(_rightWheel, RAD2DEG(theta));
+		if (rs::R2D(angle) > 0.005) {
+			this->moveJoint(_leftWheel, -rs::R2D(theta));
+			this->moveJoint(_rightWheel, rs::R2D(theta));
 		}
-		else if (RAD2DEG(angle) < -0.005) {
-			this->moveJoint(_leftWheel, RAD2DEG(theta));
-			this->moveJoint(_rightWheel, -RAD2DEG(theta));
+		else if (rs::R2D(angle) < -0.005) {
+			this->moveJoint(_leftWheel, rs::R2D(theta));
+			this->moveJoint(_rightWheel, -rs::R2D(theta));
 		}
 
 		// calculate new rotation from error
@@ -1416,7 +1416,7 @@ int Robot::turnLeftNB(double angle, double radius, double trackwidth) {
 int Robot::turnRight(double angle, double radius, double trackwidth) {
 	// calculate angle to turn
 	double r0 = this->getRotation(0, 2);
-	angle = DEG2RAD(angle);
+	angle = rs::D2R(angle);
 	double rf = r0 - angle;
 
 	// get speed of robot
@@ -1430,13 +1430,13 @@ int Robot::turnRight(double angle, double radius, double trackwidth) {
 		double theta = (angle*trackwidth)/(2*radius);
 
 		// turn
-		if (RAD2DEG(angle) > 0.005) {
-			this->moveJoint(_leftWheel, RAD2DEG(theta));
-			this->moveJoint(_rightWheel, -RAD2DEG(theta));
+		if (rs::R2D(angle) > 0.005) {
+			this->moveJoint(_leftWheel, rs::R2D(theta));
+			this->moveJoint(_rightWheel, -rs::R2D(theta));
 		}
-		else if (RAD2DEG(angle) < -0.005) {
-			this->moveJoint(_leftWheel, -RAD2DEG(theta));
-			this->moveJoint(_rightWheel, RAD2DEG(theta));
+		else if (rs::R2D(angle) < -0.005) {
+			this->moveJoint(_leftWheel, -rs::R2D(theta));
+			this->moveJoint(_rightWheel, rs::R2D(theta));
 		}
 
 		// calculate new rotation from error
@@ -1711,7 +1711,7 @@ void* Robot::recordAngleThread(void *arg) {
 		rec->time[i] = (rec->time[i] - start_time) / 1000;
 
 		// store joint angle
-		rec->angle[0][i] = RAD2DEG(rec->robot->_motor[rec->id].theta);
+		rec->angle[0][i] = rs::R2D(rec->robot->_motor[rec->id].theta);
 
 		// check if joint is moving
 		moving[i] = (int)(dJointGetAMotorParam(rec->robot->_motor[rec->id].id, dParamVel)*1000);
@@ -1795,7 +1795,7 @@ void* Robot::recordAngleBeginThread(void *arg) {
 		}
 
 		// store joint angles
-		(*(rec->pangle[0]))[i] = RAD2DEG(rec->robot->_motor[rec->id].theta);
+		(*(rec->pangle[0]))[i] = rs::R2D(rec->robot->_motor[rec->id].theta);
 		moving = (int)(dJointGetAMotorParam(rec->robot->_motor[rec->id].id, dParamVel)*1000);
 
 		// store time of data point
@@ -1849,7 +1849,7 @@ void* Robot::recordAnglesThread(void *arg) {
 
 		// store joint angles
 		for (int j = 0; j < rec->robot->_dof; j++) {
-			rec->angle[j][i] = RAD2DEG(rec->robot->_motor[j].theta);
+			rec->angle[j][i] = rs::R2D(rec->robot->_motor[j].theta);
 		}
 
 		// check if joints are moving
@@ -1945,7 +1945,7 @@ void* Robot::recordAnglesBeginThread(void *arg) {
 
 		// store joint angles
 		for (int j = 0; j < rec->robot->_dof; j++) {
-			(*(rec->pangle[j]))[i] = RAD2DEG(rec->robot->_motor[j].theta);
+			(*(rec->pangle[j]))[i] = rs::R2D(rec->robot->_motor[j].theta);
 		}
 
 		// store time of data point

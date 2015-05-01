@@ -19,7 +19,7 @@ RoboSim::RoboSim(char *name, int pause) : rsScene::Scene(), rsSim::Sim(pause, tr
 		// get xml ground object
 		rsXML::Obstacle *obstacle = Reader::getObstacle(i);
 		// build ground object
-		rsSim::Obstacle *simObstacle;
+		rsSim::Obstacle *simObstacle = NULL;
 		switch (obstacle->getForm()) {
 			case rs::BOX:
 				simObstacle = Sim::addObstacle(obstacle->getPosition(), obstacle->getQuaternion(), obstacle->getDimensions(), obstacle->getMass());

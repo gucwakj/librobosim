@@ -32,8 +32,8 @@ int CMindstorms::getJointAnglesInstant(double &angle1, double &angle2) {
 }
 
 int CMindstorms::getJointSpeeds(double &speed1, double &speed2) {
-	speed1 = RAD2DEG(_motor[JOINT1].omega);
-	speed2 = RAD2DEG(_motor[JOINT2].omega);
+	speed1 = rs::R2D(_motor[JOINT1].omega);
+	speed2 = rs::R2D(_motor[JOINT2].omega);
 
 	// success
 	return 0;

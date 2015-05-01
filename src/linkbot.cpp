@@ -42,7 +42,7 @@ int CLinkbot::accelJointCycloidalNB(Joint id, double angle, double t) {
 
 	// set acceleration parameters
 	_motor[id].mode = ACCEL_CYCLOIDAL;
-	_motor[id].goal = DEG2RAD(angle);
+	_motor[id].goal = rs::D2R(angle);
 	_motor[id].accel.init = _motor[id].theta;
 	_motor[id].accel.period = t;
 	_motor[id].accel.run = 0;
@@ -84,7 +84,7 @@ int CLinkbot::accelJointHarmonicNB(Joint id, double angle, double t) {
 
 	// set acceleration parameters
 	_motor[id].mode = ACCEL_HARMONIC;
-	_motor[id].goal = DEG2RAD(angle) - DEG2RAD(2);
+	_motor[id].goal = rs::D2R(angle) - rs::D2R(2);
 	_motor[id].accel.init = _motor[id].theta;
 	_motor[id].accel.period = t;
 	_motor[id].accel.run = 0;
@@ -110,7 +110,7 @@ int CLinkbot::accelJointHarmonicNB(Joint id, double angle, double t) {
 }
 
 int CLinkbot::accelJointSmoothNB(Joint id, double a0, double af, double vmax, double angle) {
-	_motor[id].omega = DEG2RAD(vmax);
+	_motor[id].omega = rs::D2R(vmax);
 	this->moveJoint(id, angle);
 
 	// success
@@ -132,12 +132,12 @@ int CLinkbot::accelJointTimeNB(Joint id, double a, double t) {
 	// set timeout
 	double step = g_sim->getStep();
 	if (t == 0)
-		_motor[id].timeout = fabs((_motor[id].omega_max-fabs(_motor[id].omega))/DEG2RAD(a)/step);
+		_motor[id].timeout = fabs((_motor[id].omega_max-fabs(_motor[id].omega))/rs::D2R(a)/step);
 	else
 		_motor[id].timeout = fabs(t/step);
 
 	// set acceleration parameters
-	_motor[id].alpha = DEG2RAD(a);
+	_motor[id].alpha = rs::D2R(a);
 	_motor[id].mode = ACCEL_CONSTANT;
 
 	// enable motor
@@ -209,25 +209,25 @@ int CLinkbot::closeGripperNB(void) {
 }
 
 int CLinkbot::driveAccelCycloidalNB(double radius, double d, double t) {
-	this->accelJointCycloidalNB(JOINT1,  RAD2DEG(d/radius), t);
-	this->accelJointCycloidalNB(JOINT3, -RAD2DEG(d/radius), t);
+	this->accelJointCycloidalNB(JOINT1,  rs::R2D(d/radius), t);
+	this->accelJointCycloidalNB(JOINT3, -rs::R2D(d/radius), t);
 
 	// success
 	return 0;
 }
 
 int CLinkbot::driveAccelDistanceNB(double radius, double a, double d) {
-	a = DEG2RAD(a);
-	this->accelJointTimeNB(JOINT1,  RAD2DEG(a/radius), sqrt(2*d/a));
-	this->accelJointTimeNB(JOINT3, -RAD2DEG(a/radius), sqrt(2*d/a));
+	a = rs::D2R(a);
+	this->accelJointTimeNB(JOINT1,  rs::R2D(a/radius), sqrt(2*d/a));
+	this->accelJointTimeNB(JOINT3, -rs::R2D(a/radius), sqrt(2*d/a));
 
 	// success
 	return 0;
 }
 
 int CLinkbot::driveAccelHarmonicNB(double radius, double d, double t) {
-	this->accelJointHarmonicNB(JOINT1,  RAD2DEG(d/radius), t);
-	this->accelJointHarmonicNB(JOINT3, -RAD2DEG(d/radius), t);
+	this->accelJointHarmonicNB(JOINT1,  rs::R2D(d/radius), t);
+	this->accelJointHarmonicNB(JOINT3, -rs::R2D(d/radius), t);
 
 	// success
 	return 0;
@@ -242,27 +242,27 @@ int CLinkbot::driveAccelSmoothNB(double radius, double a0, double af, double vma
 }
 
 int CLinkbot::driveAccelTimeNB(double radius, double a, double t) {
-	a = DEG2RAD(a);
-	this->accelJointTimeNB(JOINT1,  RAD2DEG(a/radius), t);
-	this->accelJointTimeNB(JOINT3, -RAD2DEG(a/radius), t);
+	a = rs::D2R(a);
+	this->accelJointTimeNB(JOINT1,  rs::R2D(a/radius), t);
+	this->accelJointTimeNB(JOINT3, -rs::R2D(a/radius), t);
 
 	// success
 	return 0;
 }
 
 int CLinkbot::driveAccelToMaxSpeedNB(double radius, double a) {
-	a = DEG2RAD(a);
-	this->accelJointTimeNB(JOINT1,  RAD2DEG(a/radius), 0);
-	this->accelJointTimeNB(JOINT3, -RAD2DEG(a/radius), 0);
+	a = rs::D2R(a);
+	this->accelJointTimeNB(JOINT1,  rs::R2D(a/radius), 0);
+	this->accelJointTimeNB(JOINT3, -rs::R2D(a/radius), 0);
 
 	// success
 	return 0;
 }
 
 int CLinkbot::driveAccelToVelocityNB(double radius, double a, double v) {
-	a = DEG2RAD(a);
-	this->accelJointTimeNB(JOINT1,  RAD2DEG(a/radius), v/a);
-	this->accelJointTimeNB(JOINT3, -RAD2DEG(a/radius), v/a);
+	a = rs::D2R(a);
+	this->accelJointTimeNB(JOINT1,  rs::R2D(a/radius), v/a);
+	this->accelJointTimeNB(JOINT3, -rs::R2D(a/radius), v/a);
 
 	// success
 	return 0;
@@ -310,10 +310,10 @@ int CLinkbot::drivexyToSmooth(double x1, double y1, double x2, double y2, double
 	double s2 = theta*(rho - trackwidth/2);
 
 	// move joints the proper amount
-	this->setJointSpeed(JOINT1, RAD2DEG(s1/theta/rho/radius*_speed));
-	this->setJointSpeed(JOINT3, RAD2DEG(s2/theta/rho/radius*_speed));
-	this->moveJointNB(JOINT1, RAD2DEG(s1/radius));
-	this->moveJointNB(JOINT3, -RAD2DEG(s2/radius));
+	this->setJointSpeed(JOINT1, rs::R2D(s1/theta/rho/radius*_speed));
+	this->setJointSpeed(JOINT3, rs::R2D(s2/theta/rho/radius*_speed));
+	this->moveJointNB(JOINT1, rs::R2D(s1/radius));
+	this->moveJointNB(JOINT3, -rs::R2D(s2/radius));
 	this->delay(theta*rho/_speed*1000);
 
 	// success
@@ -492,7 +492,7 @@ int CLinkbot::setJointSpeedRatios(double ratio1, double ratio2, double ratio3) {
 int CLinkbot::turnLeft(double angle, double radius, double trackwidth) {
 	// calculate angle to turn
 	double r0 = this->getRotation(rsLinkbot::BODY, 2);
-	angle = DEG2RAD(angle);
+	angle = rs::D2R(angle);
 	double rf = r0 + angle;
 
 	// get speed of robot
@@ -506,9 +506,9 @@ int CLinkbot::turnLeft(double angle, double radius, double trackwidth) {
 
 		// turn
 		if (angle > 0.005)
-			this->move(-RAD2DEG(theta), 0, -RAD2DEG(theta));
-		else if (RAD2DEG(angle) < -0.005)
-			this->move(RAD2DEG(theta), 0, RAD2DEG(theta));
+			this->move(-rs::R2D(theta), 0, -rs::R2D(theta));
+		else if (rs::R2D(angle) < -0.005)
+			this->move(rs::R2D(theta), 0, rs::R2D(theta));
 
 		// calculate new rotation from error
 		angle = rf - this->getRotation(rsLinkbot::BODY, 2);
@@ -527,7 +527,7 @@ int CLinkbot::turnLeft(double angle, double radius, double trackwidth) {
 int CLinkbot::turnRight(double angle, double radius, double trackwidth) {
 	// calculate angle to turn
 	double r0 = this->getRotation(rsLinkbot::BODY, 2);
-	angle = DEG2RAD(angle);
+	angle = rs::D2R(angle);
 	double rf = r0 - angle;
 
 	// get speed of robot
@@ -541,9 +541,9 @@ int CLinkbot::turnRight(double angle, double radius, double trackwidth) {
 
 		// turn
 		if (angle > 0.005)
-			this->move(RAD2DEG(theta), 0, RAD2DEG(theta));
-		else if (RAD2DEG(angle) < -0.005)
-			this->move(-RAD2DEG(theta), 0, -RAD2DEG(theta));
+			this->move(rs::R2D(theta), 0, rs::R2D(theta));
+		else if (rs::R2D(angle) < -0.005)
+			this->move(-rs::R2D(theta), 0, -rs::R2D(theta));
 
 		// calculate new rotation from error
 		angle = rf - this->getRotation(rsLinkbot::BODY, 2);
