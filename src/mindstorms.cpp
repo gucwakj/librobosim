@@ -1,5 +1,3 @@
-#include <rs/Macros>
-
 #include "mindstorms.h"
 
 using namespace rsMindstorms;
@@ -34,16 +32,16 @@ int CMindstorms::getJointAnglesInstant(double &angle1, double &angle2) {
 }
 
 int CMindstorms::getJointSpeeds(double &speed1, double &speed2) {
-	speed1 = rs::R2D(_motor[JOINT1].omega);
-	speed2 = rs::R2D(_motor[JOINT2].omega);
+	this->getJointSpeed(JOINT1, speed1);
+	this->getJointSpeed(JOINT2, speed2);
 
 	// success
 	return 0;
 }
 
 int CMindstorms::getJointSpeedRatios(double &ratio1, double &ratio2) {
-	ratio1 = _motor[JOINT1].omega/_motor[JOINT1].omega_max;
-	ratio2 = _motor[JOINT2].omega/_motor[JOINT2].omega_max;
+	this->getJointSpeedRatio(JOINT1, ratio1);
+	this->getJointSpeedRatio(JOINT2, ratio2);
 
 	// success
 	return 0;
@@ -58,19 +56,11 @@ int CMindstorms::move(double angle1, double angle2) {
 }
 
 int CMindstorms::moveNB(double angle1, double angle2) {
-	// store angles
-	double *angles = new double[_dof];
-	angles[JOINT1] = angle1;
-	angles[JOINT2] = angle2;
-
-	// call base class recording function
-	int retval = Robot::moveNB(angles);
-
-	// clean up
-	delete angles;
+	this->moveJointNB(JOINT1, angle1);
+	this->moveJointNB(JOINT2, angle2);
 
 	// success
-	return retval;
+	return 0;
 }
 
 int CMindstorms::moveTo(double angle1, double angle2) {
@@ -82,19 +72,11 @@ int CMindstorms::moveTo(double angle1, double angle2) {
 }
 
 int CMindstorms::moveToNB(double angle1, double angle2) {
-	// store angles
-	double *angles = new double[_dof];
-	angles[JOINT1] = angle1;
-	angles[JOINT2] = angle2;
-
-	// call base class recording function
-	int retval = Robot::moveToNB(angles);
-
-	// clean up
-	delete angles;
+	this->moveJointToNB(JOINT1, angle1);
+	this->moveJointToNB(JOINT2, angle2);
 
 	// success
-	return retval;
+	return 0;
 }
 
 int CMindstorms::moveToByTrackPos(double angle1, double angle2) {
