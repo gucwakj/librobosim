@@ -58,12 +58,12 @@ class CLinkbot : virtual public rsSim::Linkbot, virtual public Robot {
 
 class CLinkbotI : public CLinkbot {
 	public:
-		CLinkbotI(char *name = NULL, bool pause = true) : rsRobots::Robot(rs::LINKBOTI), rsSim::Linkbot(rs::LINKBOTI), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3), CLinkbot(name, pause) { };
+		CLinkbotI(char *name = NULL, bool pause = true) : rsRobots::Robot(rs::LINKBOTI), rsRobots::Linkbot(rs::LINKBOTI), rsSim::Linkbot(rs::LINKBOTI), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3), CLinkbot(name, pause) { };
 };
 
 class CLinkbotL : public CLinkbot {
 	public:
-		CLinkbotL(char *name = NULL, bool pause = true) : rsRobots::Robot(rs::LINKBOTL), rsSim::Linkbot(rs::LINKBOTL), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT2), CLinkbot(name, pause) { };
+		CLinkbotL(char *name = NULL, bool pause = true) : rsRobots::Robot(rs::LINKBOTL), rsRobots::Linkbot(rs::LINKBOTL), rsSim::Linkbot(rs::LINKBOTL), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT2), CLinkbot(name, pause) { };
 };
 
 // group
