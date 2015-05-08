@@ -116,6 +116,7 @@ class Robot : virtual public rsSim::Robot {
 		int turnRightNB(double, double, double);
 
 	protected:
+		double convert(double, int);
 		int recordAngles(double*, double**, int, double, int);
 		int recordAnglesBegin(robotRecordData_t&, robotRecordData_t*&, double, int);
 

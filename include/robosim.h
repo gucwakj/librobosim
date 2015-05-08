@@ -27,8 +27,12 @@ class RoboSim : public rsScene::Scene, public rsSim::Sim, public rsXML::Reader, 
 		int addRobot(rsSim::Robot*);
 		int addRobot(rsSim::ModularRobot*);
 		int deleteRobot(int);
+		bool getUnits(void);
 		void keyPressed(int);
 		void saveState(char*);
+
+	private:
+		bool _units;		// SI (true) or customary (false)
 };
 
 #endif	// ROBOSIM_H_

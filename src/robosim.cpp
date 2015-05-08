@@ -13,6 +13,7 @@ RoboSim::RoboSim(char *name, int pause) : rsScene::Scene(), rsSim::Sim(pause, tr
 	Sim::pause(Reader::getPause());
 	Scene::start(Reader::getPause());
 	Callback::setUnits(Reader::getUnits());
+	_units = Reader::getUnits();
 
 	// draw ground objects
 	for (int i = 0; i < Reader::getNumObstacles(); i++) {
@@ -151,6 +152,10 @@ int RoboSim::deleteRobot(int id) {
 	// delete robot from modules
 	Scene::deleteRobot(id);
 	return Sim::deleteRobot(id);
+}
+
+bool RoboSim::getUnits(void) {
+	return _units;
 }
 
 void RoboSim::keyPressed(int key) {

@@ -1464,6 +1464,17 @@ int Robot::turnRightNB(double angle, double radius, double trackwidth) {
 /**********************************************************
 	protected functions
  **********************************************************/
+double Robot::convert(double value, int tometer) {
+	double tmp = 0;
+
+	if (tometer)
+		tmp = ((g_sim->getUnits()) ? value/39.370 : value/100);
+	else
+		tmp = ((g_sim->getUnits()) ? value*39.370 : value*100);
+
+	return tmp;
+}
+
 int Robot::recordAngles(double *time, double **angle, int num, double seconds, int shiftData) {
 	// check if recording already
 	for (int i = 0; i < _dof; i++) {
