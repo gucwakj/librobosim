@@ -614,23 +614,6 @@ int Robot::getxy(double &x, double &y) {
 	return 0;
 }
 
-int Robot::holdJoint(int id) {
-	this->setJointSpeed(id, 0);
-
-	// success
-	return 0;
-}
-
-int Robot::holdJoints(void) {
-	// set joints to zero speed
-	for (int i = 0; i < _dof; i++) {
-		this->setJointSpeed(static_cast<int>(i), 0);
-	}
-
-	// success
-	return 0;
-}
-
 int Robot::holdJointsAtExit(void) {
 	// set joint speeds to zero
 	this->holdJoints();
@@ -666,7 +649,7 @@ int Robot::isNotMoving(void) {
 int Robot::moveForeverNB(void) {
 	// set joint movements
 	for (int i = 0; i < _dof; i++) {
-		this->moveJointForeverNB(static_cast<int>(i));
+		this->moveJointForeverNB(i);
 	}
 
 	// success
@@ -885,7 +868,7 @@ int Robot::moveToZero(void) {
 int Robot::moveToZeroNB(void) {
 	// move joints to zero
 	for (int i = 0; i < _dof; i++) {
-		this->moveJointToNB(static_cast<int>(i), 0);
+		this->moveJointToNB(i, 0);
 	}
 
 	// success
@@ -904,7 +887,7 @@ int Robot::moveWait(void) {
 	while (success != _dof) {
 		COND_WAIT(&_success_cond, &_success_mutex);
 		success = 0;
-		for (int i = 0; i < _dof; i++) { success += _motor[static_cast<int>(i)].success; }
+		for (int i = 0; i < _dof; i++) { success += _motor[i].success; }
 	}
 	// reset motor states
 	for (int i = 0; i < _dof; i++) {
@@ -1197,7 +1180,7 @@ int Robot::relaxJoint(int id) {
 
 int Robot::relaxJoints(void) {
 	for (int i = 0; i < _dof; i++) {
-		this->relaxJoint(static_cast<int>(i));
+		this->relaxJoint(i);
 	}
 
 	// success

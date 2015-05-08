@@ -61,8 +61,6 @@ class Robot : virtual public rsSim::Robot {
 		int getLEDColorName(char[]);
 		int getLEDColorRGB(int&, int&, int&);
 		int getxy(double&, double&);
-		int holdJoint(int);
-		int holdJoints(void);
 		int holdJointsAtExit(void);
 		int isConnected(void);
 		int isMoving(void);
