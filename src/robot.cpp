@@ -1072,7 +1072,7 @@ int Robot::recordDistanceOffset(double distance) {
 
 	// print warning if different from given offset
 	if (fabs(y-distance) > 0.01) {
-		printf("Warning: Robot position different from the offset specified in recordDistanceOffset(%lf)\n", distance);
+		std::cerr << "Warning: Robot position different from the offset specified in recordDistanceOffset(" << distance <<")" << std::endl;
 	}
 
 	// set offset distance
@@ -1232,21 +1232,21 @@ int Robot::resetToZeroNB(void) {
 }
 
 int Robot::setBuzzerFrequency(int frequency, double time) {
-	printf("::setBuzzerFrequency not implemented.\n");
+	std::cerr << "::setBuzzerFrequency not implemented." << std::endl;
 
 	// success
 	return 0;
 }
 
 int Robot::setBuzzerFrequencyOff(void) {
-	printf("::setBuzzerFrequencyOff not implemented.\n");
+	std::cerr << "::setBuzzerFrequencyOff not implemented." << std::endl;
 
 	// success
 	return 0;
 }
 
 int Robot::setBuzzerFrequencyOn(int frequency) {
-	printf("::setBuzzerFrequencyOn not implemented.\n");
+	std::cerr << "::setBuzzerFrequencyOn not implemented." << std::endl;
 
 	// success
 	return 0;
@@ -1300,9 +1300,8 @@ int Robot::setJointSafetyAngleTimeout(double seconds) {
 
 int Robot::setJointSpeed(int id, double speed) {
 	if (speed > rs::R2D(_motor[id].omega_max)) {
-		fprintf(stderr, "Warning: Setting the speed for joint %d to %.2lf degrees per second is "
-			"beyond the hardware limit of %.2lf degrees per second.\n",
-			id+1, speed, rs::R2D(_motor[id].omega_max));
+		std::cerr << "Warning: Setting the speed for joint " << id+1 << " to " << speed << " degrees per second is";
+		std::cerr << "         beyond the hardware limit of " << rs::R2D(_motor[id].omega_max) << " degrees per second." << std::endl;
 	}
 	_motor[id].omega = rs::D2R(speed);
 
@@ -1319,8 +1318,7 @@ int Robot::setJointSpeedRatio(int id, double ratio) {
 
 int Robot::setSpeed(double speed, double radius) {
 	if (rs::R2D(speed/radius) > rs::R2D(_motor[_leftWheel].omega_max)) {
-		fprintf(stderr, "Warning: Speed %.2lf corresponds to joint speeds of %.2lf degrees/second.\n",
-			speed, rs::R2D(speed/radius));
+		std::cerr << "Warning: Speed " << speed << " corresponds to joint speeds of " << rs::R2D(speed/radius) << " degrees/second.\n" << std::endl;
 	}
 	_speed = speed;
 	this->setJointSpeed(_leftWheel, rs::R2D(speed/radius));
