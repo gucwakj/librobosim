@@ -10,10 +10,19 @@
 RoboSim *g_sim = NULL;
 
 RoboSim::RoboSim(char *name, int pause) : rsScene::Scene(), rsSim::Sim(pause, true), rsXML::Reader(name), rsCallback::Callback() {
+	// set pausing
 	Sim::pause(Reader::getPause());
 	Scene::start(Reader::getPause());
+
+	// set units
 	Callback::setUnits(Reader::getUnits());
 	_units = Reader::getUnits();
+
+	// set background
+	for (int i = 0; i < 7; i++) {
+		Scene::setBackgroundImage(i, Reader::getBackgroundImage(i));
+	}
+	Scene::setLevel(Reader::getLevel());
 
 	// draw ground objects
 	for (int i = 0; i < Reader::getNumObstacles(); i++) {
@@ -126,6 +135,7 @@ int RoboSim::deleteRobot(int id) {
 		MUTEX_UNLOCK(&(_running_mutex));
 
 		// get HUD and set message
+		Scene::setHUD(true);
 		Scene::getHUDText()->setText("Paused: Press any key to end");
 
 		// sleep until pausing halted by user
