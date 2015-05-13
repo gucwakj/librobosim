@@ -2,7 +2,7 @@
 #include "linkbot.h"
 
 int main(int argc, char *argv[]) {
-	CLinkbotI robot1;//, robot2;
+	CLinkbotI robot1, robot2;
 
 	g_sim->setGoalSinusoid(1, 1, 0);
 
@@ -16,6 +16,9 @@ int main(int argc, char *argv[]) {
 	robot2.setSinusoidPhaseShift(0);
 	robot2.moveJointSinusoid(rsLinkbot::JOINT3);*/
 
+	double x, y, z;
+	g_sim->getCoM(x, y, z);
+	std::cerr << "com: " << x << " " << y << " " << z << std::endl;
 	robot1.delaySeconds(10);
 	std::cerr << "fitness: " << g_sim->getFitness() << std::endl;
 
