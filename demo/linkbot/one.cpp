@@ -4,7 +4,7 @@
 int main(int argc, char *argv[]) {
 	CLinkbotI robot1, robot2;
 
-	g_sim->setGoalSinusoid(1, 1, 0);
+	g_sim->setGoalSinusoid(1, 1, 0, 0.03625);
 
 	robot1.setSinusoidGain(0.988463);
 	robot1.setSinusoidFrequency(0.991112);
