@@ -23,6 +23,7 @@ RoboSim::RoboSim(char *name, int pause) : rsScene::Scene(), rsSim::Sim(pause, tr
 		Scene::setBackgroundImage(i, Reader::getBackgroundImage(i));
 	}
 	Scene::setLevel(Reader::getLevel());
+	Reader::addBackgroundObjects();
 
 	// draw ground objects
 	for (int i = 0; i < Reader::getNumObstacles(); i++) {
