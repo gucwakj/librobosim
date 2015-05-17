@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include <rs/Enum>
+#include <rs/Macros>
 #include <rsScene/Scene>
 #include <rsSim/Sim>
 #include <rsXML/Robot>
@@ -19,7 +20,7 @@
 // recorded data
 typedef double* robotRecordData_t;
 
-class RoboSim : public rsScene::Scene, public rsSim::Sim, public rsXML::Reader, public rsCallback::Callback {
+class LIBRSEXPORT RoboSim : public rsScene::Scene, public rsSim::Sim, public rsXML::Reader, public rsCallback::Callback {
 	public:
 		RoboSim(char*, int);
 		virtual ~RoboSim(void) { };

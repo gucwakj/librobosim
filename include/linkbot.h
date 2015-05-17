@@ -1,6 +1,7 @@
 #ifndef LINKBOT_H_
 #define LINKBOT_H_
 
+#include <rs/Macros>
 #include <rsSim/Sim>
 #include <rsSim/Linkbot>
 
@@ -8,7 +9,7 @@
 #include "robot.h"
 
 // individual
-class CLinkbot : virtual public rsSim::Linkbot, virtual public Robot {
+class LIBRSEXPORT CLinkbot : virtual public rsSim::Linkbot, virtual public Robot {
 	public:
 		CLinkbot(char* = NULL, bool = true);
 		virtual ~CLinkbot(void);
@@ -56,18 +57,18 @@ class CLinkbot : virtual public rsSim::Linkbot, virtual public Robot {
 		static void* closeGripperNBThread(void*);
 };
 
-class CLinkbotI : public CLinkbot {
+class LIBRSEXPORT CLinkbotI : public CLinkbot {
 	public:
 		CLinkbotI(char *name = NULL, bool pause = true) : rsRobots::Robot(rs::LINKBOTI), rsRobots::Linkbot(rs::LINKBOTI), rsSim::Linkbot(rs::LINKBOTI), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3), CLinkbot(name, pause) { };
 };
 
-class CLinkbotL : public CLinkbot {
+class LIBRSEXPORT CLinkbotL : public CLinkbot {
 	public:
 		CLinkbotL(char *name = NULL, bool pause = true) : rsRobots::Robot(rs::LINKBOTL), rsRobots::Linkbot(rs::LINKBOTL), rsSim::Linkbot(rs::LINKBOTL), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT2), CLinkbot(name, pause) { };
 };
 
 // group
-class CLinkbotGroup : public RobotGroup<CLinkbot> {
+class LIBRSEXPORT CLinkbotGroup : public RobotGroup<CLinkbot> {
 	public:
 		CLinkbotGroup(void) : RobotGroup<CLinkbot>() { };
 		virtual ~CLinkbotGroup(void) { };
@@ -248,8 +249,8 @@ class CLinkbotGroup : public RobotGroup<CLinkbot> {
 		}
 };
 
-class CLinkbotIGroup : public CLinkbotGroup { };
-class CLinkbotLGroup : public CLinkbotGroup { };
+class LIBRSEXPORT CLinkbotIGroup : public CLinkbotGroup { };
+class LIBRSEXPORT CLinkbotLGroup : public CLinkbotGroup { };
 
 // motion threading
 struct LinkbotMove {

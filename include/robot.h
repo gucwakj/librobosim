@@ -7,15 +7,17 @@
 #include <unistd.h>
 #endif
 
+#include <rs/Macros>
 #include <rs/Threads>
 #include <rsSim/Robot>
 
 #include "robosim.h"
+#include "rgbhashtable.h"
 
 #define RECORD_ANGLE_ALLOC_SIZE 16
 
 // individual
-class Robot : virtual public rsSim::Robot {
+class LIBRSEXPORT Robot : virtual public rsSim::Robot {
 	// public functions
 	public:
 		Robot(int, int);
@@ -161,7 +163,7 @@ class Robot : virtual public rsSim::Robot {
 };
 
 // group
-template<class T> class RobotGroup {
+template<class T> class LIBRSEXPORT RobotGroup {
 	// public api
 	public:
 		RobotGroup(void) { };

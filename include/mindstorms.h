@@ -1,6 +1,7 @@
 #ifndef MINDSTORMS_H_
 #define MINDSTORMS_H_
 
+#include <rs/Macros>
 #include <rsSim/Sim>
 #include <rsSim/Mindstorms>
 
@@ -8,7 +9,7 @@
 #include "robot.h"
 
 // individual
-class CMindstorms : public rsSim::Mindstorms, public Robot {
+class LIBRSEXPORT CMindstorms : public rsSim::Mindstorms, public Robot {
 	public:
 		CMindstorms(char* = NULL, bool = true);
 		virtual ~CMindstorms(void);
@@ -31,7 +32,7 @@ class CMindstorms : public rsSim::Mindstorms, public Robot {
 };
 
 // group
-class CMindstormsGroup : public RobotGroup<CMindstorms> {
+class LIBRSEXPORT CMindstormsGroup : public RobotGroup<CMindstorms> {
 	public:
 		CMindstormsGroup(void) : RobotGroup<CMindstorms>() { };
 		virtual ~CMindstormsGroup(void) { };

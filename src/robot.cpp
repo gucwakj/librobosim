@@ -586,7 +586,7 @@ int Robot::getJointSpeedRatio(int id, double &ratio) {
 	return 0;
 }
 
-/*int Robot::getLEDColorName(char color[]) {
+int Robot::getLEDColorName(char color[]) {
 	rgbHashTable *rgbTable = HT_Create();
 	int getRGB[3] = {(int)(255*_rgb[0]), (int)(255*_rgb[1]), (int)(255*_rgb[2])};
 	int retval = HT_GetKey(rgbTable, getRGB, color);
@@ -594,7 +594,7 @@ int Robot::getJointSpeedRatio(int id, double &ratio) {
 
 	// success
 	return retval;
-}*/
+}
 
 int Robot::getLEDColorRGB(int &r, int &g, int &b) {
 	r = (int)(255*_rgb[0]);
@@ -1235,7 +1235,7 @@ int Robot::setBuzzerFrequencyOn(int frequency) {
 	return 0;
 }
 
-/*int Robot::setLEDColor(char *color) {
+int Robot::setLEDColor(char *color) {
 	int getRGB[3] = {0};
 	rgbHashTable *rgbTable = HT_Create();
 	int htRetval = HT_Get(rgbTable, color, getRGB);
@@ -1252,7 +1252,7 @@ int Robot::setBuzzerFrequencyOn(int frequency) {
 	else {
 		return htRetval;
 	}
-}*/
+}
 
 int Robot::setLEDColorRGB(int r, int g, int b) {
 	_rgb[0] = r/255.0;
