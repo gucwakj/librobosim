@@ -22,7 +22,7 @@ typedef double* robotRecordData_t;
 
 class LIBRSEXPORT RoboSim : public rsScene::Scene, public rsSim::Sim, public rsXML::Reader, public rsCallback::Callback {
 	public:
-		RoboSim(char*, int);
+		RoboSim(char*, bool);
 		virtual ~RoboSim(void) { };
 
 		int addRobot(rsSim::Robot*);

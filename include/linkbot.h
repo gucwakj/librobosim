@@ -11,7 +11,7 @@
 // individual
 class LIBRSEXPORT CLinkbot : virtual public rsSim::Linkbot, virtual public Robot {
 	public:
-		CLinkbot(char* = NULL, bool = true);
+		CLinkbot(char* = "", bool = true);
 		virtual ~CLinkbot(void);
 
 		int accelJointAngleNB(rsLinkbot::Joint, double, double);

@@ -9,7 +9,7 @@
 // global robot simulation object
 RoboSim *g_sim = NULL;
 
-RoboSim::RoboSim(char *name, int pause) : rsScene::Scene(), rsSim::Sim(pause, true), rsXML::Reader(name), rsCallback::Callback() {
+RoboSim::RoboSim(char *name, bool pause) : rsScene::Scene(), rsSim::Sim(pause, true), rsXML::Reader(name), rsCallback::Callback() {
 	// set pausing
 	Sim::pause(Reader::getPause());
 	Scene::start(Reader::getPause());

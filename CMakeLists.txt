@@ -11,9 +11,19 @@ set (LibRoboSim_SO_VERSION 0)
 # verbose output
 set (CMAKE_VERBOSE_MAKEFILE off)
 
-# set the build postfix extension for debugging
-if (CMAKE_BUILD_TYPE MATCHES "Debug")
-	set (CMAKE_DEBUG_POSTFIX "d")
+# set the build postfix extension
+set (CMAKE_DEBUG_POSTFIX "d" CACHE STRING "add build postfix type")
+set (CMAKE_RELEASE_POSTFIX "" CACHE STRING "add build postfix type")
+set (CMAKE_MINSIZEREL_POSTFIX "s" CACHE STRING "add build postfix type")
+set (CMAKE_RELWITHDEBINFO_POSTFIX "rd" CACHE STRING "add build postfix type")
+if (CMAKE_BUILD_TYPE MATCHES "Release")
+	set (CMAKE_BUILD_POSTFIX "")
+elseif (CMAKE_BUILD_TYPE MATCHES "Debug")
+	set (CMAKE_BUILD_POSTFIX "d")
+elseif (CMAKE_BUILD_TYPE MATCHES "MinSizeRel")
+	set (CMAKE_BUILD_POSTFIX "s")
+elseif (CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo")
+	set (CMAKE_BUILD_POSTFIX "rd")
 endif ()
 
 # suppress developer warnings
@@ -35,21 +45,6 @@ include_directories (
 # link directory
 link_directories ("${LibRoboSim_BINARY_DIR}/lib")
 
-# add LibRS library
-if (WIN32)
-	include_directories ("C:/Users/kgucwa/projects/librs/include")
-	link_directories ("C:/Users/kgucwa/projects/librs/build/lib")
-else ()
-	include_directories ("/home/kgucwa/projects/librs/include")
-	link_directories ("/home/kgucwa/projects/librs/build/lib")
-endif ()
-set (EXTRA_LIBS ${EXTRA_LIBS} optimized rs debug rsd)
-set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsCallback debug rsCallbackd)
-set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsRobots debug rsRobotsd)
-set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsScene debug rsScened)
-set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsSim debug rsSimd)
-set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsXML debug rsXMLd)
-
 # add ODE headers
 if (WIN32)
 	include_directories ("C:/Users/kgucwa/projects/librs/deps/ode/include")
@@ -65,22 +60,25 @@ add_definitions (-DdNODEBUG)
 
 # add OpenSceneGraph headers
 if (WIN32)
-	include_directories ("C:/Users/kgucwa/projects/librs/deps/osg/build/include")
-	include_directories ("C:/Users/kgucwa/projects/librs/deps/osg/include")
-	link_directories ("C:/Users/kgucwa/projects/librs/deps/osg/build/lib")
-	set (EXTRA_LIBS ${EXTRA_LIBS} optimized OpenThreads debug OpenThreadsd)
-	set (EXTRA_LIBS ${EXTRA_LIBS} optimized osg debug osgd)
-	set (EXTRA_LIBS ${EXTRA_LIBS} optimized osgDB debug osgDBd)
-	set (EXTRA_LIBS ${EXTRA_LIBS} optimized osgFX debug osgFXd)
-	set (EXTRA_LIBS ${EXTRA_LIBS} optimized osgGA debug osgGAd)
-	set (EXTRA_LIBS ${EXTRA_LIBS} optimized osgShadow debug osgShadowd)
-	set (EXTRA_LIBS ${EXTRA_LIBS} optimized osgText debug osgTextd)
-	set (EXTRA_LIBS ${EXTRA_LIBS} optimized osgUtil debug osgUtild)
-	set (EXTRA_LIBS ${EXTRA_LIBS} optimized osgViewer debug osgViewerd)
+	#include_directories ("C:/Users/kgucwa/projects/librs/deps/osg/build/include")
+	#include_directories ("C:/Users/kgucwa/projects/librs/deps/osg/include")
+	#link_directories ("C:/Users/kgucwa/projects/librs/deps/osg/build/lib")
+	include_directories ("C:/Users/kgucwa/Downloads/OpenSceneGraph-3.2.1/build/include")
+	include_directories ("C:/Users/kgucwa/Downloads/OpenSceneGraph-3.2.1/include")
+	link_directories ("C:/Users/kgucwa/Downloads/OpenSceneGraph-3.2.1/build/lib")
 else ()
 	include_directories ("/home/kgucwa/projects/librs/deps/osg/build/include")
 	include_directories ("/home/kgucwa/projects/librs/deps/osg/include")
 endif()
+set (EXTRA_LIBS ${EXTRA_LIBS} optimized OpenThreads debug OpenThreadsd)
+set (EXTRA_LIBS ${EXTRA_LIBS} optimized osg debug osgd)
+set (EXTRA_LIBS ${EXTRA_LIBS} optimized osgDB debug osgDBd)
+set (EXTRA_LIBS ${EXTRA_LIBS} optimized osgFX debug osgFXd)
+set (EXTRA_LIBS ${EXTRA_LIBS} optimized osgGA debug osgGAd)
+set (EXTRA_LIBS ${EXTRA_LIBS} optimized osgShadow debug osgShadowd)
+set (EXTRA_LIBS ${EXTRA_LIBS} optimized osgText debug osgTextd)
+set (EXTRA_LIBS ${EXTRA_LIBS} optimized osgUtil debug osgUtild)
+set (EXTRA_LIBS ${EXTRA_LIBS} optimized osgViewer debug osgViewerd)
 
 # add tinyxml2 headers
 if (WIN32)
@@ -89,6 +87,21 @@ if (WIN32)
 else ()
 	include_directories ("/home/kgucwa/projects/librs/deps/tinyxml2")
 endif()
+
+# add LibRS library
+if (WIN32)
+	include_directories ("C:/Users/kgucwa/projects/librs/include")
+	link_directories ("C:/Users/kgucwa/projects/librs/build/lib")
+else ()
+	include_directories ("/home/kgucwa/projects/librs/include")
+	link_directories ("/home/kgucwa/projects/librs/build/lib")
+endif ()
+set (EXTRA_LIBS ${EXTRA_LIBS} optimized rs debug rsd)
+set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsCallback debug rsCallbackd)
+set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsRobots debug rsRobotsd)
+set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsScene debug rsScened)
+set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsSim debug rsSimd)
+set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsXML debug rsXMLd)
 
 # options for individual robot compilation
 set (ENABLE_LINKBOT ON)
@@ -107,10 +120,21 @@ if (ENABLE_MINDSTORMS)
 	set (SRCS ${SRCS} src/mindstorms.cpp)
 endif (ENABLE_MINDSTORMS)
 
-# set output directory for shared objects
+# set output directories
 set (OUTPUT_LIBDIR "${LibRoboSim_BINARY_DIR}/lib")
-set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_LIBDIR})
+set (OUTPUT_BINDIR "${LibRoboSim_BINARY_DIR}/bin")
+foreach (CONF ${CMAKE_CONFIGURATION_TYPES})
+	string (TOUPPER "${CONF}" CONF)
+	set ("CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${CONF}" "${OUTPUT_LIBDIR}")
+	set ("CMAKE_RUNTIME_OUTPUT_DIRECTORY_${CONF}" "${OUTPUT_BINDIR}")
+	if (WIN32)
+		set ("CMAKE_LIBRARY_OUTPUT_DIRECTORY_${CONF}" "${OUTPUT_BINDIR}")
+	else ()
+		set ("CMAKE_LIBRARY_OUTPUT_DIRECTORY_${CONF}" "${OUTPUT_LIBDIR}")
+	endif ()
+endforeach ()
 make_directory (${OUTPUT_LIBDIR})
+make_directory (${OUTPUT_BINDIR})
 
 # add the library
 add_library (robosim SHARED ${SRCS})
@@ -120,11 +144,6 @@ target_link_libraries (robosim ${EXTRA_LIBS})
 
 # set version properties
 set_target_properties (robosim PROPERTIES VERSION ${LibRoboSim_VERSION} SOVERSION ${LibRoboSim_SO_VERSION})
-
-# set output directory for demos
-set (OUTPUT_BINDIR "${LibRoboSim_BINARY_DIR}/bin")
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_BINDIR})
-make_directory (${OUTPUT_BINDIR})
 
 # link library against dependencies
 target_link_libraries (robosim ${EXTRA_LIBS})
