@@ -67,7 +67,8 @@ int RoboSim::addRobot(rsSim::Robot *robot) {
 	robot->setName(xmlbot->getName());
 
 	// build simulation robot
-	Sim::addRobot(robot, xmlbot->getID(), xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getGround());
+	Sim::addRobot(robot, xmlbot->getID(), xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getWheels(), xmlbot->getGround());
+	robot->setWheelRadius(xmlbot->getRadius());
 
 	// 'connect' xml version to prevent finding it again
 	xmlbot->setConnect(1);
