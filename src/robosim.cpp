@@ -96,7 +96,7 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot) {
 		Sim::addRobot(robot, xmlbot->getID(), Sim::getRobot(conn->getRobot()), xmlbot->getJoints(), conn->getFace1(), conn->getFace2(), conn->getType(), conn->getSide(), xmlbot->getOrientation(), xmlbot->getGround());
 	}
 	else {
-		Sim::addRobot(robot, xmlbot->getID(), xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getGround());
+		Sim::addRobot(robot, xmlbot->getID(), xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getWheels(), xmlbot->getGround());
 	}
 	robot->setWheelRadius(xmlbot->getRadius());
 
