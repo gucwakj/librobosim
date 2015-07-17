@@ -352,111 +352,6 @@ int Robot::drivexyToFuncSmooth(double x0, double xf, int n, double (*func)(doubl
 	return 0;
 }
 
-int Robot::drivexyToPoly(double x0, double xf, int n, char *poly, double radius, double trackwidth) {
-	// init variables
-	double *coeff;
-	int *power, order = 0;
-	char str[5];
-	char input[100];
-	std::strcpy(input, poly);
-
-	// parse 'fcn' into usable format
-	char *var = std::strchr(input, '^');
-	if (var != NULL) {
-		order = atoi(++var);
-		coeff = new double[order+1]();
-		power = new int[order+1]();
-		for (int i = 0; i < order+1; i++) {
-			coeff[i] = 1;
-			power[i] = order-i;
-		}
-		for (int i = 0; i < order; i++) {
-			sprintf(str, "^%d", power[i]);
-			var = std::strstr(input, str);
-			if (var != NULL) {
-				if (var[-2] == '*')
-					coeff[i] = atof(var-=3);
-				else if (var[-2] == ' ' || var[-2] == '=')
-					coeff[i] = 1;
-				else
-					coeff[i] = atof(var-=2);
-			}
-			else {
-				coeff[i] = 0;
-			}
-		}
-		var = std::strrchr(input, 'x');
-		var = std::strpbrk(input, "+-");
-		if (var != NULL) {
-			if (var[1] == ' ')
-				var[1] = var[0];
-			coeff[order] = atof(++var);
-		}
-		else {
-			coeff[order] = 0;
-		}
-	}
-	else {
-		order = 1;
-		coeff = new double[order+1];
-		power = new int[order+1];
-		power[0] = 1;
-		var = std::strchr(input, 'x');
-		if (var != NULL) {
-			if (var[-1] == '*')
-				coeff[0] = atof(var-=2);
-			else
-				coeff[0] = atof(--var);
-		}
-		var = std::strpbrk(input, "+-");
-		if (var != NULL) {
-			if (var[1] == ' ')
-				var[1] = var[0];
-			coeff[1] = atof(++var);
-			power[1] = 0;
-		}
-	}
-
-	// number of steps necessary
-	double step = (xf-x0)/(n-1);
-
-	// drivexy to sequence of (x,y) values
-	for (int i = 0; i < n; i++) {
-		double x = x0 + i*step;
-		double y = 0;
-		for (int j = 0; j <= order; j++) {
-			y += coeff[j]*pow(x, power[j]);
-		}
-		this->drivexyTo(x, y, radius, 0);
-	}
-
-	return 0;
-}
-
-int Robot::drivexyToPolyNB(double x0, double xf, int n, char *poly, double radius, double trackwidth) {
-	// create thread
-	THREAD_T moving;
-
-	// store args
-	RobotMove *move = new RobotMove;
-	move->robot = this;
-	move->x = x0;
-	move->y = xf;
-	move->i = n;
-	move->expr = poly;
-	move->radius = radius;
-	move->trackwidth = trackwidth;
-
-	// motion in progress
-	_motion = true;
-
-	// start thread
-	THREAD_CREATE(&moving, drivexyToPolyThread, (void *)move);
-
-	// success
-	return 0;
-}
-
 int Robot::drivexyToSmooth(double x1, double y1, double x2, double y2, double x3, double y3, double radius, double trackwidth) {
 	// get midpoints
 	double p[2] = {(x1 + x2)/2, (y1 + y2)/2};
@@ -1667,23 +1562,6 @@ void* Robot::drivexyToFuncThread(void *arg) {
 
 	// perform motion
 	move->robot->drivexyToFunc(move->x, move->y, move->i, move->func, move->radius, move->trackwidth);
-
-	// signal successful completion
-	COND_ACTION(&move->robot->_motion_cond, &move->robot->_motion_mutex, move->robot->_motion = false);
-
-	// cleanup
-	delete move;
-
-	// success
-	return NULL;
-}
-
-void* Robot::drivexyToPolyThread(void *arg) {
-	// cast arg
-	RobotMove *move = (RobotMove *)arg;
-
-	// perform motion
-	move->robot->drivexyToPoly(move->x, move->y, move->i, move->expr, move->radius, move->trackwidth);
 
 	// signal successful completion
 	COND_ACTION(&move->robot->_motion_cond, &move->robot->_motion_mutex, move->robot->_motion = false);

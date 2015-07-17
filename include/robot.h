@@ -44,8 +44,6 @@ class LIBRSEXPORT Robot : virtual public rsSim::Robot {
 		int drivexyToFunc(double, double, int, double (*func)(double), double, double);
 		int drivexyToFuncNB(double, double, int, double (*func)(double), double, double);
 		int drivexyToFuncSmooth(double, double, int, double (*func)(double), double, double);
-		int drivexyToPoly(double, double, int, char*, double, double);
-		int drivexyToPolyNB(double, double, int, char*, double, double);
 		virtual int drivexyToSmooth(double, double, double, double, double, double, double, double);
 		int drivexyWait(void);
 		int enableRecordDataShift(void);
@@ -153,7 +151,6 @@ class LIBRSEXPORT Robot : virtual public rsSim::Robot {
 		static void* drivexyToThread(void*);
 		static void* drivexyToArrayThread(void*);
 		static void* drivexyToFuncThread(void*);
-		static void* drivexyToPolyThread(void*);
 		static void* moveJointTimeNBThread(void*);
 		static void* moveTimeNBThread(void*);
 		static void* recordAngleThread(void*);
