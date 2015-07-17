@@ -268,6 +268,29 @@ int Robot::drivexyToNB(double x, double y, double radius, double trackwidth) {
 	return 0;
 }
 
+int Robot::drivexyToArrayNB(double *x, double *y, int n, double radius, double trackwidth) {
+	// create thread
+	THREAD_T moving;
+
+	// store args
+	RobotMove *move = new RobotMove;
+	move->robot = this;
+	move->px = x;
+	move->py = y;
+	move->i = n;
+	move->radius = radius;
+	move->trackwidth = trackwidth;
+
+	// motion in progress
+	_motion = true;
+
+	// start thread
+	THREAD_CREATE(&moving, drivexyToArrayThread, (void *)move);
+
+	// success
+	return 0;
+}
+
 int Robot::drivexyToFunc(double x0, double xf, int n, double (*func)(double x), double radius, double trackwidth) {
 	// number of steps necessary
 	double step = (xf-x0)/(n-1);
@@ -1595,6 +1618,27 @@ void* Robot::driveTimeNBThread(void *arg) {
 
 	// cleanup
 	delete rec;
+
+	// success
+	return NULL;
+}
+
+void* Robot::drivexyToArrayThread(void *arg) {
+	// cast arg
+	RobotMove *move = (RobotMove *)arg;
+
+	// perform motion
+	for (int i = 0; i < move->i; i++) {
+		move->robot->drivexyTo(move->px[i], move->py[i], move->radius, move->trackwidth);
+	}
+
+	// signal successful completion
+	COND_ACTION(&move->robot->_motion_cond, &move->robot->_motion_mutex, move->robot->_motion = false);
+
+	// cleanup
+	delete move->px;
+	delete move->py;
+	delete move;
 
 	// success
 	return NULL;

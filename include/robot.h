@@ -40,6 +40,7 @@ class LIBRSEXPORT Robot : virtual public rsSim::Robot {
 		int drivexyNB(double, double, double, double);
 		virtual int drivexyTo(double, double, double, double);
 		int drivexyToNB(double, double, double, double);
+		int drivexyToArrayNB(double*, double*, int, double, double);
 		int drivexyToFunc(double, double, int, double (*func)(double), double, double);
 		int drivexyToFuncNB(double, double, int, double (*func)(double), double, double);
 		int drivexyToFuncSmooth(double, double, int, double (*func)(double), double, double);
@@ -150,6 +151,7 @@ class LIBRSEXPORT Robot : virtual public rsSim::Robot {
 		static void* driveDistanceThread(void*);
 		static void* driveTimeNBThread(void*);
 		static void* drivexyToThread(void*);
+		static void* drivexyToArrayThread(void*);
 		static void* drivexyToFuncThread(void*);
 		static void* drivexyToPolyThread(void*);
 		static void* moveJointTimeNBThread(void*);
@@ -562,7 +564,7 @@ template<class T> class LIBRSEXPORT RobotGroup {
 struct RobotMove {
 	Robot *robot;
 	char *expr;
-	double x, y, radius, trackwidth;
+	double x, y, *px, *py, radius, trackwidth;
 	double (*func)(double x);
 	int i;
 };
