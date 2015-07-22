@@ -107,7 +107,7 @@ int Robot::driveDistance(double distance, double radius) {
 	// calculate distance to move
 	double x = x0 + distance*sin(this->getRotation(0, 2));
 	double y = y0 + distance*cos(this->getRotation(0, 2));
-	double d = sqrt((x-x0)*(x-x0) + (y-y0)*(y-y0));
+	double d = sqrt((x - x0)*(x - x0) + (y - y0)*(y - y0));
 
 	// move until close to goal
 	while (fabs(d) > 0.005) {
@@ -1265,7 +1265,7 @@ int Robot::turnLeft(double angle, double radius, double trackwidth) {
 	// turn toward new postition until pointing correctly
 	while (fabs(angle) > 0.005) {
 		// turn in shortest path
-		double theta = (angle*trackwidth)/(2*radius);
+		double theta = (angle*this->convert(_trackwidth, 0)) / (2 * radius);
 
 		// turn
 		if (rs::R2D(angle) > 0.005) {
@@ -1329,7 +1329,7 @@ int Robot::turnRight(double angle, double radius, double trackwidth) {
 	// turn toward new postition until pointing correctly
 	while (fabs(angle) > 0.005) {
 		// turn in shortest path
-		double theta = (angle*trackwidth)/(2*radius);
+		double theta = (angle*this->convert(_trackwidth, 0)) / (2 * radius);
 
 		// turn
 		if (rs::R2D(angle) > 0.005) {
@@ -1386,9 +1386,9 @@ double Robot::convert(double value, int tometer) {
 	double tmp = 0;
 
 	if (tometer)
-		tmp = ((g_sim->getUnits()) ? value/39.370 : value/100);
+		tmp = ((g_sim->getUnits()) ? value / 100 : value / 39.370);
 	else
-		tmp = ((g_sim->getUnits()) ? value*39.370 : value*100);
+		tmp = ((g_sim->getUnits()) ? value * 100 : value * 39.370);
 
 	return tmp;
 }

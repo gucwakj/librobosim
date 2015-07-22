@@ -99,6 +99,7 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot) {
 		Sim::addRobot(robot, xmlbot->getID(), xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getWheels(), xmlbot->getGround());
 	}
 	robot->setWheelRadius(xmlbot->getRadius());
+	robot->setLED(xmlbot->getLED());
 
 	// 'connect' xml version to prevent finding it again
 	xmlbot->setConnect(1);

@@ -272,7 +272,7 @@ int CLinkbot::driveAccelToVelocityNB(double radius, double a, double v) {
 
 int CLinkbot::driveAngleNB(double angle) {
 	this->moveJointNB(_leftWheel, angle);
-	this->moveJointNB(_rightWheel, angle);
+	this->moveJointNB(_rightWheel, -angle);
 
 	// success
 	return 0;
@@ -504,10 +504,10 @@ int CLinkbot::turnLeft(double angle, double radius, double trackwidth) {
 	// turn toward new postition until pointing correctly
 	while (fabs(angle) > 0.005) {
 		// turn in shortest path
-		double theta = (angle*_trackwidth)/(2*radius);
+		double theta = (angle*this->convert(_trackwidth, 0)) / (2 * radius);
 
 		// turn
-		if (angle > 0.005)
+		if (rs::R2D(angle) > 0.005)
 			this->move(-rs::R2D(theta), 0, -rs::R2D(theta));
 		else if (rs::R2D(angle) < -0.005)
 			this->move(rs::R2D(theta), 0, rs::R2D(theta));
@@ -539,7 +539,7 @@ int CLinkbot::turnRight(double angle, double radius, double trackwidth) {
 	// turn toward new postition until pointing correctly
 	while (fabs(angle) > 0.005) {
 		// turn in shortest path
-		double theta = (angle*_trackwidth)/(2*radius);
+		double theta = (angle*this->convert(_trackwidth, 0)) / (2 * radius);
 
 		// turn
 		if (angle > 0.005)
