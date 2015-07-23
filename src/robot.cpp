@@ -574,44 +574,6 @@ int Robot::moveForeverNB(void) {
 	return 0;
 }
 
-int Robot::moveJoint(int id, double angle) {
-	this->moveJointNB(id, angle);
-	this->moveJointWait(id);
-
-	// success
-	return 0;
-}
-
-int Robot::moveJointNB(int id, double angle) {
-	// lock goal
-	MUTEX_LOCK(&_goal_mutex);
-
-	// set new goal angles
-	if (_motor[id].omega < -rs::EPSILON) angle = -angle;
-	_motor[id].goal += rs::D2R(angle);
-
-	// actively seeking an angle
-	_motor[id].mode = SEEK;
-
-	// enable motor
-	MUTEX_LOCK(&_theta_mutex);
-	dJointEnable(_motor[id].id);
-	dJointSetAMotorAngle(_motor[id].id, 0, _motor[id].theta);
-	dBodyEnable(_body[0]);
-	MUTEX_UNLOCK(&_theta_mutex);
-
-	// set success to false
-	MUTEX_LOCK(&_motor[id].success_mutex);
-	_motor[id].success = false;
-	MUTEX_UNLOCK(&_motor[id].success_mutex);
-
-	// unlock goal
-	MUTEX_UNLOCK(&_goal_mutex);
-
-	// success
-	return 0;
-}
-
 int Robot::moveJointByPowerNB(int id, int power) {
 	_motor[id].omega = (power/100.0)*_motor[id].omega_max;
 
@@ -680,43 +642,6 @@ int Robot::moveJointTimeNB(int id, double seconds) {
 	return 0;
 }
 
-int Robot::moveJointTo(int id, double angle) {
-	this->moveJointToNB(id, angle);
-	this->moveJointWait(id);
-
-	// success
-	return 0;
-}
-
-int Robot::moveJointToNB(int id, double angle) {
-	// lock goal
-	MUTEX_LOCK(&_goal_mutex);
-
-	// set new goal angles
-	_motor[id].goal = rs::D2R(angle);
-
-	// actively seeking an angle
-	_motor[id].mode = SEEK;
-
-	// enable motor
-	MUTEX_LOCK(&_theta_mutex);
-	dJointEnable(_motor[id].id);
-	dJointSetAMotorAngle(_motor[id].id, 0, _motor[id].theta);
-	dBodyEnable(_body[0]);
-	MUTEX_UNLOCK(&_theta_mutex);
-
-	// set success to false
-	MUTEX_LOCK(&_motor[id].success_mutex);
-	_motor[id].success = false;
-	MUTEX_UNLOCK(&_motor[id].success_mutex);
-
-	// unlock goal
-	MUTEX_UNLOCK(&_goal_mutex);
-
-	// success
-	return 0;
-}
-
 int Robot::moveJointToByTrackPos(int id, double angle) {
 	this->moveJointToByTrackPosNB(id, angle);
 	this->moveJointWait(id);
@@ -727,16 +652,6 @@ int Robot::moveJointToByTrackPos(int id, double angle) {
 
 int Robot::moveJointToByTrackPosNB(int id, double angle) {
 	this->moveJointToNB(id, angle);
-
-	// success
-	return 0;
-}
-
-int Robot::moveJointWait(int id) {
-	// wait for motion to complete
-	MUTEX_LOCK(&_motor[id].success_mutex);
-	while ( !_motor[id].success ) { COND_WAIT(&_motor[id].success_cond, &_motor[id].success_mutex); }
-	MUTEX_UNLOCK(&_motor[id].success_mutex);
 
 	// success
 	return 0;
@@ -1269,11 +1184,11 @@ int Robot::turnLeft(double angle, double radius, double trackwidth) {
 
 		// turn
 		if (rs::R2D(angle) > 0.005) {
-			this->moveJoint(_leftWheel, -rs::R2D(theta));
+			this->moveJointNB(_leftWheel, -rs::R2D(theta));
 			this->moveJoint(_rightWheel, rs::R2D(theta));
 		}
 		else if (rs::R2D(angle) < -0.005) {
-			this->moveJoint(_leftWheel, rs::R2D(theta));
+			this->moveJointNB(_leftWheel, rs::R2D(theta));
 			this->moveJoint(_rightWheel, -rs::R2D(theta));
 		}
 
@@ -1333,11 +1248,11 @@ int Robot::turnRight(double angle, double radius, double trackwidth) {
 
 		// turn
 		if (rs::R2D(angle) > 0.005) {
-			this->moveJoint(_leftWheel, rs::R2D(theta));
+			this->moveJointNB(_leftWheel, rs::R2D(theta));
 			this->moveJoint(_rightWheel, -rs::R2D(theta));
 		}
 		else if (rs::R2D(angle) < -0.005) {
-			this->moveJoint(_leftWheel, -rs::R2D(theta));
+			this->moveJointNB(_leftWheel, -rs::R2D(theta));
 			this->moveJoint(_rightWheel, rs::R2D(theta));
 		}
 

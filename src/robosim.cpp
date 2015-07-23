@@ -69,12 +69,16 @@ int RoboSim::addRobot(rsSim::Robot *robot) {
 	// build simulation robot
 	Sim::addRobot(robot, xmlbot->getID(), xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getWheels(), xmlbot->getGround());
 	robot->setWheelRadius(xmlbot->getRadius());
+	robot->setLED(xmlbot->getLED());
 
 	// 'connect' xml version to prevent finding it again
 	xmlbot->setConnect(1);
 
 	// draw graphical robot
 	rsScene::Robot *sceneRobot = Scene::drawRobot(robot, xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getLED(), xmlbot->getTrace());
+	rs::Vec wheel = xmlbot->getWheels();
+	Scene::drawWheel(robot, sceneRobot, wheel[0], 1);
+	Scene::drawWheel(robot, sceneRobot, wheel[1], 2);
 
 	// attach callback
 	Callback::attachCallback(sceneRobot, robot, robot->getBodyList());

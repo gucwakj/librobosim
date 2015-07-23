@@ -67,17 +67,12 @@ class LIBRSEXPORT Robot : virtual public rsSim::Robot {
 		int isMoving(void);
 		int isNotMoving(void);
 		int moveForeverNB(void);
-		int moveJoint(int, double);
-		int moveJointNB(int, double);
 		int moveJointByPowerNB(int, int);
 		int moveJointForeverNB(int);
 		int moveJointTime(int, double);
 		int moveJointTimeNB(int, double);
-		int moveJointTo(int, double);
-		int moveJointToNB(int, double);
 		int moveJointToByTrackPos(int, double);
 		int moveJointToByTrackPosNB(int, double);
-		int moveJointWait(int);
 		int moveTime(double);
 		int moveTimeNB(double);
 		int moveToZero(void);

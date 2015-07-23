@@ -15,141 +15,104 @@ CMindstorms::~CMindstorms(void) {
 	if (!g_sim->deleteRobot(_id)) { delete g_sim; this->_sim = NULL; }
 }
 
-int CMindstorms::getJointAngles(double &angle1, double &angle2, int numReadings) {
-	this->getJointAngle(JOINT1, angle1, numReadings);
-	this->getJointAngle(JOINT2, angle2, numReadings);
+int CMindstorms::getJointAngles(double &angle1, double &angle2, double &angle3, double &angle4, int numReadings) {
+	angle1 = 0;
+	this->getJointAngle(JOINT1, angle2, numReadings);
+	this->getJointAngle(JOINT2, angle3, numReadings);
+	angle4 = 0;
 
 	// success
 	return 0;
 }
 
-int CMindstorms::getJointAnglesInstant(double &angle1, double &angle2) {
-	this->getJointAngleInstant(JOINT1, angle1);
-	this->getJointAngleInstant(JOINT2, angle2);
+int CMindstorms::getJointAnglesInstant(double &angle1, double &angle2, double &angle3, double &angle4) {
+	angle1 = 0;
+	this->getJointAngleInstant(JOINT1, angle2);
+	this->getJointAngleInstant(JOINT2, angle3);
+	angle4 = 0;
 
 	// success
 	return 0;
 }
 
-int CMindstorms::getJointSpeeds(double &speed1, double &speed2) {
-	this->getJointSpeed(JOINT1, speed1);
-	this->getJointSpeed(JOINT2, speed2);
+int CMindstorms::getJointSpeeds(double &speed1, double &speed2, double &speed3, double &speed4) {
+	speed1 = 0;
+	this->getJointSpeed(JOINT1, speed2);
+	this->getJointSpeed(JOINT2, speed3);
+	speed4 = 0;
 
 	// success
 	return 0;
 }
 
-int CMindstorms::getJointSpeedRatios(double &ratio1, double &ratio2) {
-	this->getJointSpeedRatio(JOINT1, ratio1);
-	this->getJointSpeedRatio(JOINT2, ratio2);
+int CMindstorms::getJointSpeedRatios(double &ratio1, double &ratio2, double &ratio3, double &ratio4) {
+	ratio1 = 0;
+	this->getJointSpeedRatio(JOINT1, ratio2);
+	this->getJointSpeedRatio(JOINT2, ratio3);
+	ratio4 = 0;
 
 	// success
 	return 0;
 }
 
-int CMindstorms::move(double angle1, double angle2) {
-	this->moveNB(angle1, angle2);
+int CMindstorms::move(double angle1, double angle2, double angle3, double angle4) {
+	this->moveNB(angle1, angle2, angle3, angle4);
 	this->moveWait();
 
 	// success
 	return 0;
 }
 
-int CMindstorms::moveNB(double angle1, double angle2) {
-	this->moveJointNB(JOINT1, angle1);
-	this->moveJointNB(JOINT2, angle2);
+int CMindstorms::moveNB(double angle1, double angle2, double angle3, double angle4) {
+	this->moveJointNB(JOINT1, angle2);
+	this->moveJointNB(JOINT2, angle3);
 
 	// success
 	return 0;
 }
 
-int CMindstorms::moveTo(double angle1, double angle2) {
-	this->moveToNB(angle1, angle2);
+int CMindstorms::moveTo(double angle1, double angle2, double angle3, double angle4) {
+	this->moveToNB(angle1, angle2, angle3, angle4);
 	this->moveWait();
 
 	// success
 	return 0;
 }
 
-int CMindstorms::moveToNB(double angle1, double angle2) {
-	this->moveJointToNB(JOINT1, angle1);
-	this->moveJointToNB(JOINT2, angle2);
+int CMindstorms::moveToNB(double angle1, double angle2, double angle3, double angle4) {
+	this->moveJointToNB(JOINT1, angle2);
+	this->moveJointToNB(JOINT2, angle3);
 
 	// success
 	return 0;
 }
 
-int CMindstorms::moveToByTrackPos(double angle1, double angle2) {
-	this->moveToByTrackPosNB(angle1, angle2);
+int CMindstorms::moveToByTrackPos(double angle1, double angle2, double angle3, double angle4) {
+	this->moveToByTrackPosNB(angle1, angle2, angle3, angle4);
 	this->moveWait();
 
 	// success
 	return 0;
 }
 
-int CMindstorms::moveToByTrackPosNB(double angle1, double angle2) {
-	this->moveToNB(angle1, angle2);
+int CMindstorms::moveToByTrackPosNB(double angle1, double angle2, double angle3, double angle4) {
+	this->moveToNB(angle1, angle2, angle3, angle4);
 
 	// success
 	return 0;
 }
 
-int CMindstorms::recordAngles(double *time, double *angle1, double *angle2, int num, double seconds, int shiftData) {
-	// check if recording already
-	for (int i = 0; i < _dof; i++) {
-		if (_motor[i].record) { return -1; }
-	}
-
-	// store angles
-	double **angles = new double * [_dof];
-	angles[JOINT1] = angle1;
-	angles[JOINT2] = angle2;
-
-	// call base class recording function
-	return Robot::recordAngles(time, angles, num, seconds, shiftData);
-}
-
-int CMindstorms::recordAnglesBegin(robotRecordData_t &time, robotRecordData_t &angle1, robotRecordData_t &angle2, double seconds, int shiftData) {
-	// check if recording already
-	for (int i = 0; i < _dof; i++) {
-		if (_motor[i].record) { return -1; }
-	}
-
-	// store angles
-	double **angles = new double * [_dof];
-	angles[JOINT1] = angle1;
-	angles[JOINT2] = angle2;
-
-	// call base class recording function
-	return Robot::recordAnglesBegin(time, angles, seconds, shiftData);
-}
-
-int CMindstorms::recordDistancesBegin(robotRecordData_t &time, robotRecordData_t &distance1, robotRecordData_t &distance2, double radius, double seconds, int shiftData) {
-	// check if recording already
-	for (int i = 0; i < _dof; i++) {
-		if (_motor[i].record) { return -1; }
-	}
-
-	// store angles
-	double **angles = new double * [_dof];
-	angles[JOINT1] = distance1;
-	angles[JOINT2] = distance2;
-
-	// call base class recording function
-	return Robot::recordAnglesBegin(time, angles, seconds, shiftData);
-}
-
-int CMindstorms::setJointSpeeds(double speed1, double speed2) {
-	this->setJointSpeed(JOINT1, speed1);
-	this->setJointSpeed(JOINT2, speed2);
+int CMindstorms::setJointSpeeds(double speed1, double speed2, double speed3, double speed4) {
+	this->setJointSpeed(JOINT1, speed2);
+	this->setJointSpeed(JOINT2, speed3);
 
 	// success
 	return 0;
 }
 
-int CMindstorms::setJointSpeedRatios(double ratio1, double ratio2) {
-	this->setJointSpeedRatio(JOINT1, ratio1);
-	this->setJointSpeedRatio(JOINT2, ratio2);
+int CMindstorms::setJointSpeedRatios(double ratio1, double ratio2, double ratio3, double ratio4) {
+	this->setJointSpeedRatio(JOINT1, ratio2);
+	this->setJointSpeedRatio(JOINT2, ratio3);
 
 	// success
 	return 0;

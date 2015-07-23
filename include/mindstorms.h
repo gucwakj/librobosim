@@ -14,21 +14,18 @@ class LIBRSEXPORT CMindstorms : public rsSim::Mindstorms, public Robot {
 		CMindstorms(char* = "", bool = true);
 		virtual ~CMindstorms(void);
 
-		int getJointAngles(double&, double&, int = 10);
-		int getJointAnglesInstant(double&, double&);
-		int getJointSpeeds(double&, double&);
-		int getJointSpeedRatios(double&, double&);
-		int move(double, double);
-		int moveNB(double, double);
-		int moveTo(double, double);
-		int moveToNB(double, double);
-		int moveToByTrackPos(double, double);
-		int moveToByTrackPosNB(double, double);
-		int recordAngles(double[], double[], double[], int, double, int = 1);
-		int recordAnglesBegin(robotRecordData_t&, robotRecordData_t&, robotRecordData_t&, double, int = 1);
-		int recordDistancesBegin(robotRecordData_t&, robotRecordData_t&, robotRecordData_t&, double, double, int = 1);
-		int setJointSpeeds(double, double);
-		int setJointSpeedRatios(double, double);
+		int getJointAngles(double&, double&, double&, double&, int = 10);
+		int getJointAnglesInstant(double&, double&, double&, double&);
+		int getJointSpeeds(double&, double&, double&, double&);
+		int getJointSpeedRatios(double&, double&, double&, double&);
+		int move(double, double, double, double = 0);
+		int moveNB(double, double, double, double = 0);
+		int moveTo(double, double, double, double = 0);
+		int moveToNB(double, double, double, double = 0);
+		int moveToByTrackPos(double, double, double, double = 0);
+		int moveToByTrackPosNB(double, double, double, double = 0);
+		int setJointSpeeds(double, double, double, double = 0);
+		int setJointSpeedRatios(double, double, double, double = 0);
 };
 
 // group
@@ -37,45 +34,45 @@ class LIBRSEXPORT CMindstormsGroup : public RobotGroup<CMindstorms> {
 		CMindstormsGroup(void) : RobotGroup<CMindstorms>() { };
 		virtual ~CMindstormsGroup(void) { };
 
-		inline int move(double angle1, double angle2) {
-			this->moveNB(angle1, angle2);
+		inline int move(double angle1, double angle2, double angle3, double angle4 = 0) {
+			this->moveNB(angle1, angle2, angle3, angle4);
 			return this->moveWait();
 		}
-		inline int moveNB(double angle1, double angle2) {
+		inline int moveNB(double angle1, double angle2, double angle3, double angle4 = 0) {
 			for (unsigned int i = 0; i < _robots.size(); i++) {
-				_robots[i]->moveNB(angle1, angle2);
+				_robots[i]->moveNB(angle1, angle2, angle3, angle4);
 			}
 			return 0;
 		}
-		inline int moveTo(double angle1, double angle2) {
-			moveToNB(angle1, angle2);
+		inline int moveTo(double angle1, double angle2, double angle3, double angle4 = 0) {
+			this->moveToNB(angle1, angle2, angle3, angle4);
 			return moveWait();
 		}
-		inline int moveToNB(double angle1, double angle2) {
+		inline int moveToNB(double angle1, double angle2, double angle3, double angle4 = 0) {
 			for (unsigned int i = 0; i < _robots.size(); i++) {
-				_robots[i]->moveToNB(angle1, angle2);
+				_robots[i]->moveToNB(angle1, angle2, angle3, angle4);
 			}
 			return 0;
 		}
-		inline int moveToByTrackPos(double angle1, double angle2) {
-			moveToNB(angle1, angle2);
+		inline int moveToByTrackPos(double angle1, double angle2, double angle3, double angle4 = 0) {
+			this->moveToNB(angle1, angle2, angle3, angle4);
 			return moveWait();
 		}
-		inline int moveToByTrackPosNB(double angle1, double angle2) {
+		inline int moveToByTrackPosNB(double angle1, double angle2, double angle3, double angle4 = 0) {
 			for (unsigned int i = 0; i < _robots.size(); i++) {
-				_robots[i]->moveToByTrackPosNB(angle1, angle2);
+				_robots[i]->moveToByTrackPosNB(angle1, angle2, angle3, angle4);
 			}
 			return 0;
 		}
-		inline int setJointSpeeds(double speed1, double speed2) {
+		inline int setJointSpeeds(double speed1, double speed2, double speed3, double speed4 = 0) {
 			for (unsigned int i = 0; i < _robots.size(); i++) {
-				_robots[i]->setJointSpeeds(speed1, speed2);
+				_robots[i]->setJointSpeeds(speed1, speed2, speed3, speed4);
 			}
 			return 0;
 		}
-		inline int setJointSpeedRatios(double ratio1, double ratio2) {
+		inline int setJointSpeedRatios(double ratio1, double ratio2, double ratio3, double ratio4) {
 			for (unsigned int i = 0; i < _robots.size(); i++) {
-				_robots[i]->setJointSpeedRatios(ratio1, ratio2);
+				_robots[i]->setJointSpeedRatios(ratio1, ratio2, ratio3, ratio4);
 			}
 			return 0;
 		}
