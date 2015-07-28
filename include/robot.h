@@ -61,6 +61,7 @@ class LIBRSEXPORT Robot : virtual public rsSim::Robot {
 		int getJointSpeedRatio(int, double&);
 		int getLEDColorName(char[]);
 		int getLEDColorRGB(int&, int&, int&);
+		int getPosition(double&, double&, double&);
 		int getxy(double&, double&);
 		int holdJointsAtExit(void);
 		int isConnected(void);
