@@ -1176,10 +1176,9 @@ int Robot::traceOn(void) {
 }
 
 int Robot::turnLeft(double angle, double radius, double trackwidth) {
-	// calculate angle to turn
-	double r0 = this->getRotation(0, 2);
+	// calculate final rotation after turn
 	angle = rs::D2R(angle);
-	double rf = r0 + angle;
+	double rf = this->getRotation(0, 2) + angle;
 
 	// get speed of robot
 	double *speed = new double[2]();
@@ -1188,21 +1187,25 @@ int Robot::turnLeft(double angle, double radius, double trackwidth) {
 
 	// turn toward new postition until pointing correctly
 	while (fabs(angle) > 0.005) {
-		// turn in shortest path
-		double theta = (angle*this->convert(_trackwidth, 0)) / (2 * radius);
+		// calculate wheel theta
+		double theta = fabs((angle*this->convert(_trackwidth, 0)) / (2 * radius));
 
-		// turn
+		// turn left
 		if (rs::R2D(angle) > 0.005) {
 			this->moveJointNB(_leftWheel, -rs::R2D(theta));
 			this->moveJoint(_rightWheel, rs::R2D(theta));
 		}
+		// turn right
 		else if (rs::R2D(angle) < -0.005) {
 			this->moveJointNB(_leftWheel, rs::R2D(theta));
 			this->moveJoint(_rightWheel, -rs::R2D(theta));
 		}
 
 		// calculate new rotation from error
-		angle = rf - this->getRotation(0, 2);
+		double turnone = rf - this->getRotation(0, 2);
+		double turntwo = rf - (2 * rs::PI + this->getRotation(0, 2));
+		if (fabs(turnone) < fabs(turntwo))	angle = turnone;
+		else								angle = turntwo;
 
 		// move slowly
 		this->setJointSpeed(_leftWheel, 45);
@@ -1214,7 +1217,7 @@ int Robot::turnLeft(double angle, double radius, double trackwidth) {
 	this->setJointSpeed(_rightWheel, speed[1]);
 
 	// success
-	return 1;
+	return 0;
 }
 
 int Robot::turnLeftNB(double angle, double radius, double trackwidth) {
@@ -1240,10 +1243,11 @@ int Robot::turnLeftNB(double angle, double radius, double trackwidth) {
 }
 
 int Robot::turnRight(double angle, double radius, double trackwidth) {
-	// calculate angle to turn
-	double r0 = this->getRotation(0, 2);
+	// calculate final rotation after turn
 	angle = rs::D2R(angle);
-	double rf = r0 - angle;
+	double rf = this->getRotation(0, 2) + 2 * rs::PI - angle;
+	int num = rf / (2 * rs::PI);
+	rf -= num * 2 * rs::PI;
 
 	// get speed of robot
 	double *speed = new double[2]();
@@ -1252,21 +1256,25 @@ int Robot::turnRight(double angle, double radius, double trackwidth) {
 
 	// turn toward new postition until pointing correctly
 	while (fabs(angle) > 0.005) {
-		// turn in shortest path
-		double theta = (angle*this->convert(_trackwidth, 0)) / (2 * radius);
+		// calculate wheel theta
+		double theta = fabs((angle*this->convert(_trackwidth, 0)) / (2 * radius));
 
-		// turn
-		if (rs::R2D(angle) > 0.005) {
-			this->moveJointNB(_leftWheel, rs::R2D(theta));
-			this->moveJoint(_rightWheel, -rs::R2D(theta));
-		}
-		else if (rs::R2D(angle) < -0.005) {
+		// turn left
+		if (angle > 0.005) {
 			this->moveJointNB(_leftWheel, -rs::R2D(theta));
 			this->moveJoint(_rightWheel, rs::R2D(theta));
 		}
+		// turn right
+		else if (rs::R2D(angle) < -0.005) {
+			this->moveJointNB(_leftWheel, rs::R2D(theta));
+			this->moveJoint(_rightWheel, -rs::R2D(theta));
+		}
 
 		// calculate new rotation from error
-		angle = rf - this->getRotation(0, 2);
+		double turnone = rf - this->getRotation(0, 2);
+		double turntwo = rf - (2 * rs::PI + this->getRotation(0, 2));
+		if (fabs(turnone) < fabs(turntwo))	angle = turnone;
+		else								angle = turntwo;
 
 		// move slowly
 		this->setJointSpeed(_leftWheel, 45);
@@ -1278,7 +1286,7 @@ int Robot::turnRight(double angle, double radius, double trackwidth) {
 	this->setJointSpeed(_rightWheel, speed[1]);
 
 	// success
-	return 1;
+	return 0;
 }
 
 int Robot::turnRightNB(double angle, double radius, double trackwidth) {
