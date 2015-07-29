@@ -539,6 +539,10 @@ int CLinkbot::turnRight(double angle, double radius, double trackwidth) {
 	double rf = this->getRotation(0, 2) + 2 * rs::PI - angle;
 	int num = rf / (2 * rs::PI);
 	rf -= num * 2 * rs::PI;
+	double left = rf - this->getRotation(0, 2);
+	double right = rf - (2 * rs::PI + this->getRotation(0, 2));
+	if (fabs(left) < fabs(right))	angle = left;
+	else							angle = right;
 
 	// get speed of robot
 	double *speed = new double[_dof]();
