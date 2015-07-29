@@ -118,7 +118,7 @@ int Robot::driveDistance(double distance, double radius) {
 		// calculate new distance to move
 		this->getxy(x0, y0);
 		d = sqrt((x - x0)*(x - x0) + (y - y0)*(y - y0));
-		if (distance < 0) d *= -1;
+		if (x - x0 < 0 || y - y0 < 0) d *= -1;		// too far -> go backward
 	}
 
 	// success
