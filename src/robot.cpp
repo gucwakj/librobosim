@@ -108,20 +108,17 @@ int Robot::driveDistance(double distance, double radius) {
 	double x = x0 + distance*sin(this->getRotation(0, 2));
 	double y = y0 + distance*cos(this->getRotation(0, 2));
 	double d = sqrt((x - x0)*(x - x0) + (y - y0)*(y - y0));
+	if (distance < 0) d *= -1;
 
 	// move until close to goal
 	while (fabs(d) > 0.005) {
-		// turn
-		if (d > 0.005) {
-			this->driveAngle(rs::R2D(d/radius));
-		}
-		else if (d < -0.005) {
-			this->driveAngle(-rs::R2D(d/radius));
-		}
+		// drive distance
+		this->driveAngle(rs::R2D(d / radius));
 
 		// calculate new distance to move
 		this->getxy(x0, y0);
-		d = sqrt((x-x0)*(x-x0) + (y-y0)*(y-y0));
+		d = sqrt((x - x0)*(x - x0) + (y - y0)*(y - y0));
+		if (distance < 0) d *= -1;
 	}
 
 	// success
