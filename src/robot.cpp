@@ -115,6 +115,9 @@ int Robot::driveDistance(double distance, double radius) {
 		// drive distance
 		this->driveAngle(rs::R2D(d / radius));
 
+		// don't try again if wheels are different
+		if (_wheels[0] != _wheels[1]) break;
+
 		// calculate new distance to move
 		this->getxy(x0, y0);
 		d = sqrt((x - x0)*(x - x0) + (y - y0)*(y - y0));
