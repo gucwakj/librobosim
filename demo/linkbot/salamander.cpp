@@ -1,7 +1,7 @@
 #include <iostream>
 #include "linkbot.h"
 
-#define NUM 5
+#define NUM 9
 
 int main(int argc, char *argv[]) {
 	// make robots
