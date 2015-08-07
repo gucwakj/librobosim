@@ -1,4 +1,4 @@
-# project: libRoboSim
+# project: LibRoboSim
 project (LibRoboSim)
 
 # Set minimum cmake version
@@ -64,8 +64,9 @@ if (WIN32)
 	include_directories ("C:/Users/kgucwa/projects/librs/deps/osg3.2.1/include")
 	link_directories ("C:/Users/kgucwa/projects/librs/deps/osg3.2.1/build/lib")
 else ()
-	include_directories ("/home/kgucwa/projects/librs/deps/osg/build/include")
-	include_directories ("/home/kgucwa/projects/librs/deps/osg/include")
+	include_directories ("/home/kgucwa/projects/librs/deps/osg3.2.1/build/include")
+	include_directories ("/home/kgucwa/projects/librs/deps/osg3.2.1/include")
+	link_directories ("/home/kgucwa/projects/librs/deps/osg3.2.1/build/lib")
 endif()
 set (EXTRA_LIBS ${EXTRA_LIBS} optimized OpenThreads debug OpenThreadsd)
 set (EXTRA_LIBS ${EXTRA_LIBS} optimized osg debug osgd)
@@ -130,6 +131,8 @@ foreach (CONF ${CMAKE_CONFIGURATION_TYPES})
 		set ("CMAKE_LIBRARY_OUTPUT_DIRECTORY_${CONF}" "${OUTPUT_LIBDIR}")
 	endif ()
 endforeach ()
+set ("CMAKE_RUNTIME_OUTPUT_DIRECTORY" "${OUTPUT_BINDIR}")
+set ("CMAKE_LIBRARY_OUTPUT_DIRECTORY" "${OUTPUT_LIBDIR}")
 make_directory (${OUTPUT_LIBDIR})
 make_directory (${OUTPUT_BINDIR})
 

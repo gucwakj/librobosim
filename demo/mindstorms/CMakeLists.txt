@@ -1,5 +1,5 @@
-# project: libRoboSim mindstorms demos
-project (LIBROBOSIM_MINDSTORMS_DEMOS)
+# project: LibRoboSim mindstorms demos
+project (LibRoboSim_Mindstorms_Demos)
 
 # add executable
 add_executable (mindstorms_one one.cpp)

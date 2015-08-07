@@ -1,9 +1,9 @@
 # project: libRoboSim demos
-project (LIBROBOSIM_DEMOS)
+project (LibRoboSim_Demos)
 
 # add librobosim library
-include_directories ("${LIBROBOSIM_SOURCE_DIR}/include")
-link_directories ("${LIBROBOSIM_SOURCE_DIR}/lib")
+include_directories ("${LibRoboSim_SOURCE_DIR}/include")
+link_directories ("${LibRoboSim_SOURCE_DIR}/lib")
 set (EXTRA_LIBS ${EXTRA_LIBS} optimized robosim debug robosimd)
 
 # add each subdirectory
