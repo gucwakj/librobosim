@@ -102,8 +102,8 @@ set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsSim debug rsSimd)
 set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsXML debug rsXMLd)
 
 # options for individual robot compilation
-set (ENABLE_LINKBOT ON)
-set (ENABLE_MINDSTORMS ON)
+option (ENABLE_LINKBOT "Enable linkbot compilation" ON)
+option (ENABLE_MINDSTORMS "Enable mindstorms compilation" ON)
 
 # add source files to library
 set (SRCS ${SRCS}
