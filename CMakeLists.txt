@@ -102,6 +102,7 @@ set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsSim debug rsSimd)
 set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsXML debug rsXMLd)
 
 # options for individual robot compilation
+option (ENABLE_DOF "Enable dof compilation" OFF)
 option (ENABLE_LINKBOT "Enable linkbot compilation" ON)
 option (ENABLE_MINDSTORMS "Enable mindstorms compilation" ON)
 
@@ -111,6 +112,9 @@ set (SRCS ${SRCS}
 	src/robot.cpp
 	src/rgbhashtable.c
 )
+if (ENABLE_DOF)
+	set (SRCS ${SRCS} src/dof.cpp)
+endif (ENABLE_DOF)
 if (ENABLE_LINKBOT)
 	set (SRCS ${SRCS} src/linkbot.cpp)
 endif (ENABLE_LINKBOT)

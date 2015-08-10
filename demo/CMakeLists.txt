@@ -7,6 +7,9 @@ link_directories ("${LibRoboSim_SOURCE_DIR}/lib")
 set (EXTRA_LIBS ${EXTRA_LIBS} optimized robosim debug robosimd)
 
 # add each subdirectory
+if (ENABLE_DOF)
+	add_subdirectory (dof)
+endif (ENABLE_DOF)
 if (ENABLE_LINKBOT)
 	add_subdirectory (linkbot)
 endif (ENABLE_LINKBOT)
