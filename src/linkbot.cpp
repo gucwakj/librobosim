@@ -33,7 +33,7 @@ int CLinkbot::accelJointCycloidalNB(Joint id, double angle, double t) {
 
 	// set initial omega
 	if (_motor[id].state != POSITIVE || _motor[id].state != NEGATIVE) {
-		if (angle > rs::EPSILON)
+		if (angle > rs::Epsilon)
 			_motor[id].omega = 0.01;
 		else
 			_motor[id].omega = -0.01;
@@ -75,7 +75,7 @@ int CLinkbot::accelJointHarmonicNB(Joint id, double angle, double t) {
 
 	// set initial omega
 	if (_motor[id].state != POSITIVE || _motor[id].state != NEGATIVE) {
-		if (angle > rs::EPSILON)
+		if (angle > rs::Epsilon)
 			_motor[id].omega = 0.01;
 		else
 			_motor[id].omega = -0.01;
@@ -125,7 +125,7 @@ int CLinkbot::accelJointTimeNB(Joint id, double a, double t) {
 
 	// set initial omega
 	if (_motor[id].state != POSITIVE || _motor[id].state != NEGATIVE) {
-		if (a > rs::EPSILON)
+		if (a > rs::Epsilon)
 			_motor[id].omega = 0.01;
 		else
 			_motor[id].omega = -0.01;
@@ -518,7 +518,7 @@ int CLinkbot::turnLeft(double angle, double radius, double trackwidth) {
 
 		// calculate new rotation from error
 		double turnone = rf - this->getRotation(0, 2);
-		double turntwo = rf - (2 * rs::PI + this->getRotation(0, 2));
+		double turntwo = rf - (2 * rs::Pi + this->getRotation(0, 2));
 		if (fabs(turnone) < fabs(turntwo))	angle = turnone;
 		else								angle = turntwo;
 
@@ -536,11 +536,11 @@ int CLinkbot::turnLeft(double angle, double radius, double trackwidth) {
 int CLinkbot::turnRight(double angle, double radius, double trackwidth) {
 	// calculate final rotation after turn
 	angle = rs::D2R(angle);
-	double rf = this->getRotation(0, 2) + 2 * rs::PI - angle;
-	int num = rf / (2 * rs::PI);
-	rf -= num * 2 * rs::PI;
+	double rf = this->getRotation(0, 2) + 2 * rs::Pi - angle;
+	int num = rf / (2 * rs::Pi);
+	rf -= num * 2 * rs::Pi;
 	double left = rf - this->getRotation(0, 2);
-	double right = rf - (2 * rs::PI + this->getRotation(0, 2));
+	double right = rf - (2 * rs::Pi + this->getRotation(0, 2));
 	if (fabs(left) < fabs(right))	angle = left;
 	else							angle = right;
 
@@ -566,7 +566,7 @@ int CLinkbot::turnRight(double angle, double radius, double trackwidth) {
 
 		// calculate new rotation from error
 		double turnone = rf - this->getRotation(0, 2);
-		double turntwo = rf - (2 * rs::PI + this->getRotation(0, 2));
+		double turntwo = rf - (2 * rs::Pi + this->getRotation(0, 2));
 		if (fabs(turnone) < fabs(turntwo))	angle = turnone;
 		else								angle = turntwo;
 

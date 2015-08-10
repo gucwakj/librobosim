@@ -52,7 +52,7 @@ int Robot::delay(double milliseconds) {
 	double end = g_sim->getClock() + milliseconds/1000;
 
 	// while clock hasn't reached ending time
-	while ((end - g_sim->getClock()) >= rs::EPSILON)
+	while ((end - g_sim->getClock()) >= rs::Epsilon)
 		this->doze(50);
 
 	// success
@@ -526,8 +526,8 @@ int Robot::getLEDColorRGB(int &r, int &g, int &b) {
 int Robot::getPosition(double &x, double &y, double &angle) {
 	this->getxy(x, y);
 	double rotation = this->getRotation(0, 2);
-	int num = rotation / (2 * rs::PI);
-	rotation -= num * 2 * rs::PI;
+	int num = rotation / (2 * rs::Pi);
+	rotation -= num * 2 * rs::Pi;
 	angle = rs::R2D(rotation);
 
 	// success
@@ -602,9 +602,9 @@ int Robot::moveJointForeverNB(int id) {
 	// set mode
 	_motor[id].mode = CONTINUOUS;
 	// drive in proper direction
-	if ( _motor[id].omega > rs::EPSILON )
+	if (_motor[id].omega > rs::Epsilon)
 		_motor[id].state = POSITIVE;
-	else if ( _motor[id].omega < rs::EPSILON )
+	else if (_motor[id].omega < rs::Epsilon)
 		_motor[id].state = NEGATIVE;
 	else
 		_motor[id].state = HOLD;
@@ -1205,7 +1205,7 @@ int Robot::turnLeft(double angle, double radius, double trackwidth) {
 
 		// calculate new rotation from error
 		double turnone = rf - this->getRotation(0, 2);
-		double turntwo = rf - (2 * rs::PI + this->getRotation(0, 2));
+		double turntwo = rf - (2 * rs::Pi + this->getRotation(0, 2));
 		if (fabs(turnone) < fabs(turntwo))	angle = turnone;
 		else								angle = turntwo;
 
@@ -1247,11 +1247,11 @@ int Robot::turnLeftNB(double angle, double radius, double trackwidth) {
 int Robot::turnRight(double angle, double radius, double trackwidth) {
 	// calculate final rotation after turn
 	angle = rs::D2R(angle);
-	double rf = this->getRotation(0, 2) + 2 * rs::PI - angle;
-	int num = rf / (2 * rs::PI);
-	rf -= num * 2 * rs::PI;
+	double rf = this->getRotation(0, 2) + 2 * rs::Pi - angle;
+	int num = rf / (2 * rs::Pi);
+	rf -= num * 2 * rs::Pi;
 	double left = rf - this->getRotation(0, 2);
-	double right = rf - (2 * rs::PI + this->getRotation(0, 2));
+	double right = rf - (2 * rs::Pi + this->getRotation(0, 2));
 	if (fabs(left) < fabs(right))	angle = left;
 	else							angle = right;
 
@@ -1278,7 +1278,7 @@ int Robot::turnRight(double angle, double radius, double trackwidth) {
 
 		// calculate new rotation from error
 		double turnone = rf - this->getRotation(0, 2);
-		double turntwo = rf - (2 * rs::PI + this->getRotation(0, 2));
+		double turntwo = rf - (2 * rs::Pi + this->getRotation(0, 2));
 		if (fabs(turnone) < fabs(turntwo))	angle = turnone;
 		else								angle = turntwo;
 
