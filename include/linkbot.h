@@ -14,13 +14,13 @@ class LIBRSEXPORT CLinkbot : virtual public rsSim::Linkbot, virtual public Robot
 		CLinkbot(char* = "", bool = true);
 		virtual ~CLinkbot(void);
 
-		int accelJointAngleNB(rsLinkbot::Joint, double, double);
-		int accelJointCycloidalNB(rsLinkbot::Joint, double, double);
-		int accelJointHarmonicNB(rsLinkbot::Joint, double, double);
-		int accelJointSmoothNB(rsLinkbot::Joint, double, double, double, double);
-		int accelJointTimeNB(rsLinkbot::Joint, double, double);
-		int accelJointToMaxSpeedNB(rsLinkbot::Joint, double);
-		int accelJointToVelocityNB(rsLinkbot::Joint, double, double);
+		int accelJointAngleNB(rsLinkbot::Bodies::Joint, double, double);
+		int accelJointCycloidalNB(rsLinkbot::Bodies::Joint, double, double);
+		int accelJointHarmonicNB(rsLinkbot::Bodies::Joint, double, double);
+		int accelJointSmoothNB(rsLinkbot::Bodies::Joint, double, double, double, double);
+		int accelJointTimeNB(rsLinkbot::Bodies::Joint, double, double);
+		int accelJointToMaxSpeedNB(rsLinkbot::Bodies::Joint, double);
+		int accelJointToVelocityNB(rsLinkbot::Bodies::Joint, double, double);
 		int closeGripper(void);
 		int closeGripperNB(void);
 		int driveAccelCycloidalNB(double, double, double);
@@ -59,12 +59,12 @@ class LIBRSEXPORT CLinkbot : virtual public rsSim::Linkbot, virtual public Robot
 
 class LIBRSEXPORT CLinkbotI : public CLinkbot {
 	public:
-		CLinkbotI(char *name = NULL, bool pause = true) : rsRobots::Robot(rs::LINKBOTI), rsRobots::Linkbot(rs::LINKBOTI), rsSim::Linkbot(rs::LINKBOTI), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT3), CLinkbot(name, pause) { };
+		CLinkbotI(char *name = NULL, bool pause = true) : rsRobots::Robot(rs::LINKBOTI), rsRobots::Linkbot(rs::LINKBOTI), rsSim::Linkbot(rs::LINKBOTI), Robot(rsLinkbot::Bodies::Joint1, rsLinkbot::Bodies::Joint3), CLinkbot(name, pause) { };
 };
 
 class LIBRSEXPORT CLinkbotL : public CLinkbot {
 	public:
-		CLinkbotL(char *name = NULL, bool pause = true) : rsRobots::Robot(rs::LINKBOTL), rsRobots::Linkbot(rs::LINKBOTL), rsSim::Linkbot(rs::LINKBOTL), Robot(rsLinkbot::JOINT1, rsLinkbot::JOINT2), CLinkbot(name, pause) { };
+		CLinkbotL(char *name = NULL, bool pause = true) : rsRobots::Robot(rs::LINKBOTL), rsRobots::Linkbot(rs::LINKBOTL), rsSim::Linkbot(rs::LINKBOTL), Robot(rsLinkbot::Bodies::Joint1, rsLinkbot::Bodies::Joint2), CLinkbot(name, pause) { };
 };
 
 // group
@@ -73,49 +73,49 @@ class LIBRSEXPORT CLinkbotGroup : public RobotGroup<CLinkbot> {
 		CLinkbotGroup(void) : RobotGroup<CLinkbot>() { };
 		virtual ~CLinkbotGroup(void) { };
 
-		inline int accelJointAngleNB(rsLinkbot::Joint id, double a, double angle) {
+		inline int accelJointAngleNB(rsLinkbot::Bodies::Joint id, double a, double angle) {
 			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->accelJointAngleNB(id, a, angle);
 			}
 			return 0;
 		}
 
-		inline int accelJointCycloidalNB(rsLinkbot::Joint id, double angle, double t) {
+		inline int accelJointCycloidalNB(rsLinkbot::Bodies::Joint id, double angle, double t) {
 			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->accelJointCycloidalNB(id, angle, t);
 			}
 			return 0;
 		}
 
-		inline int accelJointHarmonicNB(rsLinkbot::Joint id, double angle, double t) {
+		inline int accelJointHarmonicNB(rsLinkbot::Bodies::Joint id, double angle, double t) {
 			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->accelJointHarmonicNB(id, angle, t);
 			}
 			return 0;
 		}
 
-		inline int accelJointSmoothNB(rsLinkbot::Joint id, double a0, double af, double vmax, double angle) {
+		inline int accelJointSmoothNB(rsLinkbot::Bodies::Joint id, double a0, double af, double vmax, double angle) {
 			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->accelJointSmoothNB(id, a0, af, vmax, angle);
 			}
 			return 0;
 		}
 
-		inline int accelJointTimeNB(rsLinkbot::Joint id, double a, double t) {
+		inline int accelJointTimeNB(rsLinkbot::Bodies::Joint id, double a, double t) {
 			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->accelJointTimeNB(id, a, t);
 			}
 			return 0;
 		}
 
-		inline int accelJointToMaxSpeedNB(rsLinkbot::Joint id, double a) {
+		inline int accelJointToMaxSpeedNB(rsLinkbot::Bodies::Joint id, double a) {
 			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->accelJointToMaxSpeedNB(id, a);
 			}
 			return 0;
 		}
 
-		inline int accelJointToVelocityNB(rsLinkbot::Joint id, double a, double v) {
+		inline int accelJointToVelocityNB(rsLinkbot::Bodies::Joint id, double a, double v) {
 			for (unsigned int i = 0; i < _robots.size(); i++) {
 				_robots[i]->accelJointToVelocityNB(id, a, v);
 			}
