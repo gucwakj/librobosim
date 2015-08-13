@@ -165,6 +165,12 @@ int Robot::driveForeverNB(void) {
 }
 
 int Robot::driveTime(double seconds) {
+	// warn and exit if time is negative
+	if (fabs(seconds) < -rs::Epsilon) {
+		std::cerr << "Error: driveTime doesn't accept negative times." << std::endl;
+		return -1;
+	}
+
 	// move joint
 	this->driveForeverNB();
 
@@ -179,6 +185,12 @@ int Robot::driveTime(double seconds) {
 }
 
 int Robot::driveTimeNB(double seconds) {
+	// warn and exit if time is negative
+	if (fabs(seconds) < -rs::Epsilon) {
+		std::cerr << "Error: driveTimeNB doesn't accept negative times." << std::endl;
+		return -1;
+	}
+
 	// set up threading
 	THREAD_T moving;
 	Recording *rec = new Recording;
