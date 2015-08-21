@@ -891,24 +891,6 @@ int Robot::recordDistanceOffset(double distance) {
 	return 0;
 }
 
-int Robot::recordDistancesEnd(int &num) {
-	// end recording of angles
-	this->recordAnglesEnd(num);
-
-	// convert radius to output units
-	double radius = this->convert(_wheel_radius, 0);
-
-	// convert all angles to distances based upon radius
-	for (int i = 0; i < num; i++) {
-		for (int j = 0; j < _dof; j++) {
-			(*_motor[j].record_angle)[i] = rs::D2R((*_motor[j].record_angle)[i]) * radius + _distOffset;
-		}
-	}
-
-	// success
-	return 0;
-}
-
 int Robot::recordWait(void) {
 	// lock
 	MUTEX_LOCK(&_recording_mutex);

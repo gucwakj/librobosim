@@ -85,7 +85,6 @@ class LIBRSEXPORT Robot : virtual public rsSim::Robot {
 		int recordDistanceBegin(int, robotRecordData_t&, robotRecordData_t&, double, double, int = 1);
 		int recordDistanceEnd(int, int&);
 		int recordDistanceOffset(double);
-		int recordDistancesEnd(int&);
 		int recordWait(void);
 		int recordxyBegin(robotRecordData_t&, robotRecordData_t&, double, int = 1);
 		int recordxyEnd(int&);
