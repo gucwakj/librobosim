@@ -4,7 +4,7 @@
 
 using namespace rsLinkbot;
 
-CLinkbot::CLinkbot(char *name, bool pause) : rsRobots::Robot(rs::LINKBOTT), rsRobots::Linkbot(rs::LINKBOTT), rsSim::Linkbot(rs::LINKBOTT), Robot(Bodies::Joint1, Bodies::Joint3) {
+CLinkbot::CLinkbot(const char *name, bool pause) : rsRobots::Robot(rs::LINKBOTT), rsRobots::Linkbot(rs::LINKBOTT), rsSim::Linkbot(rs::LINKBOTT), Robot(Bodies::Joint1, Bodies::Joint3) {
 	// create simulation object if necessary
 	if (!g_sim)
 		g_sim = new RoboSim(name, pause);

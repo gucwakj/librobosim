@@ -2,7 +2,7 @@
 
 using namespace rsMindstorms;
 
-CMindstorms::CMindstorms(char *name, bool pause) : rsRobots::Robot(rs::EV3), rsRobots::Mindstorms(rs::EV3), rsSim::Mindstorms(), Robot(Bodies::Joint1, Bodies::Joint2) {
+CMindstorms::CMindstorms(const char *name, bool pause) : rsRobots::Robot(rs::EV3), rsRobots::Mindstorms(rs::EV3), rsSim::Mindstorms(), Robot(Bodies::Joint1, Bodies::Joint2) {
 	// create simulation object if necessary
 	if (!g_sim)
 		g_sim = new RoboSim(name, pause);

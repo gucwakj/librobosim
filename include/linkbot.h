@@ -11,7 +11,7 @@
 // individual
 class LIBRSEXPORT CLinkbot : virtual public rsSim::Linkbot, virtual public Robot {
 	public:
-		CLinkbot(char* = "", bool = true);
+		CLinkbot(const char* = NULL, bool = true);
 		virtual ~CLinkbot(void);
 
 		int accelJointAngleNB(rsLinkbot::Bodies::Joint, double, double);
@@ -59,12 +59,12 @@ class LIBRSEXPORT CLinkbot : virtual public rsSim::Linkbot, virtual public Robot
 
 class LIBRSEXPORT CLinkbotI : public CLinkbot {
 	public:
-		CLinkbotI(char *name = NULL, bool pause = true) : rsRobots::Robot(rs::LINKBOTI), rsRobots::Linkbot(rs::LINKBOTI), rsSim::Linkbot(rs::LINKBOTI), Robot(rsLinkbot::Bodies::Joint1, rsLinkbot::Bodies::Joint3), CLinkbot(name, pause) { };
+		CLinkbotI(const char *name = NULL, bool pause = true) : rsRobots::Robot(rs::LINKBOTI), rsRobots::Linkbot(rs::LINKBOTI), rsSim::Linkbot(rs::LINKBOTI), Robot(rsLinkbot::Bodies::Joint1, rsLinkbot::Bodies::Joint3), CLinkbot(name, pause) { };
 };
 
 class LIBRSEXPORT CLinkbotL : public CLinkbot {
 	public:
-		CLinkbotL(char *name = NULL, bool pause = true) : rsRobots::Robot(rs::LINKBOTL), rsRobots::Linkbot(rs::LINKBOTL), rsSim::Linkbot(rs::LINKBOTL), Robot(rsLinkbot::Bodies::Joint1, rsLinkbot::Bodies::Joint2), CLinkbot(name, pause) { };
+		CLinkbotL(const char *name = NULL, bool pause = true) : rsRobots::Robot(rs::LINKBOTL), rsRobots::Linkbot(rs::LINKBOTL), rsSim::Linkbot(rs::LINKBOTL), Robot(rsLinkbot::Bodies::Joint1, rsLinkbot::Bodies::Joint2), CLinkbot(name, pause) { };
 };
 
 // group

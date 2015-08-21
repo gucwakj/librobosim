@@ -11,7 +11,7 @@
 // individual
 class LIBRSEXPORT CMindstorms : public rsSim::Mindstorms, public Robot {
 	public:
-		CMindstorms(char* = "", bool = true);
+		CMindstorms(const char* = NULL, bool = true);
 		virtual ~CMindstorms(void);
 
 		int getJointAngles(double&, double&, double&, double&, int = 10);
