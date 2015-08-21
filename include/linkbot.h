@@ -45,7 +45,6 @@ class LIBRSEXPORT CLinkbot : virtual public rsSim::Linkbot, virtual public Robot
 		int moveToByTrackPosNB(double, double, double);
 		int openGripper(double);
 		int openGripperNB(double);
-		int recordAngles(double[], double[], double[], double[], int, double, int = 1);
 		int recordAnglesBegin(robotRecordData_t&, robotRecordData_t&, robotRecordData_t&, robotRecordData_t&, double, int = 1);
 		int recordDistancesBegin(robotRecordData_t&, robotRecordData_t&, robotRecordData_t&, robotRecordData_t&, double, double, int = 1);
 		int setJointSpeeds(double, double, double);

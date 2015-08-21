@@ -756,36 +756,6 @@ int Robot::moveWait(void) {
 	return 0;
 }
 
-int Robot::recordAngle(int id, double time[], double angle[], int num, double seconds, int shiftData) {
-	// check if recording already
-	if (_motor[id].record) { return -1; }
-
-	// set up recording thread
-	THREAD_T recording;
-
-	// set up recording args
-	Recording *rec = new Recording;
-	rec->robot = this;
-	rec->time = time;
-	rec->angle = new double * [1];
-	rec->angle[0] = angle;
-	rec->id = id;
-	rec->num = num;
-	rec->msecs = 1000*seconds;
-
-	// lock recording for joint id
-	_motor[id].record = true;
-
-	// set shift data
-	_shift_data = shiftData;
-
-	// create thread
-	THREAD_CREATE(&recording, (void* (*)(void *))&Robot::recordAngleThread, (void *)rec);
-
-	// success
-	return 0;
-}
-
 int Robot::recordAngleBegin(int id, robotRecordData_t &time, robotRecordData_t &angle, double seconds, int shiftData) {
 	// check if recording already
 	if (_motor[id].record) { return -1; }
@@ -1343,40 +1313,6 @@ double Robot::convert(double value, int tometer) {
 	return tmp;
 }
 
-int Robot::recordAngles(double *time, double **angle, int num, double seconds, int shiftData) {
-	// check if recording already
-	for (int i = 0; i < _dof; i++) {
-		if (_motor[i].record) { return -1; }
-	}
-
-	// set up recording thread
-	THREAD_T recording;
-
-	// set up recording args
-	Recording *rec = new Recording;
-	rec->robot = this;
-	rec->time = time;
-	rec->angle = new double * [_dof];
-	rec->angle = angle;
-	rec->num = num;
-	rec->msecs = 1000*seconds;
-
-	// lock recording for joints
-	for (int i = 0; i < _dof; i++) {
-		rec->angle[i] = angle[i];
-		_motor[i].record = true;
-	}
-
-	// set shift data
-	_shift_data = shiftData;
-
-	// create thread
-	THREAD_CREATE(&recording, (void* (*)(void *))&Robot::recordAnglesThread, (void *)rec);
-
-	// success
-	return 0;
-}
-
 int Robot::recordAnglesBegin(robotRecordData_t &time, robotRecordData_t *&angle, double seconds, int shiftData) {
 	// check if recording already
 	for (int i = 0; i < _dof; i++) {
@@ -1691,83 +1627,6 @@ void* Robot::recordAngleBeginThread(void *arg) {
 
 	// cleanup
 	delete rec;
-
-	// success
-	return NULL;
-}
-
-void* Robot::recordAnglesThread(void *arg) {
-	// cast argument
-	Recording *rec = (Recording *)arg;
-
-	// create initial time points
-    double start_time = 0;
-	int time = (int)(g_sim->getClock()*1000);
-
-	// is robot moving
-	int *moving = new int[rec->num];
-
-	// get 'num' data points
-    for (int i = 0; i < rec->num; i++) {
-		// store time of data point
-		rec->time[i] = g_sim->getClock()*1000;
-        if (i == 0) { start_time = rec->time[i]; }
-        rec->time[i] = (rec->time[i] - start_time) / 1000;
-
-		// store joint angles
-		for (int j = 0; j < rec->robot->_dof; j++) {
-			rec->angle[j][i] = rs::R2D(rec->robot->_motor[j].theta);
-		}
-
-		// check if joints are moving
-		moving[i] = 0;
-		for (int j = 0; j < rec->robot->_dof; j++) {
-			moving[i] += (int)(dJointGetAMotorParam(rec->robot->_motor[j].id, dParamVel)*1000);
-		}
-
-		// increment time step
-		time += rec->msecs;
-
-		// pause until next step
-		if ( (int)(g_sim->getClock()*1000) < time )
-			rec->robot->doze(time - (int)(g_sim->getClock()*1000));
-    }
-
-	// shift time to start of movement
-	double shiftTime = 0;
-	int shiftTimeIndex = 0;
-	if(rec->robot->is_shift_enabled()) {
-		for (int i = 0; i < rec->num; i++) {
-			if (moving[i]) {
-				shiftTime = rec->time[i];
-				shiftTimeIndex = i;
-				break;
-			}
-		}
-		for (int i = 0; i < rec->num; i++) {
-			if (i < shiftTimeIndex) {
-				rec->time[i] = 0;
-				for (int j = 0; j < rec->robot->_dof; j++) {
-					rec->angle[j][i] = rec->angle[j][shiftTimeIndex];
-				}
-			}
-			else {
-				rec->time[i] = rec->time[i] - shiftTime;
-			}
-		}
-	}
-
-	// signal completion of recording
-	MUTEX_LOCK(&rec->robot->_recording_mutex);
-    for (int i = 0; i < rec->robot->_dof; i++) {
-        rec->robot->_motor[i].record = false;
-    }
-	COND_SIGNAL(&rec->robot->_recording_cond);
-	MUTEX_UNLOCK(&rec->robot->_recording_mutex);
-
-	// cleanup
-	delete rec;
-	delete moving;
 
 	// success
 	return NULL;

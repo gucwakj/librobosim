@@ -79,7 +79,6 @@ class LIBRSEXPORT Robot : virtual public rsSim::Robot {
 		int moveToZero(void);
 		int moveToZeroNB(void);
 		int moveWait(void);
-		int recordAngle(int, double[], double[], int, double, int = 1);
 		int recordAngleBegin(int, robotRecordData_t&, robotRecordData_t&, double, int = 1);
 		int recordAngleEnd(int, int&);
 		int recordAnglesEnd(int&);
@@ -114,7 +113,6 @@ class LIBRSEXPORT Robot : virtual public rsSim::Robot {
 
 	protected:
 		double convert(double, int);
-		int recordAngles(double*, double**, int, double, int);
 		int recordAnglesBegin(robotRecordData_t&, robotRecordData_t*&, double, int);
 
 	protected:
@@ -151,7 +149,6 @@ class LIBRSEXPORT Robot : virtual public rsSim::Robot {
 		static void* moveTimeNBThread(void*);
 		static void* recordAngleThread(void*);
 		static void* recordAngleBeginThread(void*);
-		static void* recordAnglesThread(void*);
 		static void* recordAnglesBeginThread(void*);
 		static void* recordxyBeginThread(void*);
 		static void* turnThread(void*);
