@@ -1678,7 +1678,7 @@ void* Robot::recordAngleBeginThread(void *arg) {
 			rec->robot->doze(time - (int)(g_sim->getClock()*1000));
 
 		// wait until movement to start recording
-		if( !moving && rec->robot->is_shift_enabled() ) {
+		if( !moving && rec->robot->is_shift_enabled() && i == 1 ) {
 			i--;
 		}
 	}
