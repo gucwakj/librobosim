@@ -24,6 +24,7 @@ class LIBRSEXPORT CMindstorms : public rsSim::Mindstorms, public Robot {
 		int moveToNB(double, double, double, double = 0);
 		int moveToByTrackPos(double, double, double, double = 0);
 		int moveToByTrackPosNB(double, double, double, double = 0);
+		int recordAnglesBegin(robotRecordData_t&, robotRecordData_t&, robotRecordData_t&, double, int = 1);
 		int setJointSpeeds(double, double, double, double = 0);
 		int setJointSpeedRatios(double, double, double, double = 0);
 };

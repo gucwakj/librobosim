@@ -102,6 +102,21 @@ int CMindstorms::moveToByTrackPosNB(double angle1, double angle2, double angle3,
 	return 0;
 }
 
+int CMindstorms::recordAnglesBegin(robotRecordData_t &time, robotRecordData_t &angle1, robotRecordData_t &angle2, double seconds, int shiftData) {
+	// check if recording already
+	for (int i = 0; i < _dof; i++) {
+		if (_motor[i].record) { return -1; }
+	}
+
+	// store angles
+	double **angles = new double * [_dof];
+	angles[Bodies::Joint1] = angle1;
+	angles[Bodies::Joint2] = angle2;
+
+	// call base class recording function
+	return Robot::recordAnglesBegin(time, angles, seconds, shiftData);
+}
+
 int CMindstorms::setJointSpeeds(double speed1, double speed2, double speed3, double speed4) {
 	this->setJointSpeed(Bodies::Joint1, speed2);
 	this->setJointSpeed(Bodies::Joint2, speed3);
