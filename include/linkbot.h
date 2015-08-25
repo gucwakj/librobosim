@@ -259,5 +259,8 @@ struct LinkbotMove {
 	int i;
 };
 
+// robosim
+extern RoboSim *g_sim;
+
 #endif // LINKBOT_H_
 

@@ -22,5 +22,8 @@ class LIBRSEXPORT CDofGroup : public RobotGroup<CDof> {
 		virtual ~CDofGroup(void) { };
 };
 
+// robosim
+extern RoboSim *g_sim;
+
 #endif // DOF_H_
 

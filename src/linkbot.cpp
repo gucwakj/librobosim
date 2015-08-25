@@ -1,7 +1,5 @@
 #include "linkbot.h"
 
-extern RoboSim *g_sim;
-
 using namespace rsLinkbot;
 
 CLinkbot::CLinkbot(const char *name, bool pause) :	rsRobots::Robot(rs::LINKBOTT),

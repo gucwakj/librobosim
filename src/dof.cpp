@@ -1,7 +1,5 @@
 #include "dof.h"
 
-extern RoboSim *g_sim;
-
 using namespace rsDof;
 
 CDof::CDof(int joint, char *name, bool pause) :	rsRobots::Robot(rs::DOF),

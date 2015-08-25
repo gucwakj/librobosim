@@ -3,8 +3,6 @@
 
 #include "robot.h"
 
-extern RoboSim *g_sim;
-
 Robot::Robot(int left, int right) : rsRobots::Robot(rs::ROBOT) {
 	_leftWheel = left;
 	_rightWheel = right;

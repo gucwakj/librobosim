@@ -1,7 +1,5 @@
 #include "mindstorms.h"
 
-extern RoboSim *g_sim;
-
 using namespace rsMindstorms;
 
 CMindstorms::CMindstorms(const char *name, bool pause) :	rsRobots::Robot(rs::EV3),
