@@ -1,13 +1,15 @@
-#include <rs/Macros>
-
 #include "linkbot.h"
+
+extern RoboSim *g_sim;
 
 using namespace rsLinkbot;
 
-CLinkbot::CLinkbot(const char *name, bool pause) : rsRobots::Robot(rs::LINKBOTT), rsRobots::Linkbot(rs::LINKBOTT), rsSim::Linkbot(rs::LINKBOTT), Robot(Bodies::Joint1, Bodies::Joint3) {
+CLinkbot::CLinkbot(const char *name, bool pause) :	rsRobots::Robot(rs::LINKBOTT),
+													rsRobots::Linkbot(rs::LINKBOTT),
+													rsSim::Linkbot(rs::LINKBOTT),
+													Robot(Bodies::Joint1, Bodies::Joint3) {
 	// create simulation object if necessary
-	if (!g_sim)
-		g_sim = new RoboSim(name, pause);
+	if (g_sim == NULL) g_sim = new RoboSim(name, pause);
 
 	// add to simulation
 	g_sim->addRobot(this);

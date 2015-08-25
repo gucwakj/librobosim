@@ -558,8 +558,5 @@ struct RobotMove {
 	int i;
 };
 
-// simulation
-extern RoboSim *g_sim;
-
 #endif // ROBOT_H_
 

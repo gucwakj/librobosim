@@ -79,8 +79,5 @@ class LIBRSEXPORT CMindstormsGroup : public RobotGroup<CMindstorms> {
 		}
 };
 
-// simulation
-extern RoboSim *g_sim;
-
 #endif // MINDSTORMS_H_
 
