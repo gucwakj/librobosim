@@ -6,6 +6,7 @@
 #include <rs/Enum>
 #include <rs/Macros>
 #include <rsScene/Scene>
+#include <rsScene/ModularRobot>
 #include <rsSim/Sim>
 #include <rsXML/Robot>
 #include <rsXML/Reader>
@@ -25,8 +26,8 @@ class LIBRSEXPORT RoboSim : public rsScene::Scene, public rsSim::Sim, public rsX
 		RoboSim(const char*, bool);
 		virtual ~RoboSim(void) { };
 
-		int addRobot(rsSim::Robot*);
-		int addRobot(rsSim::ModularRobot*);
+		int addRobot(rsSim::Robot*, rsScene::Robot*);
+		int addRobot(rsSim::ModularRobot*, rsScene::ModularRobot*);
 		int deleteRobot(int);
 		bool getUnits(void);
 		void keyPressed(int);

@@ -2,6 +2,7 @@
 #define LINKBOT_H_
 
 #include <rs/Macros>
+#include <rsScene/Linkbot>
 #include <rsSim/Sim>
 #include <rsSim/Linkbot>
 
@@ -9,7 +10,7 @@
 #include "robot.h"
 
 // individual
-class LIBRSEXPORT CLinkbot : virtual public rsSim::Linkbot, virtual public Robot {
+class LIBRSEXPORT CLinkbot : virtual public rsScene::Linkbot, virtual public rsSim::Linkbot, virtual public roboSim::Robot {
 	public:
 		CLinkbot(const char* = NULL, bool = true);
 		virtual ~CLinkbot(void);
@@ -57,16 +58,26 @@ class LIBRSEXPORT CLinkbot : virtual public rsSim::Linkbot, virtual public Robot
 
 class LIBRSEXPORT CLinkbotI : public CLinkbot {
 	public:
-		CLinkbotI(const char *name = NULL, bool pause = true) : rsRobots::Robot(rs::LINKBOTI), rsRobots::Linkbot(rs::LINKBOTI), rsSim::Linkbot(rs::LINKBOTI), Robot(rsLinkbot::Bodies::Joint1, rsLinkbot::Bodies::Joint3), CLinkbot(name, pause) { };
+		CLinkbotI(const char *name = NULL, bool pause = true) :	rsRobots::Robot(rs::LINKBOTI),
+																rsRobots::Linkbot(rs::LINKBOTI),
+																rsScene::Linkbot(rs::LINKBOTI),
+																rsSim::Linkbot(rs::LINKBOTI),
+																roboSim::Robot(rsLinkbot::Bodies::Joint1, rsLinkbot::Bodies::Joint3),
+																CLinkbot(name, pause) { };
 };
 
 class LIBRSEXPORT CLinkbotL : public CLinkbot {
 	public:
-		CLinkbotL(const char *name = NULL, bool pause = true) : rsRobots::Robot(rs::LINKBOTL), rsRobots::Linkbot(rs::LINKBOTL), rsSim::Linkbot(rs::LINKBOTL), Robot(rsLinkbot::Bodies::Joint1, rsLinkbot::Bodies::Joint2), CLinkbot(name, pause) { };
+		CLinkbotL(const char *name = NULL, bool pause = true) :	rsRobots::Robot(rs::LINKBOTL),
+																rsRobots::Linkbot(rs::LINKBOTL),
+																rsScene::Linkbot(rs::LINKBOTL),
+																rsSim::Linkbot(rs::LINKBOTL),
+																roboSim::Robot(rsLinkbot::Bodies::Joint1, rsLinkbot::Bodies::Joint2),
+																CLinkbot(name, pause) { };
 };
 
 // group
-class LIBRSEXPORT CLinkbotGroup : public RobotGroup<CLinkbot> {
+class LIBRSEXPORT CLinkbotGroup : public roboSim::RobotGroup<CLinkbot> {
 	public:
 		CLinkbotGroup(void) : RobotGroup<CLinkbot>() { };
 		virtual ~CLinkbotGroup(void) { };

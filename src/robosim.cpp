@@ -58,7 +58,7 @@ RoboSim::RoboSim(const char *name, bool pause) : rsScene::Scene(), rsSim::Sim(pa
 	Scene::setUnits(Reader::getUnits());
 }
 
-int RoboSim::addRobot(rsSim::Robot *robot) {
+int RoboSim::addRobot(rsSim::Robot *robot, rsScene::Robot *robot2) {
 	// find new robot of this type
 	rsXML::Robot *xmlbot = Reader::getNextRobot(robot->getForm());
 	robot->setForm(xmlbot->getForm());
@@ -75,10 +75,11 @@ int RoboSim::addRobot(rsSim::Robot *robot) {
 	xmlbot->setConnect(1);
 
 	// draw graphical robot
-	rsScene::Robot *sceneRobot = Scene::drawRobot(robot, xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getLED(), xmlbot->getTrace());
+	rsScene::Group *sceneRobot = Scene::createRobot(robot2);
+	robot2->draw(sceneRobot, xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getLED(), xmlbot->getTrace());
 	rs::Vec wheel = xmlbot->getWheels();
-	Scene::drawWheel(robot, sceneRobot, wheel[0], 1);
-	Scene::drawWheel(robot, sceneRobot, wheel[1], 2);
+	robot2->drawWheel(sceneRobot, wheel[0], 1);
+	robot2->drawWheel(sceneRobot, wheel[1], 2);
 
 	// attach callback
 	Callback::attachCallback(sceneRobot, robot, robot->getBodyList());
@@ -87,7 +88,7 @@ int RoboSim::addRobot(rsSim::Robot *robot) {
 	return 0;
 }
 
-int RoboSim::addRobot(rsSim::ModularRobot *robot) {
+int RoboSim::addRobot(rsSim::ModularRobot *robot, rsScene::ModularRobot *robot2) {
 	// find new robot of this type
 	rsXML::Robot *xmlbot = Reader::getNextRobot(robot->getForm());
 
@@ -117,11 +118,12 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot) {
 	}
 
 	// draw graphical robot
-	rsScene::Robot *sceneRobot = Scene::drawRobot(robot, xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getLED(), xmlbot->getTrace());
+	rsScene::Group *sceneRobot = Scene::createRobot(robot2);
+	robot2->draw(sceneRobot, xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getLED(), xmlbot->getTrace());
 
 	// draw connectors
 	for (unsigned int i = 0; i < conn.size(); i++) {
-		Scene::drawConnector(robot, sceneRobot, conn[i]->getType(), conn[i]->getFace1(), conn[i]->getOrientation(), conn[i]->getSize(), conn[i]->getSide(), conn[i]->getConn());
+		robot2->drawConnector(sceneRobot, conn[i]->getType(), conn[i]->getFace1(), conn[i]->getOrientation(), conn[i]->getSize(), conn[i]->getSide(), conn[i]->getConn());
 	}
 
 	// attach callback

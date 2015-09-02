@@ -2,6 +2,7 @@
 #define DOF_H_
 
 #include <rs/Macros>
+#include <rsScene/Dof>
 #include <rsSim/Sim>
 #include <rsSim/Dof>
 
@@ -9,14 +10,14 @@
 #include "robot.h"
 
 // individual
-class LIBRSEXPORT CDof : virtual public rsSim::Dof, virtual public Robot {
+class LIBRSEXPORT CDof : virtual public rsScene::Dof, virtual public rsSim::Dof, virtual public roboSim::Robot {
 	public:
 		CDof(int, char* = "", bool = true);
 		virtual ~CDof(void);
 };
 
 // group
-class LIBRSEXPORT CDofGroup : public RobotGroup<CDof> {
+class LIBRSEXPORT CDofGroup : public roboSim::RobotGroup<CDof> {
 	public:
 		CDofGroup(void) : RobotGroup<CDof>() { };
 		virtual ~CDofGroup(void) { };

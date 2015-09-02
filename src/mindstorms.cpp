@@ -4,13 +4,14 @@ using namespace rsMindstorms;
 
 CMindstorms::CMindstorms(const char *name, bool pause) :	rsRobots::Robot(rs::EV3),
 															rsRobots::Mindstorms(rs::EV3),
+															rsScene::Mindstorms(rs::EV3),
 															rsSim::Mindstorms(),
-															Robot(Bodies::Joint1, Bodies::Joint2) {
+															roboSim::Robot(Bodies::Joint1, Bodies::Joint2) {
 	// create simulation object if necessary
 	if (g_sim == NULL) g_sim = new RoboSim(name, pause);
 
 	// add to simulation
-	g_sim->addRobot(this);
+	g_sim->addRobot(this, this);
 }
 
 CMindstorms::~CMindstorms(void) {
@@ -116,7 +117,7 @@ int CMindstorms::recordAnglesBegin(robotRecordData_t &time, robotRecordData_t &a
 	angles[Bodies::Joint2] = angle2;
 
 	// call base class recording function
-	return Robot::recordAnglesBegin(time, angles, seconds, shiftData);
+	return roboSim::Robot::recordAnglesBegin(time, angles, seconds, shiftData);
 }
 
 int CMindstorms::setJointSpeeds(double speed1, double speed2, double speed3, double speed4) {

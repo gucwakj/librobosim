@@ -4,13 +4,14 @@ using namespace rsLinkbot;
 
 CLinkbot::CLinkbot(const char *name, bool pause) :	rsRobots::Robot(rs::LINKBOTT),
 													rsRobots::Linkbot(rs::LINKBOTT),
+													rsScene::Linkbot(rs::LINKBOTT),
 													rsSim::Linkbot(rs::LINKBOTT),
-													Robot(Bodies::Joint1, Bodies::Joint3) {
+													roboSim::Robot(Bodies::Joint1, Bodies::Joint3) {
 	// create simulation object if necessary
 	if (g_sim == NULL) g_sim = new RoboSim(name, pause);
 
 	// add to simulation
-	g_sim->addRobot(this);
+	g_sim->addRobot(this, this);
 }
 
 CLinkbot::~CLinkbot(void) {
@@ -438,7 +439,7 @@ int CLinkbot::recordAnglesBegin(robotRecordData_t &time, robotRecordData_t &angl
 	angles[Bodies::Joint3] = angle3;
 
 	// call base class recording function
-	return Robot::recordAnglesBegin(time, angles, seconds, shiftData);
+	return roboSim::Robot::recordAnglesBegin(time, angles, seconds, shiftData);
 }
 
 int CLinkbot::setJointSpeeds(double speed1, double speed2, double speed3) {
