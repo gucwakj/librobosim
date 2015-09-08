@@ -33,12 +33,14 @@ RoboSim::RoboSim(const char *name, bool pause) : rsScene::Scene(), rsSim::Sim(pa
 		rsSim::Obstacle *simObstacle = NULL;
 		switch (obstacle->getForm()) {
 			case rs::BOX:
+			case rs::WOODBLOCK:
 				simObstacle = Sim::addObstacle(obstacle->getPosition(), obstacle->getQuaternion(), obstacle->getDimensions(), obstacle->getMass());
 				break;
 			case rs::CYLINDER:
 				simObstacle = Sim::addObstacle(obstacle->getPosition(), obstacle->getQuaternion(), obstacle->getDimensions(), obstacle->getMass(), obstacle->getAxis());
 				break;
 			case rs::SPHERE:
+			case rs::HACKYSACK:
 				simObstacle = Sim::addObstacle(obstacle->getPosition(), obstacle->getDimensions(), obstacle->getMass());
 				break;
 		}
