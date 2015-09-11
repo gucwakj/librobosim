@@ -107,23 +107,21 @@ int Robot::driveDistance(double distance, double radius) {
 	this->getxy(x0, y0);
 
 	// calculate distance to move
-	double x = x0 + distance*sin(this->getRotation(0, 2));
+	double x = x0 - distance*sin(this->getRotation(0, 2));
 	double y = y0 + distance*cos(this->getRotation(0, 2));
-	double d = sqrt((x - x0)*(x - x0) + (y - y0)*(y - y0));
-	if (distance < 0) d *= -1;
 
 	// move until close to goal
-	while (fabs(d) > 0.005) {
+	while (fabs(distance) > 0.005) {
 		// drive distance
-		this->driveAngle(rs::R2D(d / radius));
+		this->driveAngle(rs::R2D(distance / radius));
 
 		// don't try again if wheels are different
 		if (_wheels[0] != _wheels[1]) break;
 
 		// calculate new distance to move
 		this->getxy(x0, y0);
-		d = sqrt((x - x0)*(x - x0) + (y - y0)*(y - y0));
-		if (fabs(x - x0) < -rs::Epsilon || fabs(y - y0) < -rs::Epsilon) d *= -1;		// too far -> go backward
+		distance = sqrt((x - x0)*(x - x0) + (y - y0)*(y - y0));
+		if (fabs(x - x0) < -rs::Epsilon || fabs(y - y0) < -rs::Epsilon) distance *= -1;		// too far -> go backward
 	}
 
 	// success
