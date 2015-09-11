@@ -76,6 +76,7 @@ int RoboSim::addRobot(rsSim::Robot *robot, rsScene::Robot *robot2) {
 	rs::Vec wheel = xmlbot->getWheels();
 	robot2->drawWheel(sceneRobot, wheel[0], 1);
 	robot2->drawWheel(sceneRobot, wheel[1], 2);
+	Scene::stageChild(sceneRobot);
 
 	// attach callback
 	Callback::attachCallback(sceneRobot, robot, robot->getBodyList());
@@ -122,6 +123,9 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot, rsScene::ModularRobot *robot2)
 	for (unsigned int i = 0; i < conn.size(); i++) {
 		robot2->drawConnector(sceneRobot, conn[i]->getType(), conn[i]->getFace1(), conn[i]->getOrientation(), conn[i]->getSize(), conn[i]->getSide(), conn[i]->getConn());
 	}
+
+	// add to scene
+	Scene::stageChild(sceneRobot);
 
 	// attach callback
 	Callback::attachCallback(sceneRobot, robot, robot->getBodyList(), robot->getConnectorList());
