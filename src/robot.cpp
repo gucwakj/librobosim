@@ -732,22 +732,23 @@ int Robot::moveToZeroNB(void) {
 }
 
 int Robot::moveWait(void) {
-	// lock
+	// wait for each joint
+	for (int i = 0; i < _dof; i++) {
+		this->moveJointWait(i);
+	}
+
+	// wait for whole robot to be done
 	MUTEX_LOCK(&_success_mutex);
-	// wait
 	while (!_success) {
 		COND_WAIT(&_success_cond, &_success_mutex);
 	}
-	// unlock
 	MUTEX_UNLOCK(&_success_mutex);
 
-	// lock
+	// wait for motion to complete (for threaded)
 	MUTEX_LOCK(&_motion_mutex);
-	// wait
 	while (_motion) {
 		COND_WAIT(&_motion_cond, &_motion_mutex);
 	}
-	// unlock
 	MUTEX_UNLOCK(&_motion_mutex);
 
 	// reset motor states
