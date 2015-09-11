@@ -127,17 +127,18 @@ namespace roboSim {
 				double **angle;		// array of angles
 				double ***pangle;	// point to array of angles
 			};
+			bool _motion;				// robot is doing a motion
 			int _shift_data;			// shift recorded data or not
 			int _g_shift_data;			// globally shift data for robot
 			int _g_shift_data_en;		// globally shift data for robot enable/disable flag
+			int _leftWheel;				// joint id of left wheel
+			int _rightWheel;			// joint id of right wheel
 			MUTEX_T _active_mutex;		// active recording
 			COND_T _active_cond;		// active recording
 			MUTEX_T _motion_mutex;		// motion in progress
 			COND_T _motion_cond;		// motion in progress
 			MUTEX_T _recording_mutex;	// recording data point
 			COND_T _recording_cond;		// recording data  point
-			int _leftWheel;
-			int _rightWheel;
 
 		private:
 			bool is_shift_enabled(void);

@@ -8,6 +8,7 @@ using namespace roboSim;
 Robot::Robot(int left, int right) : rsRobots::Robot(rs::ROBOT) {
 	_leftWheel = left;
 	_rightWheel = right;
+	_motion = false;
 
 	MUTEX_INIT(&_active_mutex);
 	COND_INIT(&_active_cond);
@@ -85,7 +86,8 @@ int Robot::disconnect(void) {
 
 int Robot::driveAngle(double angle) {
 	this->driveAngleNB(angle);
-	this->moveWait();
+	this->moveJointWait(_leftWheel);
+	this->moveJointWait(_rightWheel);
 
 	// success
 	return 0;
@@ -734,23 +736,26 @@ int Robot::moveToZeroNB(void) {
 int Robot::moveWait(void) {
 	// lock
 	MUTEX_LOCK(&_success_mutex);
-	// get number of successes
-	int success = 0;
-	for (int i = 0; i < _dof; i++) {
-		success += _motor[i].success;
-	}
 	// wait
-	while (success != _dof) {
+	while (!_success) {
 		COND_WAIT(&_success_cond, &_success_mutex);
-		success = 0;
-		for (int i = 0; i < _dof; i++) { success += _motor[i].success; }
 	}
+	// unlock
+	MUTEX_UNLOCK(&_success_mutex);
+
+	// lock
+	MUTEX_LOCK(&_motion_mutex);
+	// wait
+	while (_motion) {
+		COND_WAIT(&_motion_cond, &_motion_mutex);
+	}
+	// unlock
+	MUTEX_UNLOCK(&_motion_mutex);
+
 	// reset motor states
 	for (int i = 0; i < _dof; i++) {
 		_motor[i].mode = CONTINUOUS;
 	}
-	// unlock
-	MUTEX_UNLOCK(&_success_mutex);
 
 	// success
 	return 0;
