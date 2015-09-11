@@ -1,9 +1,3 @@
-#ifdef _WIN32
-#include <windows.h>
-#else
-#include <unistd.h>
-#endif // _WIN32
-
 #include "robosim.h"
 
 // global robot simulation object
@@ -154,7 +148,7 @@ int RoboSim::deleteRobot(int id) {
 		MUTEX_LOCK(&(_pause_mutex));
 		while (Sim::_pause) {
 			MUTEX_UNLOCK(&(_pause_mutex));
-#ifdef _WIN32
+#ifdef RS_WIN32
 			Sleep(1);
 #else
 			usleep(1000);
