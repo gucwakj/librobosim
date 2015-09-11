@@ -118,6 +118,7 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot, rsScene::ModularRobot *robot2)
 		robot->addConnector(conn[i]->getType(), conn[i]->getFace1(), conn[i]->getOrientation(), conn[i]->getSize(), conn[i]->getSide(), conn[i]->getConn());
 		Sim::mutexUnlock(0);
 	}
+	robot->calculateTrackwidth();
 
 	// draw graphical robot
 	rsScene::Group *sceneRobot = Scene::createRobot(robot2);
