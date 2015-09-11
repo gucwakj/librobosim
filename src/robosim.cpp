@@ -50,8 +50,8 @@ RoboSim::RoboSim(const char *name, bool pause) : rsScene::Scene(), rsSim::Sim(pa
 	}
 
 	// set grid
-	Scene::setGrid(Reader::getGrid());
 	Scene::setUnits(Reader::getUnits());
+	Scene::setGrid(Reader::getGrid(), true);
 }
 
 int RoboSim::addRobot(rsSim::Robot *robot, rsScene::Robot *robot2) {
