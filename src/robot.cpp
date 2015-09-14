@@ -5,7 +5,7 @@
 
 using namespace roboSim;
 
-Robot::Robot(int left, int right) : rsRobots::Robot(rs::ROBOT) {
+Robot::Robot(int left, int right) : rsRobots::Robot(rs::Robot) {
 	_leftWheel = left;
 	_rightWheel = right;
 	_motion = false;

@@ -58,20 +58,20 @@ class LIBRSEXPORT CLinkbot : virtual public rsScene::Linkbot, virtual public rsS
 
 class LIBRSEXPORT CLinkbotI : public CLinkbot {
 	public:
-		CLinkbotI(const char *name = NULL, bool pause = true) :	rsRobots::Robot(rs::LINKBOTI),
-																rsRobots::Linkbot(rs::LINKBOTI),
-																rsScene::Linkbot(rs::LINKBOTI),
-																rsSim::Linkbot(rs::LINKBOTI),
+		CLinkbotI(const char *name = NULL, bool pause = true) :	rsRobots::Robot(rs::LinkbotI),
+																rsRobots::Linkbot(rs::LinkbotI),
+																rsScene::Linkbot(rs::LinkbotI),
+																rsSim::Linkbot(rs::LinkbotI),
 																roboSim::Robot(rsLinkbot::Bodies::Joint1, rsLinkbot::Bodies::Joint3),
 																CLinkbot(name, pause) { };
 };
 
 class LIBRSEXPORT CLinkbotL : public CLinkbot {
 	public:
-		CLinkbotL(const char *name = NULL, bool pause = true) :	rsRobots::Robot(rs::LINKBOTL),
-																rsRobots::Linkbot(rs::LINKBOTL),
-																rsScene::Linkbot(rs::LINKBOTL),
-																rsSim::Linkbot(rs::LINKBOTL),
+		CLinkbotL(const char *name = NULL, bool pause = true) :	rsRobots::Robot(rs::LinkbotL),
+																rsRobots::Linkbot(rs::LinkbotL),
+																rsScene::Linkbot(rs::LinkbotL),
+																rsSim::Linkbot(rs::LinkbotL),
 																roboSim::Robot(rsLinkbot::Bodies::Joint1, rsLinkbot::Bodies::Joint2),
 																CLinkbot(name, pause) { };
 };

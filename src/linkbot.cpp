@@ -2,10 +2,10 @@
 
 using namespace rsLinkbot;
 
-CLinkbot::CLinkbot(const char *name, bool pause) :	rsRobots::Robot(rs::LINKBOTT),
-													rsRobots::Linkbot(rs::LINKBOTT),
-													rsScene::Linkbot(rs::LINKBOTT),
-													rsSim::Linkbot(rs::LINKBOTT),
+CLinkbot::CLinkbot(const char *name, bool pause) :	rsRobots::Robot(rs::LinkbotT),
+													rsRobots::Linkbot(rs::LinkbotT),
+													rsScene::Linkbot(rs::LinkbotT),
+													rsSim::Linkbot(rs::LinkbotT),
 													roboSim::Robot(Bodies::Joint1, Bodies::Joint3) {
 	// create simulation object if necessary
 	if (g_sim == NULL) g_sim = new RoboSim(name, pause);
@@ -417,7 +417,7 @@ int CLinkbot::openGripper(double angle) {
 }
 
 int CLinkbot::openGripperNB(double angle) {
-	if (_form == rs::LINKBOTL)
+	if (_form == rs::LinkbotL)
 		this->moveJointToNB(Bodies::Joint1, -angle);
 	else
 		this->moveToNB(-angle/2, 0, -angle/2);
