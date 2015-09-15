@@ -39,7 +39,7 @@ RoboSim::RoboSim(const char *name, bool pause) : rsScene::Scene(), rsSim::Sim(pa
 		}
 		// draw ground object
 		rsScene::Obstacle *sceneObstacle = Scene::drawObstacle(0, obstacle->getForm(), obstacle->getPosition(), obstacle->getColor(), obstacle->getDimensions(), obstacle->getQuaternion());
-		Callback::attachCallback(sceneObstacle, simObstacle);
+		this->attachCallback(sceneObstacle, simObstacle);
 	}
 
 	// draw marker objects
