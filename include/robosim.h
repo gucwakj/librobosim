@@ -12,6 +12,7 @@
 #include <rsXML/Reader>
 #include <rsXML/Writer>
 #include <rsCallback/Callback>
+#include <rsCallback/ModularRobot>
 
 // macros
 #define angle2distance(radius, angle) ((radius) * (angle * 0.01745329251994329547))
@@ -26,8 +27,8 @@ class LIBRSEXPORT RoboSim : public rsScene::Scene, public rsSim::Sim, public rsX
 		RoboSim(const char*, bool);
 		virtual ~RoboSim(void) { };
 
-		int addRobot(rsSim::Robot*, rsScene::Robot*);
-		int addRobot(rsSim::ModularRobot*, rsScene::ModularRobot*);
+		int addRobot(rsSim::Robot*, rsScene::Robot*, rsCallback::Robot*);
+		int addRobot(rsSim::ModularRobot*, rsScene::ModularRobot*, rsCallback::ModularRobot*);
 		int deleteRobot(int);
 		bool getUnits(void);
 		void keyPressed(int);

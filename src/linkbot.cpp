@@ -6,12 +6,13 @@ CLinkbot::CLinkbot(const char *name, bool pause) :	rsRobots::Robot(rs::LinkbotT)
 													rsRobots::Linkbot(rs::LinkbotT),
 													rsScene::Linkbot(rs::LinkbotT),
 													rsSim::Linkbot(rs::LinkbotT),
+													rsCallback::Linkbot(),
 													roboSim::Robot(Bodies::Joint1, Bodies::Joint3) {
 	// create simulation object if necessary
 	if (g_sim == NULL) g_sim = new RoboSim(name, pause);
 
 	// add to simulation
-	g_sim->addRobot(this, this);
+	g_sim->addRobot(this, this, this);
 }
 
 CLinkbot::~CLinkbot(void) {

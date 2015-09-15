@@ -2,6 +2,7 @@
 #define DOF_H_
 
 #include <rs/Macros>
+#include <rsCallback/Dof>
 #include <rsScene/Dof>
 #include <rsSim/Sim>
 #include <rsSim/Dof>
@@ -10,7 +11,7 @@
 #include "robot.h"
 
 // individual
-class LIBRSEXPORT CDof : virtual public rsScene::Dof, virtual public rsSim::Dof, virtual public roboSim::Robot {
+class LIBRSEXPORT CDof : virtual public rsScene::Dof, virtual public rsSim::Dof, virtual public rsCallback::Dof, virtual public roboSim::Robot {
 	public:
 		CDof(int, char* = "", bool = true);
 		virtual ~CDof(void);

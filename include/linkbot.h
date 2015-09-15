@@ -2,6 +2,7 @@
 #define LINKBOT_H_
 
 #include <rs/Macros>
+#include <rsCallback/Linkbot>
 #include <rsScene/Linkbot>
 #include <rsSim/Sim>
 #include <rsSim/Linkbot>
@@ -10,7 +11,7 @@
 #include "robot.h"
 
 // individual
-class LIBRSEXPORT CLinkbot : virtual public rsScene::Linkbot, virtual public rsSim::Linkbot, virtual public roboSim::Robot {
+class LIBRSEXPORT CLinkbot : virtual public rsScene::Linkbot, virtual public rsSim::Linkbot, virtual public rsCallback::Linkbot, virtual public roboSim::Robot {
 	public:
 		CLinkbot(const char* = NULL, bool = true);
 		virtual ~CLinkbot(void);

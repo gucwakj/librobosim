@@ -6,12 +6,13 @@ CMindstorms::CMindstorms(const char *name, bool pause) :	rsRobots::Robot(rs::EV3
 															rsRobots::Mindstorms(rs::EV3),
 															rsScene::Mindstorms(rs::EV3),
 															rsSim::Mindstorms(),
+															rsCallback::Mindstorms(),
 															roboSim::Robot(Bodies::Joint1, Bodies::Joint2) {
 	// create simulation object if necessary
 	if (g_sim == NULL) g_sim = new RoboSim(name, pause);
 
 	// add to simulation
-	g_sim->addRobot(this, this);
+	g_sim->addRobot(this, this, this);
 }
 
 CMindstorms::~CMindstorms(void) {

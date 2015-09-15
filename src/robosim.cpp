@@ -9,7 +9,6 @@ RoboSim::RoboSim(const char *name, bool pause) : rsScene::Scene(), rsSim::Sim(pa
 	Scene::start(Reader::getPause());
 
 	// set units
-	Callback::setUnits(Reader::getUnits());
 	_units = Reader::getUnits();
 
 	// set background
@@ -54,7 +53,7 @@ RoboSim::RoboSim(const char *name, bool pause) : rsScene::Scene(), rsSim::Sim(pa
 	Scene::setGrid(Reader::getGrid(), true);
 }
 
-int RoboSim::addRobot(rsSim::Robot *robot, rsScene::Robot *robot2) {
+int RoboSim::addRobot(rsSim::Robot *robot, rsScene::Robot *robot2, rsCallback::Robot *robot3) {
 	// find new robot of this type
 	rsXML::Robot *xmlbot = Reader::getNextRobot(robot->getForm());
 	robot->setForm(xmlbot->getForm());
@@ -78,14 +77,15 @@ int RoboSim::addRobot(rsSim::Robot *robot, rsScene::Robot *robot2) {
 	robot2->drawWheel(sceneRobot, wheel[1], 2);
 	Scene::stageChild(sceneRobot);
 
-	// attach callback
-	Callback::attachCallback(sceneRobot, robot, robot->getBodyList());
+	// create and attach callback
+	robot3->setCallbackParams(robot, robot->getBodyList(), _units);
+	Scene::setRobotCallback(sceneRobot, robot3);
 
 	// success
 	return 0;
 }
 
-int RoboSim::addRobot(rsSim::ModularRobot *robot, rsScene::ModularRobot *robot2) {
+int RoboSim::addRobot(rsSim::ModularRobot *robot, rsScene::ModularRobot *robot2, rsCallback::ModularRobot *robot3) {
 	// find new robot of this type
 	rsXML::Robot *xmlbot = Reader::getNextRobot(robot->getForm());
 
@@ -127,8 +127,9 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot, rsScene::ModularRobot *robot2)
 	// add to scene
 	Scene::stageChild(sceneRobot);
 
-	// attach callback
-	Callback::attachCallback(sceneRobot, robot, robot->getBodyList(), robot->getConnectorList());
+	// create and attach callback
+	robot3->setCallbackParams(robot, robot->getBodyList(), robot->getConnectorList(), _units);
+	Scene::setRobotCallback(sceneRobot, robot3);
 
 	// success
 	return 0;

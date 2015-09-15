@@ -2,6 +2,7 @@
 #define MINDSTORMS_H_
 
 #include <rs/Macros>
+#include <rsCallback/Mindstorms>
 #include <rsScene/Mindstorms>
 #include <rsSim/Sim>
 #include <rsSim/Mindstorms>
@@ -10,7 +11,7 @@
 #include "robot.h"
 
 // individual
-class LIBRSEXPORT CMindstorms : virtual public rsScene::Mindstorms, virtual public rsSim::Mindstorms, virtual public roboSim::Robot {
+class LIBRSEXPORT CMindstorms : virtual public rsScene::Mindstorms, virtual public rsSim::Mindstorms, virtual public rsCallback::Mindstorms, virtual public roboSim::Robot {
 	public:
 		CMindstorms(const char* = NULL, bool = true);
 		virtual ~CMindstorms(void);
