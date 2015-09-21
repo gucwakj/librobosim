@@ -16,7 +16,7 @@ CLinkbot::CLinkbot(const char *name, bool pause) :	rsRobots::Robot(rs::LinkbotT)
 }
 
 CLinkbot::~CLinkbot(void) {
-	if (!g_sim->deleteRobot(_id)) { delete g_sim; this->_sim = NULL; }
+	if (!g_sim->deleteRobot(_id)) { delete g_sim; _sim = NULL; }
 }
 
 /**********************************************************
