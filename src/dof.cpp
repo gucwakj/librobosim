@@ -2,7 +2,7 @@
 
 using namespace rsDof;
 
-CDof::CDof(int joint, char *name, bool pause) :	rsRobots::Robot(rs::DOF),
+CDof::CDof(int joint, char *name, bool pause) :	rsRobots::Robot(rs::Dof),
 												rsRobots::Dof(joint),
 												rsScene::Dof(joint),
 												rsSim::Dof(joint),
