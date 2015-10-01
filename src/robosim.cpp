@@ -109,9 +109,9 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot, rsScene::ModularRobot *robot2,
 	// build connectors
 	rsXML::ConnectorList conn = xmlbot->getConnectorList();
 	for (unsigned int i = 0; i < conn.size(); i++) {
-		Sim::mutexLock(0);
+		Sim::mutexLock(Sim::AddRobot);
 		robot->addConnector(conn[i]->getType(), conn[i]->getFace1(), conn[i]->getOrientation(), conn[i]->getSize(), conn[i]->getSide(), conn[i]->getConn());
-		Sim::mutexUnlock(0);
+		Sim::mutexUnlock(Sim::AddRobot);
 	}
 	robot->calculateTrackwidth();
 
@@ -138,37 +138,37 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot, rsScene::ModularRobot *robot2,
 int RoboSim::deleteRobot(int id) {
 	// pause simulation to view results only on first delete
 	static int paused = 0;
-	MUTEX_LOCK(&(_pause_mutex));
-	MUTEX_LOCK(&(_running_mutex));
-	if (!paused++ && _running) {
-		Sim::_pause = 1;
-		MUTEX_UNLOCK(&(_pause_mutex));
-		MUTEX_UNLOCK(&(_running_mutex));
+	Sim::mutexLock(Sim::PauseSimulation);
+	Sim::mutexLock(Sim::RunningSimulation);
+	if (!paused++ && Sim::getRunning()) {
+		Sim::pause(1);
+		Sim::mutexUnlock(Sim::PauseSimulation);
+		Sim::mutexUnlock(Sim::RunningSimulation);
 
 		// get HUD and set message
 		Scene::setHUD(true);
 		Scene::getHUDText()->setText("Paused: Press any key to end");
 
 		// sleep until pausing halted by user
-		MUTEX_LOCK(&(_pause_mutex));
-		while (Sim::_pause) {
-			MUTEX_UNLOCK(&(_pause_mutex));
+		Sim::mutexLock(Sim::PauseSimulation);
+		while (Sim::getPause()) {
+			Sim::mutexUnlock(Sim::PauseSimulation);
 #ifdef RS_WIN32
 			Sleep(1);
 #else
 			usleep(1000);
 #endif
-			MUTEX_LOCK(&(_pause_mutex));
+			Sim::mutexLock(Sim::PauseSimulation);
 		}
-		MUTEX_UNLOCK(&(_pause_mutex));
+		Sim::mutexUnlock(Sim::PauseSimulation);
 
 		// relock for new loop
-		MUTEX_LOCK(&(_pause_mutex));
-		MUTEX_LOCK(&(_running_mutex));
+		Sim::mutexLock(Sim::PauseSimulation);
+		Sim::mutexLock(Sim::RunningSimulation);
 	}
 	// unlock mutexes
-	MUTEX_UNLOCK(&(_pause_mutex));
-	MUTEX_UNLOCK(&(_running_mutex));
+	Sim::mutexUnlock(Sim::PauseSimulation);
+	Sim::mutexUnlock(Sim::RunningSimulation);
 
 	// delete robot from modules
 	Scene::deleteRobot(id);
