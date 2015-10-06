@@ -105,6 +105,12 @@ int Robot::driveDistance(double distance, double radius) {
 	// get current position
 	double x0, y0;
 	this->getxy(x0, y0);
+	x0 = this->convert(x0, 1);
+	y0 = this->convert(y0, 1);
+
+	// do everything in meters
+	distance = this->convert(distance, 1);
+	radius = this->convert(radius, 1);
 
 	// calculate distance to move
 	double x = x0 - distance*sin(this->getRotation(0, 2));
@@ -120,8 +126,10 @@ int Robot::driveDistance(double distance, double radius) {
 
 		// calculate new distance to move
 		this->getxy(x0, y0);
+		x0 = this->convert(x0, 1);
+		y0 = this->convert(y0, 1);
 		distance = sqrt((x - x0)*(x - x0) + (y - y0)*(y - y0));
-		if (fabs(x - x0) < -rs::Epsilon || fabs(y - y0) < -rs::Epsilon) distance *= -1;		// too far -> go backward
+		if (x - x0 < -rs::Epsilon || y - y0 < -rs::Epsilon) distance *= -1;		// too far -> go backward
 	}
 
 	// success
