@@ -138,37 +138,23 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot, rsScene::ModularRobot *robot2,
 int RoboSim::deleteRobot(int id) {
 	// pause simulation to view results only on first delete
 	static int paused = 0;
-	Sim::mutexLock(Sim::PauseSimulation);
-	Sim::mutexLock(Sim::RunningSimulation);
 	if (!paused++ && Sim::getRunning()) {
+		// pause simulation
 		Sim::pause(1);
-		Sim::mutexUnlock(Sim::PauseSimulation);
-		Sim::mutexUnlock(Sim::RunningSimulation);
 
 		// get HUD and set message
 		Scene::setHUD(true);
 		Scene::getHUDText()->setText("Paused: Press any key to end");
 
 		// sleep until pausing halted by user
-		Sim::mutexLock(Sim::PauseSimulation);
 		while (Sim::getPause()) {
-			Sim::mutexUnlock(Sim::PauseSimulation);
 #ifdef RS_WIN32
 			Sleep(1);
 #else
 			usleep(1000);
 #endif
-			Sim::mutexLock(Sim::PauseSimulation);
 		}
-		Sim::mutexUnlock(Sim::PauseSimulation);
-
-		// relock for new loop
-		Sim::mutexLock(Sim::PauseSimulation);
-		Sim::mutexLock(Sim::RunningSimulation);
 	}
-	// unlock mutexes
-	Sim::mutexUnlock(Sim::PauseSimulation);
-	Sim::mutexUnlock(Sim::RunningSimulation);
 
 	// delete robot from modules
 	Scene::deleteRobot(id);

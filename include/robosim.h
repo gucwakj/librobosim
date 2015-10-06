@@ -5,14 +5,14 @@
 
 #include <rs/Enum>
 #include <rs/Macros>
-#include <rsScene/Scene>
-#include <rsScene/ModularRobot>
-#include <rsSim/Sim>
-#include <rsXML/Robot>
-#include <rsXML/Reader>
-#include <rsXML/Writer>
 #include <rsCallback/Callback>
 #include <rsCallback/ModularRobot>
+#include <rsScene/ModularRobot>
+#include <rsScene/Scene>
+#include <rsSim/Sim>
+#include <rsXML/Reader>
+#include <rsXML/Robot>
+#include <rsXML/Writer>
 
 // macros
 #define angle2distance(radius, angle) ((radius) * (angle * 0.01745329251994329547))
