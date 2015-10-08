@@ -1,6 +1,8 @@
 #include <iostream>
 #include "mindstorms.h"
 
+using namespace rsMindstorms;
+
 int main(int argc, char *argv[]) {
 	CMindstorms robot1, robot2;
 	CMindstormsGroup group;

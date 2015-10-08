@@ -1,8 +1,11 @@
 #include <iostream>
 #include "linkbot.h"
 
+using namespace rsLinkbot;
+
 int main(int argc, char *argv[]) {
-	CLinkbotI robot1, robot2;
+	CLinkbotI robot1;
+	CLinkbotI robot2;
 	CLinkbotIGroup group;
 
 	group.addRobot(robot1);
