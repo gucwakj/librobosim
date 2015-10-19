@@ -435,6 +435,9 @@ int CLinkbot::recordAnglesBegin(robotRecordData_t &time, robotRecordData_t &angl
 
 	// store angles
 	double **angles = new double * [_dof];
+	angle1 = new double[RECORD_ANGLE_ALLOC_SIZE];
+	angle2 = new double[RECORD_ANGLE_ALLOC_SIZE];
+	angle3 = new double[RECORD_ANGLE_ALLOC_SIZE];
 	angles[Bodies::Joint1] = angle1;
 	angles[Bodies::Joint2] = angle2;
 	angles[Bodies::Joint3] = angle3;

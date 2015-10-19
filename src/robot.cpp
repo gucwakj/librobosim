@@ -784,8 +784,8 @@ int Robot::recordAngleBegin(int id, robotRecordData_t &time, robotRecordData_t &
 	time = new double[RECORD_ANGLE_ALLOC_SIZE];
 	angle = new double[RECORD_ANGLE_ALLOC_SIZE];
 	rec->ptime = &time;
-	rec->pangle = new double ** [_dof];
-	rec->pangle[_leftWheel] = &angle;
+	rec->pangle = new double ** [1];
+	rec->pangle[0] = &angle;
 
 	// store pointer to recorded angles locally
 	_motor[id].record_angle = &angle;
@@ -1324,9 +1324,6 @@ int Robot::recordAnglesBegin(robotRecordData_t &time, robotRecordData_t *&angle,
 	rec->num = RECORD_ANGLE_ALLOC_SIZE;
 	rec->msecs = seconds * 1000;
 	time = new double[RECORD_ANGLE_ALLOC_SIZE];
-	for (int i = 0; i < _dof; i++) {
-		angle[i] = new double[RECORD_ANGLE_ALLOC_SIZE];
-	}
 	rec->ptime = &time;
 	rec->pangle = new double ** [_dof];
 	for (int i = 0; i < _dof; i++) {
@@ -1645,7 +1642,7 @@ void* Robot::recordAnglesBeginThread(void *arg) {
 	MUTEX_UNLOCK(&rec->robot->_active_mutex);
 
 	// loop until recording is no longer needed
-	for (int i = 0; rec->robot->_motor[rec->id].record; i++) {
+	for (int i = 0; rec->robot->_motor[rec->robot->_leftWheel].record; i++) {
 		// store locally num of data points taken
 		rec->robot->_motor[rec->robot->_leftWheel].record_num = i;
 

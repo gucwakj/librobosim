@@ -114,6 +114,8 @@ int CMindstorms::recordAnglesBegin(robotRecordData_t &time, robotRecordData_t &a
 
 	// store angles
 	double **angles = new double * [_dof];
+	angle1 = new double[RECORD_ANGLE_ALLOC_SIZE];
+	angle2 = new double[RECORD_ANGLE_ALLOC_SIZE];
 	angles[Bodies::Joint1] = angle1;
 	angles[Bodies::Joint2] = angle2;
 
