@@ -924,9 +924,8 @@ int Robot::recordWait(void) {
 
 int Robot::recordxyBegin(robotRecordData_t &x, robotRecordData_t &y, double seconds, int shiftData) {
 	// check if recording already
-	for (int i = 0; i < 2; i++) {
-		if (_motor[i].record) { return -1; }
-	}
+	if (_motor[_leftWheel].record) return -1;
+	if (_motor[_rightWheel].record) return -1;
 
 	// set up recording thread
 	THREAD_T recording;
@@ -940,7 +939,7 @@ int Robot::recordxyBegin(robotRecordData_t &x, robotRecordData_t &y, double seco
 	y = new double[RECORD_ANGLE_ALLOC_SIZE];
 	rec->ptime = &x;
 	rec->pangle = new double ** [1];
-	rec->pangle[_leftWheel] = &y;
+	rec->pangle[0] = &y;
 
 	// store pointer to recorded angles locally
 	_motor[_leftWheel].record_angle = &x;
@@ -1728,8 +1727,8 @@ void* Robot::recordxyBeginThread(void *arg) {
 			*(rec->ptime) = newbuf;
 			// create larger array for angle
 			newbuf = new double[rec->num];
-			memcpy(newbuf, *(rec->pangle), sizeof(double)*i);
-			delete [] (*(rec->pangle));
+			memcpy(newbuf, *(rec->pangle[0]), sizeof(double)*i);
+			delete [] *(rec->pangle[0]);
 			*(rec->pangle[0]) = newbuf;
 		}
 
