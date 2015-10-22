@@ -108,6 +108,9 @@ int Robot::driveDistance(double distance, double radius) {
 	x0 = this->convert(x0, 1);
 	y0 = this->convert(y0, 1);
 
+	// check speed and flip distance if necessary
+	if (_speed < -rs::Epsilon) { distance = -distance; }
+
 	// do everything in meters
 	distance = this->convert(distance, 1);
 	radius = this->convert(radius, 1);
@@ -118,8 +121,13 @@ int Robot::driveDistance(double distance, double radius) {
 
 	// move until close to goal
 	while (fabs(distance) > 0.005) {
-		// drive distance
-		this->driveAngle(rs::R2D(distance / radius));
+		// drive distance (check all combinations of +/- speed and distance
+		if (_speed < -rs::Epsilon && distance < -rs::Epsilon)
+			this->driveAngle(rs::R2D(fabs(distance) / radius));
+		else if (_speed < -rs::Epsilon && distance > -rs::Epsilon)
+			this->driveAngle(rs::R2D(-distance / radius));
+		else
+			this->driveAngle(rs::R2D(distance / radius));
 
 		// don't try again if wheels are different
 		if (_wheels[0] != _wheels[1]) break;
