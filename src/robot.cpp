@@ -9,6 +9,7 @@ Robot::Robot(int left, int right) : rsRobots::Robot(rs::Robot) {
 	_leftWheel = left;
 	_rightWheel = right;
 	_motion = false;
+	_distOffset = 0;
 
 	MUTEX_INIT(&_active_mutex);
 	COND_INIT(&_active_cond);

@@ -133,6 +133,7 @@ namespace roboSim {
 			int _g_shift_data_en;		// globally shift data for robot enable/disable flag
 			int _leftWheel;				// joint id of left wheel
 			int _rightWheel;			// joint id of right wheel
+			float _distOffset;			// distance of recording offset
 			MUTEX_T _active_mutex;		// active recording
 			COND_T _active_cond;		// active recording
 			MUTEX_T _motion_mutex;		// motion in progress
