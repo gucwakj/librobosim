@@ -5,7 +5,7 @@ RoboSim *g_sim = NULL;
 
 RoboSim::RoboSim(const char *name, bool pause) : rsScene::Scene(), rsSim::Sim(pause, true), rsXML::Reader(name), rsCallback::Callback() {
 	// set pausing
-	Sim::pause(Reader::getPause());
+	Sim::setPause(Reader::getPause());
 	Scene::start(Reader::getPause());
 
 	// set units
@@ -140,7 +140,7 @@ int RoboSim::deleteRobot(int id) {
 	static int paused = 0;
 	if (!paused++ && Sim::getRunning()) {
 		// pause simulation
-		Sim::pause(1);
+		Sim::setPause(1);
 
 		// get HUD and set message
 		Scene::setHUD(true);
@@ -175,7 +175,7 @@ void RoboSim::keyPressed(int key) {
 	}
 	else if (key == 't') { }
 	else {
-		Sim::pause(2);
+		Sim::setPause(2);
 		Scene::setPauseText(Sim::getPause());
 	}
 }
