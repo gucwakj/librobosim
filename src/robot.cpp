@@ -754,13 +754,6 @@ int Robot::moveWait(void) {
 		this->moveJointWait(i);
 	}
 
-	// wait for whole robot to be done
-	MUTEX_LOCK(&_success_mutex);
-	while (!_success) {
-		COND_WAIT(&_success_cond, &_success_mutex);
-	}
-	MUTEX_UNLOCK(&_success_mutex);
-
 	// wait for motion to complete (for threaded)
 	MUTEX_LOCK(&_motion_mutex);
 	while (_motion) {
