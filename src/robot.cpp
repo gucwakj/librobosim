@@ -30,20 +30,20 @@ Robot::~Robot(void) {
 
 int Robot::blinkLED(double delay, int num) {
 	// store original led color
-	double rgb[3] = {_rgb[0], _rgb[1], _rgb[2]};
+	float rgb[3] = {this->getRGB(1), this->getRGB(2), this->getRGB(3)};
 
 	// blink num-1 full times
 	for (int i = 0; i < num-1; i++) {
-		_rgb[0] = 1; _rgb[1] = 1; _rgb[2] = 1;
+		this->setRGB(rs::Vec(1, 1, 1));
 		this->doze(delay);
-		_rgb[0] = rgb[0]; _rgb[1] = rgb[1]; _rgb[2] = rgb[2];
+		this->setRGB(rs::Vec(rgb[0], rgb[1], rgb[2]));
 		this->doze(delay);
 	}
 
 	// one last off before resetting to original color
-	_rgb[0] = 1; _rgb[1] = 1; _rgb[2] = 1;
+	this->setRGB(rs::Vec(1, 1, 1));
 	this->doze(delay);
-	_rgb[0] = rgb[0]; _rgb[1] = rgb[1]; _rgb[2] = rgb[2];
+	this->setRGB(rs::Vec(rgb[0], rgb[1], rgb[2]));
 
 	// success
 	return 0;
@@ -131,7 +131,7 @@ int Robot::driveDistance(double distance, double radius) {
 			this->driveAngle(rs::R2D(distance / radius));
 
 		// don't try again if wheels are different
-		if (_wheels[0] != _wheels[1]) break;
+		if (this->getWheelLeft() != this->getWheelRight()) break;
 
 		// calculate new distance to move
 		this->getxy(x0, y0);
@@ -460,15 +460,10 @@ int Robot::getDistance(double &distance, double radius) {
 }
 
 int Robot::getFormFactor(int &formFactor) {
-	formFactor = _form;
+	formFactor = this->getForm();
 
 	// success
 	return 0;
-}
-
-int Robot::getID(void) {
-	// get id of robot
-	return _id;
 }
 
 int Robot::getJointAngle(int id, double &angle, int numReadings) {
@@ -535,7 +530,7 @@ int Robot::getJointSpeedRatio(int id, double &ratio) {
 
 int Robot::getLEDColorName(char color[]) {
 	rgbHashTable *rgbTable = HT_Create();
-	int getRGB[3] = {(int)(255*_rgb[0]), (int)(255*_rgb[1]), (int)(255*_rgb[2])};
+	int getRGB[3] = {(int)(255*this->getRGB(1)), (int)(255*this->getRGB(2)), (int)(255*this->getRGB(3))};
 	int retval = HT_GetKey(rgbTable, getRGB, color);
 	HT_Destroy(rgbTable);
 
@@ -544,9 +539,9 @@ int Robot::getLEDColorName(char color[]) {
 }
 
 int Robot::getLEDColorRGB(int &r, int &g, int &b) {
-	r = (int)(255*_rgb[0]);
-	g = (int)(255*_rgb[1]);
-	b = (int)(255*_rgb[2]);
+	r = (int)255*this->getRGB(1);
+	g = (int)255*this->getRGB(2);
+	b = (int)255*this->getRGB(3);
 
 	// success
 	return 0;
@@ -869,7 +864,7 @@ int Robot::recordDistanceEnd(int id, int &num) {
 	this->recordAngleEnd(id, num);
 
 	// convert radius to output units
-	double radius = this->convert(_wheel_radius, 0);
+	double radius = this->convert(this->getWheelRadius(), 0);
 
 	// convert all angles to distances based upon radius
 	for (int i = 0; i < num; i++) {
@@ -1062,23 +1057,14 @@ int Robot::setLEDColor(char *color) {
 	int htRetval = HT_Get(rgbTable, color, getRGB);
 	HT_Destroy(rgbTable);
 
-	if (htRetval) {
-		_rgb[0] = getRGB[0]/255.0;
-		_rgb[1] = getRGB[1]/255.0;
-		_rgb[2] = getRGB[2]/255.0;
-
-		// success
-		return 0;
-	}
-	else {
+	if (htRetval)
+		return this->setLEDColorRGB(getRGB[0], getRGB[1], getRGB[2]);
+	else
 		return htRetval;
-	}
 }
 
 int Robot::setLEDColorRGB(int r, int g, int b) {
-	_rgb[0] = r/255.0;
-	_rgb[1] = g/255.0;
-	_rgb[2] = b/255.0;
+	this->setRGB(rs::Vec(r/255.0, g/255.0, b/255.0));
 
 	// success
 	return 0;
@@ -1144,14 +1130,14 @@ int Robot::systemTime(double &time) {
 }
 
 int Robot::traceOff(void) {
-	_trace = 0;
+	this->setTrace(false);
 
 	// success
 	return 0;
 }
 
 int Robot::traceOn(void) {
-	_trace = 1;
+	this->setTrace(true);
 
 	// success
 	return 0;
@@ -1732,7 +1718,7 @@ void* Robot::recordxyBeginThread(void *arg) {
 		}
 
 		// store positions
-		if (rec->robot->_trace) {
+		if (rec->robot->getTrace()) {
 			(*(rec->ptime))[i] = rec->robot->getCenter(0);
 			(*(rec->pangle[0]))[i] = rec->robot->getCenter(1);
 		}

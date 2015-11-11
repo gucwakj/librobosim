@@ -16,6 +16,6 @@ CDof::CDof(int joint, char *name, bool pause) :	rsRobots::Robot(rs::Dof),
 }
 
 CDof::~CDof(void) {
-	if (!g_sim->deleteRobot(_id)) { delete g_sim; _sim = NULL; }
+	if (!g_sim->deleteRobot(this->getID())) { delete g_sim; _sim = NULL; }
 }
 

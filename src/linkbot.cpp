@@ -16,7 +16,7 @@ CLinkbot::CLinkbot(const char *name, bool pause) :	rsRobots::Robot(rs::LinkbotT)
 }
 
 CLinkbot::~CLinkbot(void) {
-	if (!g_sim->deleteRobot(_id)) { delete g_sim; _sim = NULL; }
+	if (!g_sim->deleteRobot(this->getID())) { delete g_sim; _sim = NULL; }
 }
 
 /**********************************************************
@@ -418,7 +418,7 @@ int CLinkbot::openGripper(double angle) {
 }
 
 int CLinkbot::openGripperNB(double angle) {
-	if (_form == rs::LinkbotL)
+	if (this->getForm() == rs::LinkbotL)
 		this->moveJointToNB(Bodies::Joint1, -angle);
 	else
 		this->moveToNB(-angle/2, 0, -angle/2);

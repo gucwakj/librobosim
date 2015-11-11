@@ -53,7 +53,6 @@ namespace roboSim {
 			int getBatteryVoltage(double&);
 			int getDistance(double&, double);
 			int getFormFactor(int&);
-			int getID(void);
 			int getJointAngle(int, double&, int = 10);
 			int getJointAngleInstant(int, double&);
 			int getJointMaxSpeed(int, double&);
