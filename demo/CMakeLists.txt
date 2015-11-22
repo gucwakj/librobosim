@@ -16,4 +16,7 @@ endif (ENABLE_LINKBOT)
 if (ENABLE_MINDSTORMS)
 	add_subdirectory (mindstorms)
 endif (ENABLE_MINDSTORMS)
+if (ENABLE_MINIDOF)
+	add_subdirectory (minidof)
+endif (ENABLE_MINIDOF)
 
