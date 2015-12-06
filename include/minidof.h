@@ -13,7 +13,7 @@
 // individual
 class LIBRSEXPORT CMiniDof : virtual public rsScene::MiniDof, virtual public rsSim::MiniDof, virtual public rsCallback::MiniDof, virtual public roboSim::Robot {
 	public:
-		CMiniDof(int, char* = "", bool = true);
+		CMiniDof(int, const char* = "", bool = true);
 		virtual ~CMiniDof(void);
 };
 

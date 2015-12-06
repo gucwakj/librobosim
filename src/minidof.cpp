@@ -2,12 +2,13 @@
 
 using namespace rsMiniDof;
 
-CMiniDof::CMiniDof(int joint, char *name, bool pause) :	rsRobots::Robot(rs::MiniDof),
-												rsRobots::MiniDof(joint),
-												rsScene::MiniDof(joint),
-												rsSim::MiniDof(joint),
-												rsCallback::MiniDof(),
-												roboSim::Robot(Bodies::Joint, Bodies::Joint) {
+CMiniDof::CMiniDof(int joint, const char *name, bool pause) :
+		rsRobots::Robot(rs::MiniDof),
+		rsRobots::MiniDof(joint),
+		rsScene::MiniDof(joint),
+		rsSim::MiniDof(joint),
+		rsCallback::MiniDof(),
+		roboSim::Robot(Bodies::Joint, Bodies::Joint) {
 	// create simulation object if necessary
 	if (g_sim == NULL) g_sim = new RoboSim(name, pause);
 
