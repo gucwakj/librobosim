@@ -110,7 +110,6 @@ set (EXTRA_LIBS ${EXTRA_LIBS} optimized rsXML debug rsXMLd)
 option (ENABLE_DOF "Enable dof compilation" OFF)
 option (ENABLE_LINKBOT "Enable linkbot compilation" ON)
 option (ENABLE_MINDSTORMS "Enable mindstorms compilation" ON)
-option (ENABLE_MINIDOF "Enable minidof compilation" OFF)
 
 # add source files to library
 set (SRCS ${SRCS}
@@ -127,9 +126,6 @@ endif (ENABLE_LINKBOT)
 if (ENABLE_MINDSTORMS)
 	set (SRCS ${SRCS} src/mindstorms.cpp)
 endif (ENABLE_MINDSTORMS)
-if (ENABLE_MINIDOF)
-	set (SRCS ${SRCS} src/minidof.cpp)
-endif (ENABLE_MINIDOF)
 
 # set output directories
 set (OUTPUT_LIBDIR "${LibRoboSim_BINARY_DIR}/lib")
