@@ -13,7 +13,7 @@
 // individual
 class LIBRSEXPORT CDof : virtual public rsScene::Dof, virtual public rsSim::Dof, virtual public rsCallback::Dof, virtual public roboSim::Robot {
 	public:
-		CDof(int, const char* = "", bool = true);
+		CDof(short, float = 1, const char* = "", bool = true);
 		virtual ~CDof(void);
 };
 

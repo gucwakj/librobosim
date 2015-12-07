@@ -2,11 +2,11 @@
 
 using namespace rsDof;
 
-CDof::CDof(int joint, const char *name, bool pause) :
+CDof::CDof(short joint, float scale, const char *name, bool pause) :
 		rsRobots::Robot(rs::Dof),
-		rsRobots::Dof(joint),
-		rsScene::Dof(joint),
-		rsSim::Dof(joint),
+		rsRobots::Dof(joint, scale),
+		rsScene::Dof(joint, scale),
+		rsSim::Dof(joint, scale),
 		rsCallback::Dof(),
 		roboSim::Robot(Bodies::Joint, Bodies::Joint) {
 	// create simulation object if necessary
