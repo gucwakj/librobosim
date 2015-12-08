@@ -1232,7 +1232,7 @@ int Robot::turnRight(double angle, double radius, double trackwidth) {
 		double theta = fabs((angle*this->convert(_trackwidth, 0)) / (2 * radius));
 
 		// turn left
-		if (angle > 0.005) {
+		if (rs::R2D(angle) > 0.005) {
 			this->moveJointNB(_leftWheel, -rs::R2D(theta));
 			this->moveJoint(_rightWheel, rs::R2D(theta));
 		}
