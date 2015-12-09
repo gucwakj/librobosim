@@ -65,6 +65,7 @@ int RoboSim::addRobot(rsSim::Robot *robot, rsScene::Robot *robot2, rsCallback::R
 	Sim::addRobot(robot, xmlbot->getID(), xmlbot->getPosition(), xmlbot->getQuaternion(), xmlbot->getJoints(), xmlbot->getWheels(), xmlbot->getGround());
 	robot->setWheelRadius(xmlbot->getWheelRadius());
 	robot->setRGB(xmlbot->getLED());
+	robot->setTrace(xmlbot->getTrace());
 
 	// 'connect' xml version to prevent finding it again
 	xmlbot->setConnect(1);
@@ -102,6 +103,7 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot, rsScene::ModularRobot *robot2,
 	}
 	robot->setWheelRadius(xmlbot->getWheelRadius());
 	robot->setRGB(xmlbot->getLED());
+	robot->setTrace(xmlbot->getTrace());
 
 	// 'connect' xml version to prevent finding it again
 	xmlbot->setConnect(1);
