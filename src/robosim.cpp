@@ -36,6 +36,9 @@ RoboSim::RoboSim(const char *name, bool pause) : rsScene::Scene(), rsSim::Sim(pa
 			case rs::HackySack:
 				simObstacle = Sim::addObstacle(obstacle->getPosition(), obstacle->getDimensions(), obstacle->getMass());
 				break;
+			case rs::PullupBar:
+				simObstacle = Sim::addPullupBar(obstacle->getPosition(), obstacle->getQuaternion(), obstacle->getDimensions());
+				break;
 		}
 		// draw ground object
 		rsScene::Obstacle *sceneObstacle = Scene::drawObstacle(0, obstacle->getForm(), obstacle->getPosition(), obstacle->getColor(), obstacle->getDimensions(), obstacle->getQuaternion());
