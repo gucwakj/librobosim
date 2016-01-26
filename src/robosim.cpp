@@ -115,7 +115,7 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot, rsScene::ModularRobot *robot2,
 	rsXML::ConnectorList conn = xmlbot->getConnectorList();
 	for (unsigned int i = 0; i < conn.size(); i++) {
 		Sim::mutexLock(Sim::AddRobot);
-		robot->addConnector(conn[i]->getType(), conn[i]->getFace1(), conn[i]->getOrientation(), conn[i]->getSize(), conn[i]->getSide(), conn[i]->getConn());
+		robot->addConnector(conn[i]->getType(), conn[i]->getFace1(), conn[i]->getOrientation(), conn[i]->getSize(), conn[i]->getSide(), conn[i]->getConn(), conn[i]->getOrientation2());
 		Sim::mutexUnlock(Sim::AddRobot);
 	}
 	robot->calculateTrackwidth();
