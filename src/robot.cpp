@@ -11,21 +11,21 @@ Robot::Robot(int left, int right) : rsRobots::Robot(rs::Robot) {
 	_motion = false;
 	_distOffset = 0;
 
-	MUTEX_INIT(&_active_mutex);
-	COND_INIT(&_active_cond);
-	MUTEX_INIT(&_motion_mutex);
-	COND_INIT(&_motion_cond);
-	MUTEX_INIT(&_recording_mutex);
-	COND_INIT(&_recording_cond);
+	RS_MUTEX_INIT(&_active_mutex);
+	RS_COND_INIT(&_active_cond);
+	RS_MUTEX_INIT(&_motion_mutex);
+	RS_COND_INIT(&_motion_cond);
+	RS_MUTEX_INIT(&_recording_mutex);
+	RS_COND_INIT(&_recording_cond);
 }
 
 Robot::~Robot(void) {
-	MUTEX_DESTROY(&_active_mutex);
-	COND_DESTROY(&_active_cond);
-	MUTEX_DESTROY(&_motion_mutex);
-	COND_DESTROY(&_motion_cond);
-	MUTEX_DESTROY(&_recording_mutex);
-	COND_DESTROY(&_recording_cond);
+	RS_MUTEX_DESTROY(&_active_mutex);
+	RS_COND_DESTROY(&_active_cond);
+	RS_MUTEX_DESTROY(&_motion_mutex);
+	RS_COND_DESTROY(&_motion_cond);
+	RS_MUTEX_DESTROY(&_recording_mutex);
+	RS_COND_DESTROY(&_recording_cond);
 }
 
 int Robot::blinkLED(double delay, int num) {
@@ -147,7 +147,7 @@ int Robot::driveDistance(double distance, double radius) {
 
 int Robot::driveDistanceNB(double distance, double radius) {
 	// create thread
-	THREAD_T moving;
+	RS_THREAD_T moving;
 
 	// store args
 	RobotMove *move = new RobotMove;
@@ -159,7 +159,7 @@ int Robot::driveDistanceNB(double distance, double radius) {
 	_motion = true;
 
 	// start thread
-	THREAD_CREATE(&moving, driveDistanceThread, (void *)move);
+	RS_THREAD_CREATE(&moving, driveDistanceThread, (void *)move);
 
 	// success
 	return 0;
@@ -209,7 +209,7 @@ int Robot::driveTimeNB(double seconds) {
 	}
 
 	// set up threading
-	THREAD_T moving;
+	RS_THREAD_T moving;
 	Recording *rec = new Recording;
 	rec->robot = this;
 	rec->msecs = 1000*seconds;
@@ -218,7 +218,7 @@ int Robot::driveTimeNB(double seconds) {
 	this->driveForeverNB();
 
 	// create thread to wait
-	THREAD_CREATE(&moving, (void* (*)(void *))&Robot::driveTimeNBThread, (void *)rec);
+	RS_THREAD_CREATE(&moving, (void* (*)(void *))&Robot::driveTimeNBThread, (void *)rec);
 
 	// success
 	return 0;
@@ -277,7 +277,7 @@ int Robot::drivexyTo(double x, double y, double radius, double trackwidth) {
 
 int Robot::drivexyToNB(double x, double y, double radius, double trackwidth) {
 	// create thread
-	THREAD_T moving;
+	RS_THREAD_T moving;
 
 	// store args
 	RobotMove *move = new RobotMove;
@@ -291,7 +291,7 @@ int Robot::drivexyToNB(double x, double y, double radius, double trackwidth) {
 	_motion = true;
 
 	// start thread
-	THREAD_CREATE(&moving, drivexyToThread, (void *)move);
+	RS_THREAD_CREATE(&moving, drivexyToThread, (void *)move);
 
 	// success
 	return 0;
@@ -299,7 +299,7 @@ int Robot::drivexyToNB(double x, double y, double radius, double trackwidth) {
 
 int Robot::drivexyToArrayNB(double *x, double *y, int n, double radius, double trackwidth) {
 	// create thread
-	THREAD_T moving;
+	RS_THREAD_T moving;
 
 	// store args
 	RobotMove *move = new RobotMove;
@@ -314,7 +314,7 @@ int Robot::drivexyToArrayNB(double *x, double *y, int n, double radius, double t
 	_motion = true;
 
 	// start thread
-	THREAD_CREATE(&moving, drivexyToArrayThread, (void *)move);
+	RS_THREAD_CREATE(&moving, drivexyToArrayThread, (void *)move);
 
 	// success
 	return 0;
@@ -337,7 +337,7 @@ int Robot::drivexyToFunc(double x0, double xf, int n, double (*func)(double x), 
 
 int Robot::drivexyToFuncNB(double x0, double xf, int n, double (*func)(double x), double radius, double trackwidth) {
 	// create thread
-	THREAD_T moving;
+	RS_THREAD_T moving;
 
 	// store args
 	RobotMove *move = new RobotMove;
@@ -353,7 +353,7 @@ int Robot::drivexyToFuncNB(double x0, double xf, int n, double (*func)(double x)
 	_motion = true;
 
 	// start thread
-	THREAD_CREATE(&moving, drivexyToFuncThread, (void *)move);
+	RS_THREAD_CREATE(&moving, drivexyToFuncThread, (void *)move);
 
 	// success
 	return 0;
@@ -415,11 +415,11 @@ int Robot::drivexyToSmooth(double x1, double y1, double x2, double y2, double x3
 
 int Robot::drivexyWait(void) {
 	// wait for motion to complete
-	MUTEX_LOCK(&_motion_mutex);
+	RS_MUTEX_LOCK(&_motion_mutex);
 	while (_motion) {
-		COND_WAIT(&_motion_cond, &_motion_mutex);
+		RS_COND_WAIT(&_motion_cond, &_motion_mutex);
 	}
-	MUTEX_UNLOCK(&_motion_mutex);
+	RS_MUTEX_UNLOCK(&_motion_mutex);
 
 	// success
 	return 0;
@@ -618,7 +618,7 @@ int Robot::moveJointByPowerNB(int id, int power) {
 
 int Robot::moveJointForeverNB(int id) {
 	// lock mutexes
-	MUTEX_LOCK(&_motor[id].success_mutex);
+	RS_MUTEX_LOCK(&_motor[id].success_mutex);
 	// enable motor
 	dJointEnable(_motor[id].id);
 	// set motor angle to current angle
@@ -637,7 +637,7 @@ int Robot::moveJointForeverNB(int id) {
 	// enable bodies for collisions
     dBodyEnable(_body[0]);
 	// unlock mutexes
-	MUTEX_UNLOCK(&_motor[id].success_mutex);
+	RS_MUTEX_UNLOCK(&_motor[id].success_mutex);
 
 	// success
 	return 0;
@@ -659,7 +659,7 @@ int Robot::moveJointTime(int id, double seconds) {
 
 int Robot::moveJointTimeNB(int id, double seconds) {
 	// set up threading
-	THREAD_T moving;
+	RS_THREAD_T moving;
 
 	// recording arguments
 	Recording *rec = new Recording;
@@ -671,7 +671,7 @@ int Robot::moveJointTimeNB(int id, double seconds) {
 	this->moveJointForeverNB(id);
 
 	// create thread to wait
-	THREAD_CREATE(&moving, (void* (*)(void *))&Robot::moveJointTimeNBThread, (void *)rec);
+	RS_THREAD_CREATE(&moving, (void* (*)(void *))&Robot::moveJointTimeNBThread, (void *)rec);
 
 	// success
 	return 0;
@@ -708,7 +708,7 @@ int Robot::moveTime(double seconds) {
 
 int Robot::moveTimeNB(double seconds) {
 	// set up threading
-	THREAD_T moving;
+	RS_THREAD_T moving;
 
 	// recording arguments
 	Recording *rec = new Recording;
@@ -719,7 +719,7 @@ int Robot::moveTimeNB(double seconds) {
 	this->moveForeverNB();
 
 	// create thread to wait
-	THREAD_CREATE(&moving, (void* (*)(void *))&Robot::moveTimeNBThread, (void *)rec);
+	RS_THREAD_CREATE(&moving, (void* (*)(void *))&Robot::moveTimeNBThread, (void *)rec);
 
 	// success
 	return 0;
@@ -750,11 +750,11 @@ int Robot::moveWait(void) {
 	}
 
 	// wait for motion to complete (for threaded)
-	MUTEX_LOCK(&_motion_mutex);
+	RS_MUTEX_LOCK(&_motion_mutex);
 	while (_motion) {
-		COND_WAIT(&_motion_cond, &_motion_mutex);
+		RS_COND_WAIT(&_motion_cond, &_motion_mutex);
 	}
-	MUTEX_UNLOCK(&_motion_mutex);
+	RS_MUTEX_UNLOCK(&_motion_mutex);
 
 	// reset motor states
 	for (int i = 0; i < _dof; i++) {
@@ -770,7 +770,7 @@ int Robot::recordAngleBegin(int id, robotRecordData_t &time, robotRecordData_t &
 	if (_motor[id].record) { return -1; }
 
 	// set up recording thread
-	THREAD_T recording;
+	RS_THREAD_T recording;
 
 	// set up recording args
 	Recording *rec = new Recording;
@@ -794,7 +794,7 @@ int Robot::recordAngleBegin(int id, robotRecordData_t &time, robotRecordData_t &
 	_shift_data = shiftData;
 
 	// create thread
-	THREAD_CREATE(&recording, (void* (*)(void *))&Robot::recordAngleBeginThread, (void *)rec);
+	RS_THREAD_CREATE(&recording, (void* (*)(void *))&Robot::recordAngleBeginThread, (void *)rec);
 
 	// success
 	return 0;
@@ -805,16 +805,16 @@ int Robot::recordAngleEnd(int id, int &num) {
 	this->doze(150);
 
 	// turn off recording
-	MUTEX_LOCK(&_recording_mutex);
+	RS_MUTEX_LOCK(&_recording_mutex);
 	_motor[id].record = false;
-	MUTEX_UNLOCK(&_recording_mutex);
+	RS_MUTEX_UNLOCK(&_recording_mutex);
 
 	// wait for last recording point to finish
-	MUTEX_LOCK(&_active_mutex);
+	RS_MUTEX_LOCK(&_active_mutex);
 	while (_motor[id].record_active) {
-		COND_WAIT(&_active_cond, &_active_mutex);
+		RS_COND_WAIT(&_active_cond, &_active_mutex);
 	}
-	MUTEX_UNLOCK(&_active_mutex);
+	RS_MUTEX_UNLOCK(&_active_mutex);
 
 	// report number of data points recorded
 	num = _motor[id].record_num;
@@ -825,24 +825,24 @@ int Robot::recordAngleEnd(int id, int &num) {
 
 int Robot::recordAnglesEnd(int &num) {
 	// turn off recording
-	MUTEX_LOCK(&_recording_mutex);
+	RS_MUTEX_LOCK(&_recording_mutex);
 	for (int i = 0; i < _dof; i++) {
 		_motor[i].record = 0;
 	}
-	MUTEX_UNLOCK(&_recording_mutex);
+	RS_MUTEX_UNLOCK(&_recording_mutex);
 
 	// get number of joints recording
 	int rec = 0;
 	for (int i = 0; i < _dof; i++) {
 		rec += _motor[i].record_active;
 	}
-	MUTEX_LOCK(&_active_mutex);
+	RS_MUTEX_LOCK(&_active_mutex);
 	while (rec) {
-		COND_WAIT(&_active_cond, &_active_mutex);
+		RS_COND_WAIT(&_active_cond, &_active_mutex);
 		rec = 0;
 		for (int i = 0; i < _dof; i++) { rec += _motor[i].record_active; }
 	}
-	MUTEX_UNLOCK(&_active_mutex);
+	RS_MUTEX_UNLOCK(&_active_mutex);
 
 	// report number of data points recorded
 	num = _motor[_leftWheel].record_num;
@@ -902,7 +902,7 @@ int Robot::recordDistanceOffset(double distance) {
 
 int Robot::recordWait(void) {
 	// lock
-	MUTEX_LOCK(&_recording_mutex);
+	RS_MUTEX_LOCK(&_recording_mutex);
 	// get number of joints recording
 	int recording = 0;
 	for (int i = 0; i < _dof; i++) {
@@ -910,10 +910,10 @@ int Robot::recordWait(void) {
 	}
 	// wait
 	while (recording) {
-		COND_WAIT(&_recording_cond, &_recording_mutex);
+		RS_COND_WAIT(&_recording_cond, &_recording_mutex);
 	}
 	// unlock
-	MUTEX_UNLOCK(&_recording_mutex);
+	RS_MUTEX_UNLOCK(&_recording_mutex);
 
 	// success
 	return 0;
@@ -925,7 +925,7 @@ int Robot::recordxyBegin(robotRecordData_t &x, robotRecordData_t &y, double seco
 	if (_motor[_rightWheel].record) return -1;
 
 	// set up recording thread
-	THREAD_T recording;
+	RS_THREAD_T recording;
 
 	// set up recording args
 	Recording *rec = new Recording;
@@ -950,7 +950,7 @@ int Robot::recordxyBegin(robotRecordData_t &x, robotRecordData_t &y, double seco
 	_shift_data = shiftData;
 
 	// create thread
-	THREAD_CREATE(&recording, (void* (*)(void *))&Robot::recordxyBeginThread, (void *)rec);
+	RS_THREAD_CREATE(&recording, (void* (*)(void *))&Robot::recordxyBeginThread, (void *)rec);
 
 	// success
 	return 0;
@@ -961,17 +961,17 @@ int Robot::recordxyEnd(int &num) {
 	this->doze(150);
 
 	// turn off recording
-	MUTEX_LOCK(&_recording_mutex);
+	RS_MUTEX_LOCK(&_recording_mutex);
 	_motor[_leftWheel].record = false;
 	_motor[_rightWheel].record = false;
-	MUTEX_UNLOCK(&_recording_mutex);
+	RS_MUTEX_UNLOCK(&_recording_mutex);
 
 	// wait for last recording point to finish
-	MUTEX_LOCK(&_active_mutex);
+	RS_MUTEX_LOCK(&_active_mutex);
 	while (_motor[_leftWheel].record_active && _motor[_rightWheel].record_active) {
-		COND_WAIT(&_active_cond, &_active_mutex);
+		RS_COND_WAIT(&_active_cond, &_active_mutex);
 	}
-	MUTEX_UNLOCK(&_active_mutex);
+	RS_MUTEX_UNLOCK(&_active_mutex);
 
 	// report number of data points recorded
 	num = _motor[_leftWheel].record_num;
@@ -1013,7 +1013,7 @@ int Robot::resetToZero(void) {
 
 int Robot::resetToZeroNB(void) {
 	// reset absolute counter to 0 -> 2M_PI
-	MUTEX_LOCK(&_theta_mutex);
+	RS_MUTEX_LOCK(&_theta_mutex);
 	for (int i = 0; i < _dof; i++) {
 		int rev = (int)(_motor[i].theta/2/M_PI);
 		if (rev) {
@@ -1021,7 +1021,7 @@ int Robot::resetToZeroNB(void) {
 			_motor[i].goal -= 2*rev*M_PI;
 		}
 	}
-	MUTEX_UNLOCK(&_theta_mutex);
+	RS_MUTEX_UNLOCK(&_theta_mutex);
 
 	// move to zero position
 	this->moveToZeroNB();
@@ -1190,7 +1190,7 @@ int Robot::turnLeft(double angle, double radius, double trackwidth) {
 
 int Robot::turnLeftNB(double angle, double radius, double trackwidth) {
 	// create thread
-	THREAD_T moving;
+	RS_THREAD_T moving;
 
 	// store args
 	RobotMove *move = new RobotMove;
@@ -1204,7 +1204,7 @@ int Robot::turnLeftNB(double angle, double radius, double trackwidth) {
 	_motion = true;
 
 	// start thread
-	THREAD_CREATE(&moving, turnThread, (void *)move);
+	RS_THREAD_CREATE(&moving, turnThread, (void *)move);
 
 	// success
 	return 0;
@@ -1263,7 +1263,7 @@ int Robot::turnRight(double angle, double radius, double trackwidth) {
 
 int Robot::turnRightNB(double angle, double radius, double trackwidth) {
 	// create thread
-	THREAD_T moving;
+	RS_THREAD_T moving;
 
 	// store args
 	RobotMove *move = new RobotMove;
@@ -1277,7 +1277,7 @@ int Robot::turnRightNB(double angle, double radius, double trackwidth) {
 	_motion = true;
 
 	// start thread
-	THREAD_CREATE(&moving, turnThread, (void *)move);
+	RS_THREAD_CREATE(&moving, turnThread, (void *)move);
 
 	// success
 	return 0;
@@ -1304,7 +1304,7 @@ int Robot::recordAnglesBegin(robotRecordData_t &time, robotRecordData_t *&angle,
 	}
 
 	// set up recording thread
-	THREAD_T recording;
+	RS_THREAD_T recording;
 
 	// set up recording args
 	Recording *rec = new Recording;
@@ -1332,7 +1332,7 @@ int Robot::recordAnglesBegin(robotRecordData_t &time, robotRecordData_t *&angle,
 	_shift_data = shiftData;
 
 	// create thread
-	THREAD_CREATE(&recording, (void* (*)(void *))&Robot::recordAnglesBeginThread, (void *)rec);
+	RS_THREAD_CREATE(&recording, (void* (*)(void *))&Robot::recordAnglesBeginThread, (void *)rec);
 
 	// success
 	return 0;
@@ -1358,7 +1358,7 @@ void* Robot::driveDistanceThread(void *arg) {
 	move->robot->driveDistance(move->x, move->radius);
 
 	// signal successful completion
-	COND_ACTION(&move->robot->_motion_cond, &move->robot->_motion_mutex, move->robot->_motion = false);
+	RS_COND_ACTION(&move->robot->_motion_cond, &move->robot->_motion_mutex, move->robot->_motion = false);
 
 	// cleanup
 	delete move;
@@ -1395,7 +1395,7 @@ void* Robot::drivexyToArrayThread(void *arg) {
 	}
 
 	// signal successful completion
-	COND_ACTION(&move->robot->_motion_cond, &move->robot->_motion_mutex, move->robot->_motion = false);
+	RS_COND_ACTION(&move->robot->_motion_cond, &move->robot->_motion_mutex, move->robot->_motion = false);
 
 	// cleanup
 	delete move->px;
@@ -1414,7 +1414,7 @@ void* Robot::drivexyToThread(void *arg) {
 	move->robot->drivexyTo(move->x, move->y, move->radius, move->trackwidth);
 
 	// signal successful completion
-	COND_ACTION(&move->robot->_motion_cond, &move->robot->_motion_mutex, move->robot->_motion = false);
+	RS_COND_ACTION(&move->robot->_motion_cond, &move->robot->_motion_mutex, move->robot->_motion = false);
 
 	// cleanup
 	delete move;
@@ -1431,7 +1431,7 @@ void* Robot::drivexyToFuncThread(void *arg) {
 	move->robot->drivexyToFunc(move->x, move->y, move->i, move->func, move->radius, move->trackwidth);
 
 	// signal successful completion
-	COND_ACTION(&move->robot->_motion_cond, &move->robot->_motion_mutex, move->robot->_motion = false);
+	RS_COND_ACTION(&move->robot->_motion_cond, &move->robot->_motion_mutex, move->robot->_motion = false);
 
 	// cleanup
 	delete move;
@@ -1531,7 +1531,7 @@ void* Robot::recordAngleThread(void *arg) {
 	}
 
 	// signal completion of recording
-	COND_ACTION(&rec->robot->_recording_cond, &rec->robot->_recording_mutex, rec->robot->_motor[rec->id].record = false);
+	RS_COND_ACTION(&rec->robot->_recording_cond, &rec->robot->_recording_mutex, rec->robot->_motor[rec->id].record = false);
 
 	// cleanup
 	delete rec;
@@ -1553,10 +1553,10 @@ void* Robot::recordAngleBeginThread(void *arg) {
 	int moving;
 
 	// actively taking a new data point
-	MUTEX_LOCK(&rec->robot->_active_mutex);
+	RS_MUTEX_LOCK(&rec->robot->_active_mutex);
 	rec->robot->_motor[rec->id].record_active = true;
-	COND_SIGNAL(&rec->robot->_active_cond);
-	MUTEX_UNLOCK(&rec->robot->_active_mutex);
+	RS_COND_SIGNAL(&rec->robot->_active_cond);
+	RS_MUTEX_UNLOCK(&rec->robot->_active_mutex);
 
 	// loop until recording is no longer needed
 	for (int i = 0; rec->robot->_motor[rec->id].record; i++) {
@@ -1601,10 +1601,10 @@ void* Robot::recordAngleBeginThread(void *arg) {
 	}
 
 	// signal completion of recording
-	MUTEX_LOCK(&rec->robot->_active_mutex);
+	RS_MUTEX_LOCK(&rec->robot->_active_mutex);
 	rec->robot->_motor[rec->id].record_active = false;
-	COND_SIGNAL(&rec->robot->_active_cond);
-	MUTEX_UNLOCK(&rec->robot->_active_mutex);
+	RS_COND_SIGNAL(&rec->robot->_active_cond);
+	RS_MUTEX_UNLOCK(&rec->robot->_active_mutex);
 
 	// cleanup
 	delete rec;
@@ -1622,12 +1622,12 @@ void* Robot::recordAnglesBeginThread(void *arg) {
 	int time = (int)((g_sim->getClock())*1000);
 
 	// actively taking a new data point
-	MUTEX_LOCK(&rec->robot->_active_mutex);
+	RS_MUTEX_LOCK(&rec->robot->_active_mutex);
 	for (int i = 0; i < rec->robot->_dof; i++) {
 		rec->robot->_motor[i].record_active = true;
 	}
-	COND_SIGNAL(&rec->robot->_active_cond);
-	MUTEX_UNLOCK(&rec->robot->_active_mutex);
+	RS_COND_SIGNAL(&rec->robot->_active_cond);
+	RS_MUTEX_UNLOCK(&rec->robot->_active_mutex);
 
 	// loop until recording is no longer needed
 	for (int i = 0; rec->robot->_motor[rec->robot->_leftWheel].record; i++) {
@@ -1669,12 +1669,12 @@ void* Robot::recordAnglesBeginThread(void *arg) {
 	}
 
 	// signal completion of recording
-	MUTEX_LOCK(&rec->robot->_active_mutex);
+	RS_MUTEX_LOCK(&rec->robot->_active_mutex);
 	for (int i = 0; i < rec->robot->_dof; i++) {
 		rec->robot->_motor[i].record_active = false;
 	}
-	COND_SIGNAL(&rec->robot->_active_cond);
-	MUTEX_UNLOCK(&rec->robot->_active_mutex);
+	RS_COND_SIGNAL(&rec->robot->_active_cond);
+	RS_MUTEX_UNLOCK(&rec->robot->_active_mutex);
 
 	// cleanup
 	delete rec;
@@ -1691,11 +1691,11 @@ void* Robot::recordxyBeginThread(void *arg) {
 	int time = (int)((g_sim->getClock())*1000);
 
 	// actively taking a new data point
-	MUTEX_LOCK(&rec->robot->_active_mutex);
+	RS_MUTEX_LOCK(&rec->robot->_active_mutex);
 	rec->robot->_motor[rec->robot->_leftWheel].record_active = true;
 	rec->robot->_motor[rec->robot->_rightWheel].record_active = true;
-	COND_SIGNAL(&rec->robot->_active_cond);
-	MUTEX_UNLOCK(&rec->robot->_active_mutex);
+	RS_COND_SIGNAL(&rec->robot->_active_cond);
+	RS_MUTEX_UNLOCK(&rec->robot->_active_mutex);
 
 	// loop until recording is no longer needed
 	for (int i = 0; rec->robot->_motor[rec->robot->_leftWheel].record; i++) {
@@ -1735,11 +1735,11 @@ void* Robot::recordxyBeginThread(void *arg) {
 	}
 
 	// signal completion of recording
-	MUTEX_LOCK(&rec->robot->_active_mutex);
+	RS_MUTEX_LOCK(&rec->robot->_active_mutex);
 	rec->robot->_motor[rec->robot->_leftWheel].record_active = false;
 	rec->robot->_motor[rec->robot->_rightWheel].record_active = false;
-	COND_SIGNAL(&rec->robot->_active_cond);
-	MUTEX_UNLOCK(&rec->robot->_active_mutex);
+	RS_COND_SIGNAL(&rec->robot->_active_cond);
+	RS_MUTEX_UNLOCK(&rec->robot->_active_mutex);
 
 	// cleanup
 	delete rec;
@@ -1759,7 +1759,7 @@ void* Robot::turnThread(void *arg) {
 		move->robot->turnRight(move->x, move->radius, move->trackwidth);
 
 	// signal successful completion
-	COND_ACTION(&move->robot->_motion_cond, &move->robot->_motion_mutex, move->robot->_motion = false);
+	RS_COND_ACTION(&move->robot->_motion_cond, &move->robot->_motion_mutex, move->robot->_motion = false);
 
 	// cleanup
 	delete move;

@@ -31,7 +31,7 @@ int CLinkbot::accelJointAngleNB(Bodies::Joint id, double a, double angle) {
 
 int CLinkbot::accelJointCycloidalNB(Bodies::Joint id, double angle, double t) {
 	// lock goal
-	MUTEX_LOCK(&_goal_mutex);
+	RS_MUTEX_LOCK(&_goal_mutex);
 
 	// set initial omega
 	if (_motor[id].state != POSITIVE || _motor[id].state != NEGATIVE) {
@@ -53,19 +53,19 @@ int CLinkbot::accelJointCycloidalNB(Bodies::Joint id, double angle, double t) {
 	_motor[id].accel.start = 0;
 
 	// enable motor
-	MUTEX_LOCK(&_theta_mutex);
+	RS_MUTEX_LOCK(&_theta_mutex);
 	dJointEnable(_motor[id].id);
 	dJointSetAMotorAngle(_motor[id].id, 0, _motor[id].theta);
 	dBodyEnable(_body[Bodies::Body]);
-	MUTEX_UNLOCK(&_theta_mutex);
+	RS_MUTEX_UNLOCK(&_theta_mutex);
 
 	// unsuccessful
-	MUTEX_LOCK(&_motor[id].success_mutex);
+	RS_MUTEX_LOCK(&_motor[id].success_mutex);
 	_motor[id].success = false;
-	MUTEX_UNLOCK(&_motor[id].success_mutex);
+	RS_MUTEX_UNLOCK(&_motor[id].success_mutex);
 
 	// unlock goal
-	MUTEX_UNLOCK(&_goal_mutex);
+	RS_MUTEX_UNLOCK(&_goal_mutex);
 
 	// success
 	return 0;
@@ -73,7 +73,7 @@ int CLinkbot::accelJointCycloidalNB(Bodies::Joint id, double angle, double t) {
 
 int CLinkbot::accelJointHarmonicNB(Bodies::Joint id, double angle, double t) {
 	// lock goal
-	MUTEX_LOCK(&_goal_mutex);
+	RS_MUTEX_LOCK(&_goal_mutex);
 
 	// set initial omega
 	if (_motor[id].state != POSITIVE || _motor[id].state != NEGATIVE) {
@@ -95,19 +95,19 @@ int CLinkbot::accelJointHarmonicNB(Bodies::Joint id, double angle, double t) {
 	_motor[id].accel.start = 0;
 
 	// enable motor
-	MUTEX_LOCK(&_theta_mutex);
+	RS_MUTEX_LOCK(&_theta_mutex);
 	dJointEnable(_motor[id].id);
 	dJointSetAMotorAngle(_motor[id].id, 0, _motor[id].theta);
 	dBodyEnable(_body[Bodies::Body]);
-	MUTEX_UNLOCK(&_theta_mutex);
+	RS_MUTEX_UNLOCK(&_theta_mutex);
 
 	// unsuccessful
-	MUTEX_LOCK(&_motor[id].success_mutex);
+	RS_MUTEX_LOCK(&_motor[id].success_mutex);
 	_motor[id].success = false;
-	MUTEX_UNLOCK(&_motor[id].success_mutex);
+	RS_MUTEX_UNLOCK(&_motor[id].success_mutex);
 
 	// unlock goal
-	MUTEX_UNLOCK(&_goal_mutex);
+	RS_MUTEX_UNLOCK(&_goal_mutex);
 
 	// success
 	return 0;
@@ -123,7 +123,7 @@ int CLinkbot::accelJointSmoothNB(Bodies::Joint id, double a0, double af, double 
 
 int CLinkbot::accelJointTimeNB(Bodies::Joint id, double a, double t) {
 	// lock goal
-	MUTEX_LOCK(&_goal_mutex);
+	RS_MUTEX_LOCK(&_goal_mutex);
 
 	// set initial omega
 	if (_motor[id].state != POSITIVE || _motor[id].state != NEGATIVE) {
@@ -145,19 +145,19 @@ int CLinkbot::accelJointTimeNB(Bodies::Joint id, double a, double t) {
 	_motor[id].mode = ACCEL_CONSTANT;
 
 	// enable motor
-	MUTEX_LOCK(&_theta_mutex);
+	RS_MUTEX_LOCK(&_theta_mutex);
 	dJointEnable(_motor[id].id);
 	dJointSetAMotorAngle(_motor[id].id, 0, _motor[id].theta);
 	dBodyEnable(_body[Bodies::Body]);
-	MUTEX_UNLOCK(&_theta_mutex);
+	RS_MUTEX_UNLOCK(&_theta_mutex);
 
 	// unsuccessful
-	MUTEX_LOCK(&_motor[id].success_mutex);
+	RS_MUTEX_LOCK(&_motor[id].success_mutex);
 	_motor[id].success = false;
-	MUTEX_UNLOCK(&_motor[id].success_mutex);
+	RS_MUTEX_UNLOCK(&_motor[id].success_mutex);
 
 	// unlock goal
-	MUTEX_UNLOCK(&_goal_mutex);
+	RS_MUTEX_UNLOCK(&_goal_mutex);
 
 	// success
 	return 0;
@@ -196,7 +196,7 @@ int CLinkbot::closeGripper(void) {
 
 int CLinkbot::closeGripperNB(void) {
 	// create thread
-	THREAD_T moving;
+	RS_THREAD_T moving;
 
 	// store args
 	LinkbotMove *move = new LinkbotMove;
@@ -206,7 +206,7 @@ int CLinkbot::closeGripperNB(void) {
 	_motion = true;
 
 	// start thread
-	THREAD_CREATE(&moving, closeGripperNBThread, (void *)move);
+	RS_THREAD_CREATE(&moving, closeGripperNBThread, (void *)move);
 
 	// success
 	return 0;
@@ -565,7 +565,7 @@ void* CLinkbot::closeGripperNBThread(void *arg) {
 	move->robot->closeGripper();
 
 	// signal successful completion
-	COND_ACTION(&move->robot->_motion_cond, &move->robot->_motion_mutex, move->robot->_motion = false);
+	RS_COND_ACTION(&move->robot->_motion_cond, &move->robot->_motion_mutex, move->robot->_motion = false);
 
 	// cleanup
 	delete move;

@@ -133,12 +133,12 @@ namespace roboSim {
 			int _leftWheel;				// joint id of left wheel
 			int _rightWheel;			// joint id of right wheel
 			float _distOffset;			// distance of recording offset
-			MUTEX_T _active_mutex;		// active recording
-			COND_T _active_cond;		// active recording
-			MUTEX_T _motion_mutex;		// motion in progress
-			COND_T _motion_cond;		// motion in progress
-			MUTEX_T _recording_mutex;	// recording data point
-			COND_T _recording_cond;		// recording data  point
+			RS_MUTEX_T _active_mutex;	// active recording
+			RS_COND_T _active_cond;		// active recording
+			RS_MUTEX_T _motion_mutex;	// motion in progress
+			RS_COND_T _motion_cond;		// motion in progress
+			RS_MUTEX_T _recording_mutex;// recording data point
+			RS_COND_T _recording_cond;	// recording data  point
 
 		private:
 			bool is_shift_enabled(void);
