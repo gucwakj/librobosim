@@ -114,9 +114,11 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot, rsScene::ModularRobot *robot2,
 	// build connectors
 	rsXML::ConnectorList conn = xmlbot->getConnectorList();
 	for (unsigned int i = 0; i < conn.size(); i++) {
-		Sim::mutexLock(Sim::AddRobot);
-		robot->addConnector(conn[i]->getType(), conn[i]->getFace1(), conn[i]->getOrientation(), conn[i]->getSize(), conn[i]->getSide(), conn[i]->getConn(), conn[i]->getOrientation2());
-		Sim::mutexUnlock(Sim::AddRobot);
+		if (conn[i]->getRobot() == xmlbot->getID()) {
+			Sim::mutexLock(Sim::AddRobot);
+			robot->addConnector(conn[i]->getType(), conn[i]->getFace1(), conn[i]->getOrientation(), conn[i]->getSize(), conn[i]->getSide(), conn[i]->getConn(), conn[i]->getOrientation2());
+			Sim::mutexUnlock(Sim::AddRobot);
+		}
 	}
 	robot->calculateTrackwidth();
 
@@ -126,7 +128,9 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot, rsScene::ModularRobot *robot2,
 
 	// draw connectors
 	for (unsigned int i = 0; i < conn.size(); i++) {
-		robot2->drawConnector(sceneRobot, conn[i]->getType(), conn[i]->getFace1(), conn[i]->getOrientation(), conn[i]->getSize(), conn[i]->getSide(), conn[i]->getConn());
+		if (conn[i]->getRobot() == xmlbot->getID()) {
+			robot2->drawConnector(sceneRobot, conn[i]->getType(), conn[i]->getFace1(), conn[i]->getOrientation(), conn[i]->getSize(), conn[i]->getSide(), conn[i]->getConn());
+		}
 	}
 
 	// add to scene
