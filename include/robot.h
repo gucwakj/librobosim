@@ -29,7 +29,6 @@ namespace roboSim {
 			int connectWithSerialID(const char*);
 			int delay(double);
 			int delaySeconds(double);
-			int disableRecordDataShift(void);
 			int disconnect(void);
 			int driveAngle(double);
 			virtual int driveAngleNB(double);
@@ -49,7 +48,6 @@ namespace roboSim {
 			int drivexyToFuncSmooth(double, double, int, double (*func)(double), double, double);
 			virtual int drivexyToSmooth(double, double, double, double, double, double, double, double);
 			int drivexyWait(void);
-			int enableRecordDataShift(void);
 			int getAccelerometerData(double&, double&, double&);
 			int getBatteryVoltage(double&);
 			int getDistance(double&, double);
@@ -84,9 +82,11 @@ namespace roboSim {
 			int recordAngleBegin(int, robotRecordData_t&, robotRecordData_t&, double, int = 1);
 			int recordAngleEnd(int, int&);
 			int recordAnglesEnd(int&);
+			int recordDataShift(void);
 			int recordDistanceBegin(int, robotRecordData_t&, robotRecordData_t&, double, double, int = 1);
 			int recordDistanceEnd(int, int&);
 			int recordDistanceOffset(double);
+			int recordNoDataShift(void);
 			int recordWait(void);
 			int recordxyBegin(robotRecordData_t&, robotRecordData_t&, double, int = 1);
 			int recordxyEnd(int&);

@@ -73,14 +73,6 @@ int Robot::delaySeconds(double seconds) {
 	return 0;
 }
 
-int Robot::disableRecordDataShift(void) {
-	_g_shift_data = 0;
-	_g_shift_data_en = 1;
-
-	// success
-	return 0;
-}
-
 int Robot::disconnect(void) {
 	// and we are not connected
 	_connected = 0;
@@ -424,14 +416,6 @@ int Robot::drivexyWait(void) {
 		RS_COND_WAIT(&_motion_cond, &_motion_mutex);
 	}
 	RS_MUTEX_UNLOCK(&_motion_mutex);
-
-	// success
-	return 0;
-}
-
-int Robot::enableRecordDataShift(void) {
-	_g_shift_data = 1;
-	_g_shift_data_en = 1;
 
 	// success
 	return 0;
@@ -855,6 +839,14 @@ int Robot::recordAnglesEnd(int &num) {
 	return 0;
 }
 
+int Robot::recordDataShift(void) {
+	_g_shift_data = 1;
+	_g_shift_data_en = 1;
+
+	// success
+	return 0;
+}
+
 int Robot::recordDistanceBegin(int id, robotRecordData_t &time, robotRecordData_t &distance, double radius, double seconds, int shiftData) {
 	// record angle of desired joint
 	this->recordAngleBegin(id, time, distance, seconds, shiftData);
@@ -899,6 +891,14 @@ int Robot::recordDistanceOffset(double distance) {
 
 	// set offset distance
 	_distOffset = distance;
+
+	// success
+	return 0;
+}
+
+int Robot::recordNoDataShift(void) {
+	_g_shift_data = 0;
+	_g_shift_data_en = 1;
 
 	// success
 	return 0;
