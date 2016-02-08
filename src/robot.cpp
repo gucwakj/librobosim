@@ -49,6 +49,10 @@ int Robot::blinkLED(double delay, int num) {
 	return 0;
 }
 
+int Robot::connectWithSerialID(const char *id) {
+	return 0;
+}
+
 int Robot::delay(double milliseconds) {
 	// set ending time
 	double end = g_sim->getClock() + milliseconds/1000;

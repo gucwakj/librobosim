@@ -26,6 +26,7 @@ namespace roboSim {
 			virtual ~Robot(void);
 
 			int blinkLED(double, int);
+			int connectWithSerialID(const char*);
 			int delay(double);
 			int delaySeconds(double);
 			int disableRecordDataShift(void);
@@ -178,13 +179,6 @@ namespace roboSim {
 			int blinkLED(double delay, int num) {
 				for (unsigned int i = 0; i < _robots.size(); i++) {
 					_robots[i]->blinkLED(delay, num);
-				}
-				return 0;
-			}
-
-			int connect(void) {
-				for (unsigned int i = 0; i < _robots.size(); i++) {
-					_robots[i]->connect();
 				}
 				return 0;
 			}
