@@ -1216,14 +1216,15 @@ int Robot::turnLeftNB(double angle, double radius, double trackwidth) {
 
 int Robot::turnRight(double angle, double radius, double trackwidth) {
 	// calculate final rotation after turn
-	angle = rs::D2R(angle);
-	double rf = this->getRotation(0, 2) + 2 * rs::Pi - angle;
-	int num = rf / (2 * rs::Pi);
-	rf -= num * 2 * rs::Pi;
-	double left = rf - this->getRotation(0, 2);
-	double right = rf - (2 * rs::Pi + this->getRotation(0, 2));
-	if (fabs(left) < fabs(right))	angle = left;
-	else							angle = right;
+	angle = rs::D2R(angle);												// convert to radians
+	int rotations = (angle+0.1) / 2 / rs::Pi;							// number of rotations
+	double rf = this->getRotation(0, 2) + 2*rs::Pi - angle + 2*rotations*rs::Pi;	// final angle of rotation
+	double left = rf - this->getRotation(0, 2);							// radians if turning left
+	double right = rf - (2 * rs::Pi + this->getRotation(0, 2));			// radians if turning right
+	if (fabs(left) < rs::Epsilon)			angle = -right;				// if left==0, use right angle
+	else if (fabs(right) < rs::Epsilon)		angle = -left;				// if right==0, use left angle
+	else if (fabs(left) < fabs(right))		angle = left;				// turn smaller of left or right
+	else									angle = right;				// other option
 
 	// get speed of robot
 	double *speed = new double[2]();
