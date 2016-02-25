@@ -29,6 +29,9 @@ RoboSim::RoboSim(const char *name, bool pause) : rsScene::Scene(), rsSim::Sim(pa
 			case rs::WoodBlock:
 				simObstacle = Sim::addObstacle(obstacle->getPosition(), obstacle->getQuaternion(), obstacle->getDimensions(), obstacle->getMass());
 				break;
+			case rs::CompetitionBorder:
+				simObstacle = Sim::addCompetitionBorder(obstacle->getPosition(), obstacle->getQuaternion(), obstacle->getDimensions());
+				break;
 			case rs::Cylinder:
 				simObstacle = Sim::addObstacle(obstacle->getPosition(), obstacle->getQuaternion(), obstacle->getDimensions(), obstacle->getMass(), obstacle->getAxis());
 				break;
