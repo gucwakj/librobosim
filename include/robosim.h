@@ -15,6 +15,10 @@
 #include <rsXML/Writer>
 
 // macros
+#define JOINT1 0
+#define JOINT2 1
+#define JOINT3 2
+#define JOINT4 3
 #define angle2distance(radius, angle) ((radius) * (angle * 0.01745329251994329547))
 #define distance2angle(radius, distance) (((distance)/(radius))*57.29577951308232286465)
 #define DEPRECATED(from, to) fprintf(_stderr, "Warning: The function \"%s()\" is deprecated. Please use \"%s()\"\n" , from, to)
