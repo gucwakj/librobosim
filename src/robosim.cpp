@@ -1,3 +1,5 @@
+#include <osgText/Text>
+
 #include "robosim.h"
 
 // global robot simulation object
