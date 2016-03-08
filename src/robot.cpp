@@ -99,6 +99,9 @@ int Robot::driveAngleNB(double angle) {
 }
 
 int Robot::driveDistance(double distance, double radius) {
+	// wait until the program starts
+	this->pauseWait();
+
 	// get current position
 	double x0, y0;
 	this->getxy(x0, y0);
@@ -142,6 +145,9 @@ int Robot::driveDistance(double distance, double radius) {
 }
 
 int Robot::driveDistanceNB(double distance, double radius) {
+	// wait until the program starts
+	this->pauseWait();
+
 	// create thread
 	RS_THREAD_T moving;
 
@@ -178,6 +184,9 @@ int Robot::driveForeverNB(void) {
 }
 
 int Robot::driveTime(double seconds) {
+	// wait until the program starts
+	this->pauseWait();
+
 	// warn and exit if time is negative
 	if (fabs(seconds) < -rs::Epsilon) {
 		std::cerr << "Error: driveTime doesn't accept negative times." << std::endl;
@@ -198,6 +207,9 @@ int Robot::driveTime(double seconds) {
 }
 
 int Robot::driveTimeNB(double seconds) {
+	// wait until the program starts
+	this->pauseWait();
+
 	// warn and exit if time is negative
 	if (fabs(seconds) < -rs::Epsilon) {
 		std::cerr << "Error: driveTimeNB doesn't accept negative times." << std::endl;
@@ -209,9 +221,6 @@ int Robot::driveTimeNB(double seconds) {
 	Recording *rec = new Recording;
 	rec->robot = this;
 	rec->msecs = 1000*seconds;
-
-	// set joint movements
-	this->driveForeverNB();
 
 	// create thread to wait
 	RS_THREAD_CREATE(&moving, (void* (*)(void *))&Robot::driveTimeNBThread, (void *)rec);
@@ -632,6 +641,9 @@ int Robot::moveJointForeverNB(int id) {
 }
 
 int Robot::moveJointTime(int id, double seconds) {
+	// wait until the program starts
+	this->pauseWait();
+
 	// move joint
 	this->moveJointForeverNB(id);
 
@@ -646,6 +658,9 @@ int Robot::moveJointTime(int id, double seconds) {
 }
 
 int Robot::moveJointTimeNB(int id, double seconds) {
+	// wait until the program starts
+	this->pauseWait();
+
 	// set up threading
 	RS_THREAD_T moving;
 
@@ -681,6 +696,9 @@ int Robot::moveJointToByTrackPosNB(int id, double angle) {
 }
 
 int Robot::moveTime(double seconds) {
+	// wait until the program starts
+	this->pauseWait();
+
 	// move joint
 	this->moveForeverNB();
 
@@ -695,6 +713,9 @@ int Robot::moveTime(double seconds) {
 }
 
 int Robot::moveTimeNB(double seconds) {
+	// wait until the program starts
+	this->pauseWait();
+
 	// set up threading
 	RS_THREAD_T moving;
 
@@ -754,6 +775,9 @@ int Robot::moveWait(void) {
 }
 
 int Robot::recordAngleBegin(int id, robotRecordData_t &time, robotRecordData_t &angle, double seconds, int shiftData) {
+	// wait until the program starts
+	this->pauseWait();
+
 	// check if recording already
 	if (_motor[id].record) { return -1; }
 
@@ -848,6 +872,9 @@ int Robot::recordDataShift(void) {
 }
 
 int Robot::recordDistanceBegin(int id, robotRecordData_t &time, robotRecordData_t &distance, double radius, double seconds, int shiftData) {
+	// wait until the program starts
+	this->pauseWait();
+
 	// record angle of desired joint
 	this->recordAngleBegin(id, time, distance, seconds, shiftData);
 
@@ -924,6 +951,9 @@ int Robot::recordWait(void) {
 }
 
 int Robot::recordxyBegin(robotRecordData_t &x, robotRecordData_t &y, double seconds, int shiftData) {
+	// wait until the program starts
+	this->pauseWait();
+
 	// check if recording already
 	if (_motor[_leftWheel].record) return -1;
 	if (_motor[_rightWheel].record) return -1;
@@ -1378,6 +1408,8 @@ void* Robot::driveTimeNBThread(void *arg) {
 
 	// get robot
 	Robot *robot = dynamic_cast<Robot *>(rec->robot);
+	// move
+	robot->driveForeverNB();
 	// sleep
 	robot->doze(rec->msecs);
 	// hold all robot motion

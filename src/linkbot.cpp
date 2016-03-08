@@ -122,6 +122,9 @@ int CLinkbot::accelJointSmoothNB(Bodies::Joint id, double a0, double af, double 
 }
 
 int CLinkbot::accelJointTimeNB(Bodies::Joint id, double a, double t) {
+	// wait until the program starts
+	this->pauseWait();
+
 	// lock goal
 	RS_MUTEX_LOCK(&_goal_mutex);
 
@@ -428,6 +431,9 @@ int CLinkbot::openGripperNB(double angle) {
 }
 
 int CLinkbot::recordAnglesBegin(robotRecordData_t &time, robotRecordData_t &angle1, robotRecordData_t &angle2, robotRecordData_t &angle3, double seconds, int shiftData) {
+	// wait until the program starts
+	this->pauseWait();
+
 	// check if recording already
 	for (int i = 0; i < _dof; i++) {
 		if (_motor[i].record) { return -1; }
