@@ -134,6 +134,7 @@ namespace roboSim {
 			int _leftWheel;				// joint id of left wheel
 			int _rightWheel;			// joint id of right wheel
 			float _distOffset;			// distance of recording offset
+			float _speed;				// linear speed of robot
 			RS_MUTEX_T _active_mutex;	// active recording
 			RS_COND_T _active_cond;		// active recording
 			RS_MUTEX_T _motion_mutex;	// motion in progress

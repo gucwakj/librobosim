@@ -10,6 +10,7 @@ Robot::Robot(int left, int right) : rsRobots::Robot(rs::Robot) {
 	_rightWheel = right;
 	_motion = false;
 	_distOffset = 0;
+	_speed = 2;
 
 	RS_MUTEX_INIT(&_active_mutex);
 	RS_COND_INIT(&_active_cond);
