@@ -138,7 +138,7 @@ int Robot::driveDistance(double distance, double radius) {
 		x0 = this->convert(x0, 1);
 		y0 = this->convert(y0, 1);
 		distance = sqrt((x - x0)*(x - x0) + (y - y0)*(y - y0));
-		if (x - x0 < -rs::Epsilon || y - y0 < -rs::Epsilon) distance *= -1;		// too far -> go backward
+		if (x - x0 < -2*rs::Epsilon || y - y0 < -2*rs::Epsilon) distance *= -1;		// too far -> go backward
 	}
 
 	// success
