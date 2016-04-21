@@ -13,10 +13,23 @@ CMindstorms::CMindstorms(const char *name, bool pause) :	rsRobots::Robot(rs::EV3
 
 	// add to simulation
 	g_sim->addRobot(this, this, this);
+
+	// dummy recording variable
+	_rec_time = new double *[_dof];
+	for (int i = 0; i < _dof; i++) {
+		_rec_time[i] = NULL;
+	}
 }
 
 CMindstorms::~CMindstorms(void) {
+	// remove from simulation
 	if (!g_sim->deleteRobot(this->getID())) { delete g_sim; _sim = NULL; }
+
+	// delete recording time vars
+	for (int i = 0; i < _dof; i++) {
+		if (_rec_time[i] != NULL) delete _rec_time[i];
+	}
+	delete[] _rec_time;
 }
 
 int CMindstorms::getJointAngles(double &angle1, double &angle2, double &angle3, double &angle4, int numReadings) {
@@ -115,15 +128,12 @@ int CMindstorms::recordAnglesBegin(robotRecordData_t &time, robotRecordData_t &a
 		if (_motor[i].record) { return -1; }
 	}
 
-	// store angles
-	double **angles = new double * [_dof];
-	angle1 = new double[RECORD_ANGLE_ALLOC_SIZE];
-	angle2 = new double[RECORD_ANGLE_ALLOC_SIZE];
-	angles[Bodies::Joint2] = angle1;
-	angles[Bodies::Joint3] = angle2;
+	// record two joints
+	this->recordAngleBegin(Bodies::Joint1, time, angle1, seconds, shiftData);
+	this->recordAngleBegin(Bodies::Joint2, _rec_time[1], angle2, seconds, shiftData);
 
-	// call base class recording function
-	return roboSim::Robot::recordAnglesBegin(time, angles, seconds, shiftData);
+	// success
+	return 0;
 }
 
 int CMindstorms::setJointSpeeds(double speed1, double speed2, double speed3, double speed4) {

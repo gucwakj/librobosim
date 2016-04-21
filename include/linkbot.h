@@ -55,6 +55,9 @@ class LIBRSEXPORT CLinkbot : virtual public rsScene::Linkbot, virtual public rsS
 
 	private:
 		static void* closeGripperNBThread(void*);
+
+	private:
+		double **_rec_time;
 };
 
 class LIBRSEXPORT CLinkbotI : public CLinkbot {

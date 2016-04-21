@@ -794,8 +794,7 @@ int Robot::recordAngleBegin(int id, robotRecordData_t &time, robotRecordData_t &
 	time = new double[RECORD_ANGLE_ALLOC_SIZE];
 	angle = new double[RECORD_ANGLE_ALLOC_SIZE];
 	rec->ptime = &time;
-	rec->pangle = new double ** [1];
-	rec->pangle[0] = &angle;
+	rec->pangle = &angle;
 
 	// store pointer to recorded angles locally
 	_motor[id].record_angle = &angle;
@@ -970,8 +969,7 @@ int Robot::recordxyBegin(robotRecordData_t &x, robotRecordData_t &y, double seco
 	x = new double[RECORD_ANGLE_ALLOC_SIZE];
 	y = new double[RECORD_ANGLE_ALLOC_SIZE];
 	rec->ptime = &x;
-	rec->pangle = new double ** [1];
-	rec->pangle[0] = &y;
+	rec->pangle = &y;
 
 	// store pointer to recorded angles locally
 	_motor[_leftWheel].record_angle = &x;
@@ -1333,47 +1331,6 @@ double Robot::convert(double value, int tometer) {
 	return tmp;
 }
 
-int Robot::recordAnglesBegin(robotRecordData_t &time, robotRecordData_t *&angle, double seconds, int shiftData) {
-	// check if recording already
-	for (int i = 0; i < _dof; i++) {
-		if (_motor[i].record) { return -1; }
-	}
-
-	// set up recording thread
-	RS_THREAD_T recording;
-
-	// set up recording args
-	Recording *rec = new Recording;
-	rec->robot = this;
-	rec->num = RECORD_ANGLE_ALLOC_SIZE;
-	rec->msecs = seconds * 1000;
-	time = new double[RECORD_ANGLE_ALLOC_SIZE];
-	rec->ptime = &time;
-	rec->pangle = new double ** [_dof];
-	for (int i = 0; i < _dof; i++) {
-		rec->pangle[i] = &angle[i];
-	}
-
-	// store pointer to recorded angles locally
-	for (int i = 0; i < _dof; i++) {
-		_motor[i].record_angle = &angle[i];
-	}
-
-	// lock recording for joint id
-	for (int i = 0; i < _dof; i++) {
-		_motor[i].record = true;
-	}
-
-	// set shift data
-	_shift_data = shiftData;
-
-	// create thread
-	RS_THREAD_CREATE(&recording, (void* (*)(void *))&Robot::recordAnglesBeginThread, (void *)rec);
-
-	// success
-	return 0;
-}
-
 /**********************************************************
 	private functions
  **********************************************************/
@@ -1533,7 +1490,7 @@ void* Robot::recordAngleThread(void *arg) {
 		rec->time[i] = (rec->time[i] - start_time) / 1000;
 
 		// store joint angle
-		rec->angle[0][i] = rs::R2D(rec->robot->_motor[rec->id].theta);
+		rec->angle[i] = rs::R2D(rec->robot->_motor[rec->id].theta);
 
 		// check if joint is moving
 		moving[i] = (int)(dJointGetAMotorParam(rec->robot->_motor[rec->id].id, dParamVel)*1000);
@@ -1611,13 +1568,13 @@ void* Robot::recordAngleBeginThread(void *arg) {
 			*(rec->ptime) = newbuf;
 			// create larger array for angle
 			newbuf = new double[rec->num];
-			memcpy(newbuf, *(rec->pangle[0]), sizeof(double)*i);
-			delete [] *(rec->pangle[0]);
-			*(rec->pangle[0]) = newbuf;
+			memcpy(newbuf, *(rec->pangle), sizeof(double)*i);
+			delete[] *(rec->pangle);
+			*(rec->pangle) = newbuf;
 		}
 
 		// store joint angles
-		(*(rec->pangle[0]))[i] = rs::R2D(rec->robot->_motor[rec->id].theta);
+		(*rec->pangle)[i] = rs::R2D(rec->robot->_motor[rec->id].theta);
 		moving = (int)(dJointGetAMotorParam(rec->robot->_motor[rec->id].id, dParamVel)*1000);
 
 		// store time of data point
@@ -1641,76 +1598,6 @@ void* Robot::recordAngleBeginThread(void *arg) {
 	// signal completion of recording
 	RS_MUTEX_LOCK(&rec->robot->_active_mutex);
 	rec->robot->_motor[rec->id].record_active = false;
-	RS_COND_SIGNAL(&rec->robot->_active_cond);
-	RS_MUTEX_UNLOCK(&rec->robot->_active_mutex);
-
-	// cleanup
-	delete rec;
-
-	// success
-	return NULL;
-}
-
-void* Robot::recordAnglesBeginThread(void *arg) {
-	// cast argument
-	Recording *rec = (Recording *)arg;
-
-	// create initial time points
-	double start_time = 0;
-	int time = (int)((g_sim->getClock())*1000);
-
-	// actively taking a new data point
-	RS_MUTEX_LOCK(&rec->robot->_active_mutex);
-	for (int i = 0; i < rec->robot->_dof; i++) {
-		rec->robot->_motor[i].record_active = true;
-	}
-	RS_COND_SIGNAL(&rec->robot->_active_cond);
-	RS_MUTEX_UNLOCK(&rec->robot->_active_mutex);
-
-	// loop until recording is no longer needed
-	for (int i = 0; rec->robot->_motor[rec->robot->_leftWheel].record; i++) {
-		// store locally num of data points taken
-		rec->robot->_motor[rec->robot->_leftWheel].record_num = i;
-
-		// resize array if filled current one
-		if(i >= rec->num) {
-			rec->num += RECORD_ANGLE_ALLOC_SIZE;
-			// create larger array for time
-			double *newbuf = new double[rec->num];
-			memcpy(newbuf, *rec->ptime, sizeof(double)*i);
-			delete [] *(rec->ptime);
-			*(rec->ptime) = newbuf;
-			for (int j = 0; j < rec->robot->_dof; j++) {
-				newbuf = new double[rec->num];
-				memcpy(newbuf, *(rec->pangle[j]), sizeof(double)*i);
-				delete [] *(rec->pangle[j]);
-				*(rec->pangle[j]) = newbuf;
-			}
-		}
-
-		// store joint angles
-		for (int j = 0; j < rec->robot->_dof; j++) {
-			(*(rec->pangle[j]))[i] = rs::R2D(rec->robot->_motor[j].theta);
-		}
-
-		// store time of data point
-		(*rec->ptime)[i] = g_sim->getClock()*1000;
-		if (i == 0) { start_time = (*rec->ptime)[i]; }
-		(*rec->ptime)[i] = ((*rec->ptime)[i] - start_time) / 1000;
-
-		// increment time step
-		time += rec->msecs;
-
-		// pause until next step
-		if ( (int)(g_sim->getClock()*1000) < time )
-			rec->robot->doze(time - (int)(g_sim->getClock()*1000));
-	}
-
-	// signal completion of recording
-	RS_MUTEX_LOCK(&rec->robot->_active_mutex);
-	for (int i = 0; i < rec->robot->_dof; i++) {
-		rec->robot->_motor[i].record_active = false;
-	}
 	RS_COND_SIGNAL(&rec->robot->_active_cond);
 	RS_MUTEX_UNLOCK(&rec->robot->_active_mutex);
 
@@ -1750,15 +1637,15 @@ void* Robot::recordxyBeginThread(void *arg) {
 			*(rec->ptime) = newbuf;
 			// create larger array for angle
 			newbuf = new double[rec->num];
-			memcpy(newbuf, *(rec->pangle[0]), sizeof(double)*i);
-			delete [] *(rec->pangle[0]);
-			*(rec->pangle[0]) = newbuf;
+			memcpy(newbuf, *rec->pangle, sizeof(double)*i);
+			delete[] * (rec->pangle);
+			*(rec->pangle) = newbuf;
 		}
 
 		// store positions
 		if (rec->robot->getTrace()) {
-			(*(rec->ptime))[i] = rec->robot->getCenter(0);
-			(*(rec->pangle[0]))[i] = rec->robot->getCenter(1);
+			(*rec->ptime)[i] = rec->robot->getCenter(0);
+			(*rec->pangle)[i] = rec->robot->getCenter(1);
 		}
 		else {
 			i--;

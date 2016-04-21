@@ -114,7 +114,6 @@ namespace roboSim {
 
 		protected:
 			double convert(double, int);
-			int recordAnglesBegin(robotRecordData_t&, robotRecordData_t*&, double, int);
 
 		protected:
 			struct Recording {
@@ -124,8 +123,8 @@ namespace roboSim {
 				int msecs;			// ms between data points
 				double *time;		// array for time
 				double **ptime;		// pointer to time array
-				double **angle;		// array of angles
-				double ***pangle;	// point to array of angles
+				double *angle;		// array for angle
+				double **pangle;	// pointer to angle array
 			};
 			bool _motion;				// robot is doing a motion
 			int _shift_data;			// shift recorded data or not
@@ -153,7 +152,6 @@ namespace roboSim {
 			static void* moveTimeNBThread(void*);
 			static void* recordAngleThread(void*);
 			static void* recordAngleBeginThread(void*);
-			static void* recordAnglesBeginThread(void*);
 			static void* recordxyBeginThread(void*);
 			static void* turnThread(void*);
 	};

@@ -29,6 +29,9 @@ class LIBRSEXPORT CMindstorms : virtual public rsScene::Mindstorms, virtual publ
 		int recordAnglesBegin(robotRecordData_t&, robotRecordData_t&, robotRecordData_t&, double, int = 1);
 		int setJointSpeeds(double, double, double, double = 0);
 		int setJointSpeedRatios(double, double, double, double = 0);
+
+	private:
+		double **_rec_time;
 };
 
 // group
