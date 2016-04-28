@@ -433,9 +433,9 @@ int Robot::drivexyWait(void) {
 
 int Robot::getAccelerometerData(double &accel_x, double &accel_y, double &accel_z) {
 	// output current accel data
-	accel_x = _accel[0];
-	accel_y = _accel[1];
-	accel_z = _accel[2];
+	accel_x = _a[0];
+	accel_y = _a[1];
+	accel_z = _a[2];
 
 	// success
 	return 0;
