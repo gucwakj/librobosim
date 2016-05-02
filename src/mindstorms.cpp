@@ -129,8 +129,8 @@ int CMindstorms::recordAnglesBegin(robotRecordData_t &time, robotRecordData_t &a
 	}
 
 	// record two joints
-	this->recordAngleBegin(Bodies::Joint1, time, angle1, seconds, shiftData);
-	this->recordAngleBegin(Bodies::Joint2, _rec_time[1], angle2, seconds, shiftData);
+	this->recordAngleBegin(Bodies::Joint2, time, angle1, seconds, shiftData);
+	this->recordAngleBegin(Bodies::Joint3, _rec_time[1], angle2, seconds, shiftData);
 
 	// success
 	return 0;
