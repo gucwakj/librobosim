@@ -480,45 +480,8 @@ int CLinkbot::setJointSpeedRatios(double ratio1, double ratio2, double ratio3) {
 }
 
 int CLinkbot::turnLeft(double angle, double radius, double trackwidth) {
-	// calculate final rotation after turn
-	angle = rs::D2R(angle);
-	double rf = this->getRotation(0, 2) + angle;
-
-	// get speed of robot
-	double *speed = new double[_dof]();
-	this->getJointSpeeds(speed[0], speed[1], speed[2]);
-
-	// turn toward new postition until pointing correctly
-	while (fabs(angle) > 0.005) {
-		// calculate wheel theta
-		double theta = fabs((angle*this->convert(_trackwidth, 0)) / (2 * radius));
-
-		// turn left
-		if (rs::R2D(angle) > 0.005) {
-			this->moveJointNB(rsLinkbot::Bodies::Joint1, -rs::R2D(theta));
-			this->moveJoint(rsLinkbot::Bodies::Joint3, -rs::R2D(theta));
-		}
-		// turn right
-		else if (rs::R2D(angle) < -0.005) {
-			this->moveJointNB(rsLinkbot::Bodies::Joint1, rs::R2D(theta));
-			this->moveJoint(rsLinkbot::Bodies::Joint3, rs::R2D(theta));
-		}
-
-		// calculate new rotation from error
-		double turnone = rf - this->getRotation(0, 2);
-		double turntwo = rf - (2 * rs::Pi + this->getRotation(0, 2));
-		if (fabs(turnone) < fabs(turntwo))	angle = turnone;
-		else								angle = turntwo;
-
-		// move slowly
-		this->setJointSpeeds(45, 45, 45);
-	}
-
-	// reset to original speed after turning
-	this->setJointSpeeds(speed[0], speed[1], speed[2]);
-
-	// success
-	return 0;
+	// turn (-)right == turn left
+	return this->turnRight(-angle, radius, trackwidth);
 }
 
 int CLinkbot::turnRight(double angle, double radius, double trackwidth) {
