@@ -1,3 +1,4 @@
+#include <cmath>
 #include <cstdint>
 #include <cstring>
 
@@ -1128,7 +1129,7 @@ int Robot::setJointSpeed(int id, double speed) {
 		std::cerr << "         beyond the hardware limit of " << rs::R2D(_motor[id].omega_max) << " degrees per second." << std::endl;
 	}
 	// check if speed = NaN
-	if (isnan(speed)) speed = 0;
+	if (std::isnan(speed)) speed = 0;
 	// set
 	_motor[id].omega = rs::D2R(speed);
 	// success
