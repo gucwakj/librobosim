@@ -1183,13 +1183,12 @@ int Robot::turnLeft(double angle, double radius, double trackwidth) {
 		return this->turnRight(-angle, radius, trackwidth);
 
 	// calculate current rotation
-	int rot = (this->getRotation(0, 2) + 0.1) / (2*rs::Pi);
+	int rot = (this->getRotation(0, 2) + 0.05)/(2*rs::Pi);
 	double current = this->getRotation(0, 2) - 2*rot*rs::Pi;
 
 	// calculate final rotation after turn
 	angle = rs::D2R(angle);
-	int rotations = (angle + 0.1) / (2*rs::Pi);
-	double rf = current + angle + 2*rotations*rs::Pi;
+	double rf = current + angle;
 
 	// store speed of robot
 	double *speed = new double[2]();
@@ -1203,8 +1202,11 @@ int Robot::turnLeft(double angle, double radius, double trackwidth) {
 
 	// correct until pointing correctly
 	while (fabs(angle) > 0.005) {
+		// modify rf
+		rf -= 2*rs::Pi*static_cast<int>(rf/(2*rs::Pi));
+
 		// calculate current rotation
-		int rot = (this->getRotation(0, 2) + 0.1) / (2*rs::Pi);
+		int rot = (this->getRotation(0, 2) + 0.05)/(2*rs::Pi);
 		double current = this->getRotation(0, 2) - 2*rot*rs::Pi;
 
 		// calculate new rotation from error
@@ -1268,12 +1270,12 @@ int Robot::turnRight(double angle, double radius, double trackwidth) {
 		return this->turnLeft(-angle, radius, trackwidth);
 
 	// calculate current rotation
-	int rot = (this->getRotation(0, 2) + 0.1) / (2*rs::Pi);
+	int rot = (this->getRotation(0, 2) + 0.05)/(2*rs::Pi);
 	double current = this->getRotation(0, 2) - 2*rot*rs::Pi;
 
 	// calculate final rotation after turn
 	angle = rs::D2R(angle);
-	int rotations = (angle + 0.1) / (2*rs::Pi);
+	int rotations = (angle + 0.05)/(2*rs::Pi);
 	double rf = current + 2*rs::Pi - angle + 2*rotations*rs::Pi;
 
 	// store speed of robot
@@ -1288,8 +1290,11 @@ int Robot::turnRight(double angle, double radius, double trackwidth) {
 
 	// correct until pointing correctly
 	while (fabs(angle) > 0.005) {
+		// modify rf
+		rf -= 2*rs::Pi*static_cast<int>(rf/(2*rs::Pi));
+
 		// calculate current rotation
-		int rot = (this->getRotation(0, 2) + 0.1) / (2*rs::Pi);
+		int rot = (this->getRotation(0, 2) + 0.05)/(2*rs::Pi);
 		double current = this->getRotation(0, 2) - 2*rot*rs::Pi;
 
 		// calculate new rotation from error
