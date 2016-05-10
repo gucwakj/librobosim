@@ -1183,8 +1183,8 @@ int Robot::turnLeft(double angle, double radius, double trackwidth) {
 		return this->turnRight(-angle, radius, trackwidth);
 
 	// calculate current rotation
-	int rot = (this->getRotation(0, 2) + 0.05)/(2*rs::Pi);
-	double current = this->getRotation(0, 2) - 2*rot*rs::Pi;
+	double current = this->getRotation(0, 2);
+	if (current > rs::Pi) current -= 2*rs::Pi;
 
 	// calculate final rotation after turn
 	angle = rs::D2R(angle);
@@ -1206,8 +1206,8 @@ int Robot::turnLeft(double angle, double radius, double trackwidth) {
 		rf -= 2*rs::Pi*static_cast<int>(rf/(2*rs::Pi));
 
 		// calculate current rotation
-		int rot = (this->getRotation(0, 2) + 0.05)/(2*rs::Pi);
-		double current = this->getRotation(0, 2) - 2*rot*rs::Pi;
+		current = this->getRotation(0, 2);
+		if (current > rs::Pi) current -= 2*rs::Pi;
 
 		// calculate new rotation from error
 		double turnone = rf - current;
@@ -1270,8 +1270,8 @@ int Robot::turnRight(double angle, double radius, double trackwidth) {
 		return this->turnLeft(-angle, radius, trackwidth);
 
 	// calculate current rotation
-	int rot = (this->getRotation(0, 2) + 0.05)/(2*rs::Pi);
-	double current = this->getRotation(0, 2) - 2*rot*rs::Pi;
+	double current = this->getRotation(0, 2);
+	if (current > rs::Pi) current -= 2*rs::Pi;
 
 	// calculate final rotation after turn
 	angle = rs::D2R(angle);
@@ -1294,8 +1294,8 @@ int Robot::turnRight(double angle, double radius, double trackwidth) {
 		rf -= 2*rs::Pi*static_cast<int>(rf/(2*rs::Pi));
 
 		// calculate current rotation
-		int rot = (this->getRotation(0, 2) + 0.05)/(2*rs::Pi);
-		double current = this->getRotation(0, 2) - 2*rot*rs::Pi;
+		current = this->getRotation(0, 2);
+		if (current > rs::Pi) current -= 2*rs::Pi;
 
 		// calculate new rotation from error
 		double turnone = rf - current;
