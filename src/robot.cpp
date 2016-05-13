@@ -1419,8 +1419,13 @@ void* Robot::drivexyToArrayThread(void *arg) {
 	// cast arg
 	RobotMove *move = (RobotMove *)arg;
 
-	// perform motion
-	for (int i = 0; i < move->i; i++) {
+	// perform first step w/o trace
+	move->robot->traceOff();
+	move->robot->drivexyTo(move->px[0], move->py[0], move->radius, move->trackwidth);
+	move->robot->traceOn();
+
+	// perform rest of motion
+	for (int i = 1; i < move->i; i++) {
 		move->robot->drivexyTo(move->px[i], move->py[i], move->radius, move->trackwidth);
 	}
 
