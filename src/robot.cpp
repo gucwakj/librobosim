@@ -331,8 +331,15 @@ int Robot::drivexyToFunc(double x0, double xf, int n, double (*func)(double x), 
 	// number of steps necessary
 	double step = (xf-x0)/(n-1);
 
+	// get to starting point w/o trace
+	this->traceOff();
+	double x = x0;
+	double y = func(x);
+	this->drivexyTo(x, y, radius, trackwidth);
+	this->traceOn();
+
 	// drivexy to sequence of (x,y) values
-	for (int i = 0; i < n; i++) {
+	for (int i = 1; i < n; i++) {
 		double x = x0 + i*step;
 		double y = func(x);
 		this->drivexyTo(x, y, radius, trackwidth);
