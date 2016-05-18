@@ -1439,11 +1439,6 @@ void* Robot::drivexyToArrayThread(void *arg) {
 	// signal successful completion
 	RS_COND_ACTION(&move->robot->_motion_cond, &move->robot->_motion_mutex, move->robot->_motion = false);
 
-	// cleanup
-	delete move->px;
-	delete move->py;
-	delete move;
-
 	// success
 	return NULL;
 }
