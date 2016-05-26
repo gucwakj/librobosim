@@ -117,6 +117,11 @@ int Robot::driveDistance(double distance, double radius) {
 	distance = this->convert(distance, 1);
 	radius = this->convert(radius, 1);
 
+	// store speed of robot
+	double *speed = new double[2]();
+	this->getJointSpeed(_leftWheel, speed[0]);
+	this->getJointSpeed(_rightWheel, speed[1]);
+
 	// calculate distance to move
 	double x = x0 - distance*sin(this->getRotation(0, 2));
 	double y = y0 + distance*cos(this->getRotation(0, 2));
@@ -133,6 +138,9 @@ int Robot::driveDistance(double distance, double radius) {
 
 		// don't try again if wheels are different
 		if (this->getWheelLeft() != this->getWheelRight()) break;
+
+		// don't try again if omegas are different
+		if (fabs(speed[0] - speed[1]) > rs::Epsilon) break;
 
 		// calculate new distance to move
 		this->getxy(x0, y0);
