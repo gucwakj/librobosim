@@ -1147,6 +1147,8 @@ int Robot::setJointSpeed(int id, double speed) {
 	if (std::isnan(speed)) speed = 0;
 	// set
 	_motor[id].omega = rs::D2R(speed);
+	// robot speed
+	_speed = rs::D2R(speed);
 	// success
 	return 0;
 }
