@@ -563,7 +563,7 @@ int Robot::getLEDColorRGB(int &r, int &g, int &b) {
 
 int Robot::getPosition(double &x, double &y, double &angle) {
 	this->getxy(x, y);
-	double rotation = this->getRotation(0, 2);
+	double rotation = this->getRotation(0, 2) + 0.01;
 	int num = rotation / (2 * rs::Pi);
 	rotation -= num * 2 * rs::Pi;
 	angle = rs::R2D(rotation);
