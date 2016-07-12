@@ -40,6 +40,7 @@ class LIBRSEXPORT RoboSim : virtual public rsScene::Scene, virtual public rsSim:
 
 	private:
 		bool _units;		// SI (true) or customary (false)
+		std::vector< std::tuple<rsXML::Conn*, int> > _delay;
 };
 
 #endif	// ROBOSIM_H_

@@ -125,11 +125,29 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot, rsScene::ModularRobot *robot2,
 		}
 		else {
 			rsXML::Conn *base = xmlbot->getBaseConnector();
-			robot->fixConnectorToBody(conn[i]->getFace2(), dynamic_cast<rsSim::ModularRobot*>(Sim::getRobot(base->getRobot()))->getConnectorBodyID(conn[i]->getFace1()), conn[i]->getType());
+			if (base) {
+				robot->fixConnectorToBody(	conn[i]->getFace2(),
+											dynamic_cast<rsSim::ModularRobot*>(Sim::getRobot(base->getRobot()))->getConnectorBodyID(conn[i]->getFace1()),
+											conn[i]->getType());
+			}
+			else
+				_delay.push_back( std::make_tuple(conn[i], xmlbot->getID()));
 		}
 		Sim::mutexUnlock(Sim::AddRobot);
 	}
 	robot->calculateTrackwidth();
+
+	// delayed fixing of looped connectors to bodies
+	for (unsigned int i = 0; i < _delay.size(); i++) {
+		rsXML::Conn *conn = std::get<0>(_delay[i]);
+		int id = std::get<1>(_delay[i]);
+		if (conn->getRobot() == xmlbot->getID()) {
+			rsSim::ModularRobot *mrp = dynamic_cast<rsSim::ModularRobot*>(Sim::getRobot(id));
+			mrp->fixConnectorToBody(	conn->getFace2(),
+										dynamic_cast<rsSim::ModularRobot*>(Sim::getRobot(conn->getRobot()))->getConnectorBodyID(conn->getFace1()),
+										conn->getType());
+		}
+	}
 
 	// draw graphical robot
 	rsScene::Group *sceneRobot = Scene::createRobot(robot2);
