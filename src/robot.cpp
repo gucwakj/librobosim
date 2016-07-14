@@ -566,7 +566,7 @@ int Robot::getPosition(double &x, double &y, double &angle) {
 	double rotation = this->getRotation(0, 2) + 0.01;
 	int num = rotation / (2 * rs::Pi);
 	rotation -= num * 2 * rs::Pi;
-	angle = rs::R2D(rotation);
+	angle = rs::R2D(rotation) + 90;
 
 	// success
 	return 0;
