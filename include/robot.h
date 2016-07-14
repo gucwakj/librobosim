@@ -182,6 +182,12 @@ namespace roboSim {
 				return 0;
 			}
 
+			int delaySeconds(double seconds) {
+				// delay first robot only
+				_robots[0]->delaySeconds(seconds);
+				return 0;
+			}
+
 			int disconnect(void) {
 				for (unsigned int i = 0; i < _robots.size(); i++) {
 					_robots[i]->disconnect();
