@@ -220,3 +220,16 @@ void RoboSim::saveState(char *name) {
 	//rsXML::Writer *writer = new rsXML::Writer("test.xml", Reader::getDoc());
 }
 
+void RoboSim::updateClock(void) {
+	// get time
+	float time = Sim::getClock();
+
+	// create string
+	char buf[10];
+	std::sprintf(buf, "%.2f", time);
+	std::string s(buf);
+
+	// set HUD
+	Scene::getClockText()->setText(s);
+}
+

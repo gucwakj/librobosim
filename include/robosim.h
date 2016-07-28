@@ -37,6 +37,7 @@ class LIBRSEXPORT RoboSim : virtual public rsScene::Scene, virtual public rsSim:
 		bool getUnits(void);
 		void keyPressed(int);
 		void saveState(char*);
+		void updateClock(void);
 
 	private:
 		bool _units;		// SI (true) or customary (false)
