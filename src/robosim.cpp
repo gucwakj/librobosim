@@ -143,9 +143,7 @@ int RoboSim::addRobot(rsSim::ModularRobot *robot, rsScene::ModularRobot *robot2,
 		int id = std::get<1>(_delay[i]);
 		if (conn->getRobot() == xmlbot->getID()) {
 			rsSim::ModularRobot *mrp = dynamic_cast<rsSim::ModularRobot*>(Sim::getRobot(id));
-			mrp->fixConnectorToBody(	conn->getFace2(),
-										dynamic_cast<rsSim::ModularRobot*>(Sim::getRobot(conn->getRobot()))->getConnectorBodyID(conn->getFace1()),
-										conn->getType());
+			mrp->fixBodyToConnector(dynamic_cast<rsSim::ModularRobot*>(Sim::getRobot(conn->getRobot()))->getConnectorBodyID(conn->getFace1()), conn->getFace2());
 		}
 	}
 
