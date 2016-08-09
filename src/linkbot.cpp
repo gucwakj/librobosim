@@ -1,4 +1,3 @@
-#include <iostream>
 #include "linkbot.h"
 
 using namespace rsLinkbot;
