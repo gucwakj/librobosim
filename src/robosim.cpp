@@ -29,6 +29,7 @@ RoboSim::RoboSim(const char *name, bool pause) : rsScene::Scene(), rsSim::Sim(pa
 		switch (obstacle->getForm()) {
 			case rs::Box:
 			case rs::WoodBlock:
+			case rs::HackySack:
 				simObstacle = Sim::addObstacle(obstacle->getPosition(), obstacle->getQuaternion(), obstacle->getDimensions(), obstacle->getMass());
 				break;
 			case rs::CompetitionBorder:
@@ -38,7 +39,6 @@ RoboSim::RoboSim(const char *name, bool pause) : rsScene::Scene(), rsSim::Sim(pa
 				simObstacle = Sim::addObstacle(obstacle->getPosition(), obstacle->getQuaternion(), obstacle->getDimensions(), obstacle->getMass(), obstacle->getAxis());
 				break;
 			case rs::Sphere:
-			case rs::HackySack:
 				simObstacle = Sim::addObstacle(obstacle->getPosition(), obstacle->getDimensions(), obstacle->getMass());
 				break;
 			case rs::PullupBar:
