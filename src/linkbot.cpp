@@ -1,3 +1,4 @@
+#include <iostream>
 #include "linkbot.h"
 
 using namespace rsLinkbot;
@@ -484,6 +485,24 @@ int CLinkbot::turnLeft(double angle, double radius, double trackwidth) {
 	if (angle < rs::Epsilon)
 		return this->turnRight(-angle, radius, trackwidth);
 
+	// turn right with negative speeds
+	if (_speed < rs::Epsilon) {
+		// save current speeds
+		double speed[2];
+		this->getJointSpeed(_leftWheel, speed[0]);
+		this->getJointSpeed(_rightWheel, speed[1]);
+		// set new opposite speeds
+		this->setJointSpeed(_leftWheel, -1*speed[0]);
+		this->setJointSpeed(_rightWheel, -1*speed[1]);
+		// turn right
+		int rc = this->turnRight(angle, radius, trackwidth);
+		// restore speeds
+		this->setJointSpeed(_leftWheel, speed[0]);
+		this->setJointSpeed(_rightWheel, speed[1]);
+		// exit
+		return rc;
+	}
+
 	// calculate current rotation
 	double current = this->getRotation(0, 2);
 	if (current > rs::Pi) current -= 2*rs::Pi;
@@ -496,7 +515,7 @@ int CLinkbot::turnLeft(double angle, double radius, double trackwidth) {
 	angle -= 0.03*angle;
 
 	// store speed of robot
-	double *speed = new double[2]();
+	double speed[2];
 	this->getJointSpeed(_leftWheel, speed[0]);
 	this->getJointSpeed(_rightWheel, speed[1]);
 
@@ -552,6 +571,24 @@ int CLinkbot::turnRight(double angle, double radius, double trackwidth) {
 	if (angle < rs::Epsilon)
 		return this->turnLeft(-angle, radius, trackwidth);
 
+	// turn left with negative speeds
+	if (_speed < rs::Epsilon) {
+		// save current speeds
+		double speed[2];
+		this->getJointSpeed(_leftWheel, speed[0]);
+		this->getJointSpeed(_rightWheel, speed[1]);
+		// set new opposite speeds
+		this->setJointSpeed(_leftWheel, -1*speed[0]);
+		this->setJointSpeed(_rightWheel, -1*speed[1]);
+		// turn right
+		int rc = this->turnLeft(angle, radius, trackwidth);
+		// restore speeds
+		this->setJointSpeed(_leftWheel, speed[0]);
+		this->setJointSpeed(_rightWheel, speed[1]);
+		// exit
+		return rc;
+	}
+
 	// calculate current rotation
 	double current = this->getRotation(0, 2);
 	if (current > rs::Pi) current -= 2*rs::Pi;
@@ -565,7 +602,7 @@ int CLinkbot::turnRight(double angle, double radius, double trackwidth) {
 	angle -= 0.03*angle;
 
 	// store speed of robot
-	double *speed = new double[2]();
+	double speed[2];
 	this->getJointSpeed(_leftWheel, speed[0]);
 	this->getJointSpeed(_rightWheel, speed[1]);
 
