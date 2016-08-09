@@ -1140,7 +1140,7 @@ int Robot::setJointSafetyAngleTimeout(double seconds) {
 int Robot::setJointSpeed(int id, double speed) {
 	// check if above hardware limit and warn user
 	if (speed > rs::R2D(_motor[id].omega_max)) {
-		std::cerr << "Warning: Setting the speed for joint " << id+1 << " to " << speed << " degrees per second is";
+		std::cerr << "Warning: Setting the speed for joint " << id+1 << " to " << speed << " degrees per second is" << std::endl;
 		std::cerr << "         beyond the hardware limit of " << rs::R2D(_motor[id].omega_max) << " degrees per second." << std::endl;
 	}
 	// check if speed = NaN
