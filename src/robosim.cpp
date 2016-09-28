@@ -20,6 +20,10 @@ RoboSim::RoboSim(const char *name, bool pause) : rsScene::Scene(), rsSim::Sim(pa
 	Scene::setLevel(Reader::getLevel());
 	Reader::addBackgroundObjects();
 
+	// set friction
+	std::vector<float> friction = Reader::getFriction();
+	Sim::setFriction(friction[0], friction[1]);
+
 	// draw ground objects
 	for (int i = 0; i < Reader::getNumObstacles(); i++) {
 		// get xml ground object
